@@ -16,7 +16,7 @@ Aplikasi ini memiliki 4 model matematika industri:
 3. **Model Antrian (M/M/1)**  
 4. **Analisis Turunan Parsial**
 
-Masukkan data sesuai tab. Hasil & grafik akan muncul otomatis.
+Masukkan data sesuai tab. Hasil & grafik akan muncul secara otomatis.
 """)
 
 # =============================
@@ -25,10 +25,10 @@ Masukkan data sesuai tab. Hasil & grafik akan muncul otomatis.
 st.title("📊 Aplikasi Model Matematika Industri")
 
 tab1, tab2, tab3, tab4 = st.tabs([
-    "1. Optimasi Produksi (LP)",
+    "1. Optimasi Produksi (Linear Programming)",
     "2. Model Persediaan (EOQ)",
     "3. Model Antrian (M/M/1)",
-    "4. Analisis Turunan Parsial"
+    "4. Model Matematika Lain (Turunan Parsial)"
 ])
 
 # =============================
@@ -37,55 +37,46 @@ tab1, tab2, tab3, tab4 = st.tabs([
 with tab1:
     st.header("1️⃣ Optimasi Produksi (Linear Programming)")
 
-    st.markdown("**📚 Studi Kasus: Produksi Kursi (x) dan Meja (y)**")
+    st.markdown("**Studi Kasus: Produksi Kursi dan Meja**")
     st.markdown("""
-    PT Maju Jaya memproduksi **kursi (x)** dan **meja (y)**.  
-    - Kursi memberi keuntungan Rp30.000 dan memerlukan 3 jam kerja serta 4 meter kayu.  
-    - Meja memberi keuntungan Rp50.000 dan memerlukan 5 jam kerja serta 2 meter kayu.
+    PT Maju Jaya memproduksi **kursi (X)** dan **meja (Y)**.  
+    Setiap kursi memberi keuntungan Rp30.000, dan setiap meja Rp50.000.
+
+    - Kursi: 3 jam kerja & 4 meter kayu  
+    - Meja: 5 jam kerja & 2 meter kayu
     """)
 
     st.subheader("🔧 Input Parameter Produksi")
     jam_kerja = st.number_input("Total jam kerja tersedia", value=240.0)
     kayu = st.number_input("Total kayu tersedia (meter)", value=160.0)
 
-    st.subheader("📐 Model Matematika")
-    st.latex(r"\text{Maksimalkan:} \quad Z = 30x + 50y")
-    st.latex(r"\text{Dengan kendala:}")
-    st.latex(r"3x + 5y \leq " + str(jam_kerja))
-    st.latex(r"4x + 2y \leq " + str(kayu))
+    st.subheader("📐 Fungsi Objektif dan Kendala")
+    st.latex(r"\text{Maksimalkan: } Z = 30x + 50y")
+    st.latex(r"\text{Kendala:}")
+    st.latex(r"3x + 5y \leq \text{" + str(jam_kerja) + "}")
+    st.latex(r"4x + 2y \leq \text{" + str(kayu) + "}")
     st.latex(r"x \geq 0, \quad y \geq 0")
 
     if st.button("🔍 Hitung Solusi Optimal"):
-        c = [-30, -50]
+        c = [-30, -50]  # negatif karena linprog meminimalkan
         A = [[3, 5], [4, 2]]
         b = [jam_kerja, kayu]
-        bounds = [(0, None), (0, None)]
+        x_bounds = (0, None)
+        y_bounds = (0, None)
 
-        result = linprog(c, A_ub=A, b_ub=b, bounds=bounds, method='highs')
+        result = linprog(c, A_ub=A, b_ub=b, bounds=[x_bounds, y_bounds], method='highs')
 
         if result.success:
-            x_opt, y_opt = result.x
-            z_max = -result.fun
-            st.success(f"✅ Keuntungan Maksimal: Rp{z_max * 1000:,.0f}")
-            st.markdown(f"- Kursi (x): {x_opt:.2f} unit  \n- Meja (y): {y_opt:.2f} unit")
+            x = result.x[0]
+            y = result.x[1]
+            z = -result.fun
 
-            # Visualisasi solusi
-            x_vals = np.linspace(0, jam_kerja / 3 + 10, 200)
-            y1 = (jam_kerja - 3 * x_vals) / 5
-            y2 = (kayu - 4 * x_vals) / 2
-
-            fig, ax = plt.subplots()
-            ax.plot(x_vals, y1, label="3x + 5y ≤ jam kerja")
-            ax.plot(x_vals, y2, label="4x + 2y ≤ kayu")
-            ax.fill_between(x_vals, 0, np.minimum(y1, y2), where=(np.minimum(y1, y2) >= 0), color='lightblue', alpha=0.5)
-            ax.plot(x_opt, y_opt, 'ro', label="Solusi Optimal")
-            ax.set_xlabel("Kursi (x)")
-            ax.set_ylabel("Meja (y)")
-            ax.set_xlim(left=0)
-            ax.set_ylim(bottom=0)
-            ax.set_title("Wilayah Solusi Linear Programming")
-            ax.legend()
-            st.pyplot(fig)
+            st.success(f"✅ Keuntungan maksimal: Rp{z * 1000:,.0f}")
+            st.markdown(f"""
+            **Rekomendasi Produksi:**
+            - Kursi: {x:.2f} unit  
+            - Meja: {y:.2f} unit  
+            """)
         else:
             st.error("❌ Gagal menemukan solusi.")
 
@@ -99,6 +90,9 @@ with tab2:
     S = st.number_input("Biaya pesan per pesanan (S)", value=50.0)
     H = st.number_input("Biaya simpan per unit per tahun (H)", value=2.0)
 
+    st.subheader("📐 Rumus EOQ")
+    st.latex(r"\text{EOQ} = \sqrt{\frac{2DS}{H}}")
+
     if D > 0 and S > 0 and H > 0:
         EOQ = np.sqrt((2 * D * S) / H)
         st.success(f"🔢 EOQ = {EOQ:.2f} unit per pesanan")
@@ -107,13 +101,15 @@ with tab2:
         TC = (D / Q) * S + (Q / 2) * H
 
         fig, ax = plt.subplots()
-        ax.plot(Q, TC, label='Total Cost')
+        ax.plot(Q, TC, label='Total Biaya')
         ax.axvline(EOQ, color='red', linestyle='--', label='EOQ')
         ax.set_xlabel("Jumlah Pesanan (Q)")
         ax.set_ylabel("Total Biaya")
         ax.set_title("Total Biaya vs Jumlah Pesanan")
         ax.legend()
         st.pyplot(fig)
+    else:
+        st.warning("❗ D, S, dan H harus lebih besar dari 0.")
 
 # =============================
 # TAB 3: Antrian M/M/1
