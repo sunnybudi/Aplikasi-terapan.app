@@ -37,25 +37,48 @@ tab1, tab2, tab3, tab4 = st.tabs([
 with tab1:
     st.header("1️⃣ Optimasi Produksi (Linear Programming)")
 
-    st.markdown("**Masukkan Koefisien Fungsi Objektif (c):**")
-    c = st.text_input("Contoh input: -3, -5", "-3, -5")
-    c = list(map(float, c.split(',')))
+    st.markdown("**Studi Kasus: Produksi Kursi dan Meja**")
+    st.markdown("""
+    PT Maju Jaya memproduksi **kursi (X)** dan **meja (Y)**.  
+    Setiap kursi memberi keuntungan Rp30.000, dan setiap meja Rp50.000.
 
-    st.markdown("**Masukkan Matriks Kendala (A):**")
-    A = st.text_area("Contoh input: pisahkan baris dengan enter\n1, 0\n0, 2\n3, 2", "1, 0\n0, 2\n3, 2")
-    A = [list(map(float, row.split(','))) for row in A.strip().split('\n')]
+    - Kursi: 3 jam kerja & 4 meter kayu  
+    - Meja: 5 jam kerja & 2 meter kayu
+    """)
 
-    st.markdown("**Masukkan Batasan (b):**")
-    b = st.text_input("Contoh input: 4, 12, 18", "4, 12, 18")
-    b = list(map(float, b.split(',')))
+    st.subheader("🔧 Input Parameter Produksi")
+    jam_kerja = st.number_input("Total jam kerja tersedia", value=240.0)
+    kayu = st.number_input("Total kayu tersedia (meter)", value=160.0)
 
-    if st.button("🔍 Hitung Solusi LP"):
-        res = linprog(c, A_ub=A, b_ub=b, method='highs')
-        if res.success:
-            st.success(f"Nilai maksimum Z = {-res.fun}")
-            st.write(f"Solusi variabel: {res.x}")
+    if st.button("🔍 Hitung Solusi Optimal"):
+        # Fungsi objektif: Z = 30X + 50Y
+        c = [-30, -50]  # negatif karena linprog meminimalkan
+
+        # Kendala:
+        A = [
+            [3, 5],   # jam kerja
+            [4, 2],   # kayu
+        ]
+        b = [jam_kerja, kayu]
+
+        x_bounds = (0, None)
+        y_bounds = (0, None)
+
+        result = linprog(c, A_ub=A, b_ub=b, bounds=[x_bounds, y_bounds], method='highs')
+
+        if result.success:
+            x = result.x[0]
+            y = result.x[1]
+            z = -result.fun
+
+            st.success(f"✅ Keuntungan maksimal: Rp{z * 1000:,.0f}")
+            st.markdown(f"""
+            **Rekomendasi Produksi:**
+            - Kursi: {x:.2f} unit  
+            - Meja: {y:.2f} unit  
+            """)
         else:
-            st.error("Gagal menemukan solusi.")
+            st.error("❌ Gagal menemukan solusi.")
 
 # =============================
 # TAB 2: EOQ Model
