@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import sympy as sp
 from scipy.optimize import linprog
 
+st.set_page_config(layout="wide")
+
 # =============================
 # SIDEBAR - PETUNJUK
 # =============================
@@ -37,48 +39,55 @@ tab1, tab2, tab3, tab4 = st.tabs([
 with tab1:
     st.header("1️⃣ Optimasi Produksi (Linear Programming)")
 
-    st.markdown("**Studi Kasus: Produksi Kursi dan Meja**")
-    st.markdown("""
-    PT Maju Jaya memproduksi **kursi (X)** dan **meja (Y)**.  
-    Setiap kursi memberi keuntungan Rp30.000, dan setiap meja Rp50.000.
+    st.markdown("Masukkan data berikut untuk menyelesaikan masalah LP:")
 
-    - Kursi: 3 jam kerja & 4 meter kayu  
-    - Meja: 5 jam kerja & 2 meter kayu
-    """)
+    c_str = st.text_input("**Fungsi Objektif (c):** Contoh: 40,60", value="40,60")
+    A_str = st.text_area("**Matriks Kendala (A):** Pisahkan baris dengan enter\nContoh:\n2,1\n1,1", value="2,1\n1,1")
+    b_str = st.text_input("**Batasan kanan (b):** Contoh: 100,80", value="100,80")
 
-    st.subheader("🔧 Input Parameter Produksi")
-    jam_kerja = st.number_input("Total jam kerja tersedia", value=240.0)
-    kayu = st.number_input("Total kayu tersedia (meter)", value=160.0)
+    try:
+        # Parsing input
+        c = list(map(float, c_str.split(',')))
+        A = [list(map(float, row.split(','))) for row in A_str.strip().split('\n')]
+        b = list(map(float, b_str.split(',')))
 
-    if st.button("🔍 Hitung Solusi Optimal"):
-        # Fungsi objektif: Z = 30X + 50Y
-        c = [-30, -50]  # negatif karena linprog meminimalkan
+        # Visualisasi rumus matematika
+        x = sp.symbols(f'x:{len(c)}')
+        f_obj = sum(ci * xi for ci, xi in zip(c, x))
+        st.latex(r"\text{Fungsi Objektif: } \max Z = " + sp.latex(f_obj))
 
-        # Kendala:
-        A = [
-            [3, 5],   # jam kerja
-            [4, 2],   # kayu
-        ]
-        b = [jam_kerja, kayu]
+        st.latex(r"\text{Kendala:}")
+        for i, row in enumerate(A):
+            lhs = sum(row[j] * x[j] for j in range(len(c)))
+            st.latex(sp.latex(lhs) + r" \leq " + sp.latex(b[i]))
 
-        x_bounds = (0, None)
-        y_bounds = (0, None)
+        if st.button("🔍 Hitung Solusi LP"):
+            res = linprog([-ci for ci in c], A_ub=A, b_ub=b, method='highs')
+            if res.success:
+                st.success(f"✅ Solusi Optimal: Z = {round(-res.fun, 2)}")
+                for i, val in enumerate(res.x):
+                    st.write(f"x{i+1} = {round(val, 2)}")
+            else:
+                st.error("❌ Gagal menemukan solusi LP.")
 
-        result = linprog(c, A_ub=A, b_ub=b, bounds=[x_bounds, y_bounds], method='highs')
+        # Visualisasi wilayah solusi (hanya untuk 2 variabel)
+        if len(c) == 2:
+            x1_vals = np.linspace(0, max(b) * 1.2, 400)
+            fig, ax = plt.subplots()
+            for row, bi in zip(A, b):
+                if row[1] != 0:
+                    x2 = (bi - row[0]*x1_vals) / row[1]
+                    ax.plot(x1_vals, x2, label=f"{row[0]}x₁ + {row[1]}x₂ ≤ {bi}")
+            ax.set_xlim(0, max(b))
+            ax.set_ylim(0, max(b))
+            ax.set_xlabel("x₁")
+            ax.set_ylabel("x₂")
+            ax.set_title("Wilayah Solusi")
+            ax.legend()
+            st.pyplot(fig)
 
-        if result.success:
-            x = result.x[0]
-            y = result.x[1]
-            z = -result.fun
-
-            st.success(f"✅ Keuntungan maksimal: Rp{z * 1000:,.0f}")
-            st.markdown(f"""
-            **Rekomendasi Produksi:**
-            - Kursi: {x:.2f} unit  
-            - Meja: {y:.2f} unit  
-            """)
-        else:
-            st.error("❌ Gagal menemukan solusi.")
+    except Exception as e:
+        st.error(f"Terjadi kesalahan dalam input: {e}")
 
 # =============================
 # TAB 2: EOQ Model
@@ -147,49 +156,4 @@ with tab3:
 
 # =============================
 # TAB 4: Turunan Parsial
-# =============================
-with tab4:
-    st.header("4️⃣ Analisis Turunan Parsial f(x, y)")
-
-    x, y = sp.symbols('x y')
-    fungsi_str = st.text_input("Masukkan fungsi f(x, y):", "x**3 + y + y**2")
-
-    try:
-        f = sp.sympify(fungsi_str)
-        fx = sp.diff(f, x)
-        fy = sp.diff(f, y)
-
-        st.latex(f"f(x, y) = {sp.latex(f)}")
-        st.latex(f"\\frac{{\\partial f}}{{\\partial x}} = {sp.latex(fx)}")
-        st.latex(f"\\frac{{\\partial f}}{{\\partial y}} = {sp.latex(fy)}")
-
-        x0 = st.number_input("Nilai x₀:", value=1.0)
-        y0 = st.number_input("Nilai y₀:", value=2.0)
-
-        f_val = f.subs({x: x0, y: y0})
-        fx_val = fx.subs({x: x0, y: y0})
-        fy_val = fy.subs({x: x0, y: y0})
-
-        st.write(f"Nilai fungsi di titik (x₀, y₀): {f_val}")
-        st.write(f"Gradien di titik (x₀, y₀): ({fx_val}, {fy_val})")
-
-        x_vals = np.linspace(x0 - 2, x0 + 2, 50)
-        y_vals = np.linspace(y0 - 2, y0 + 2, 50)
-        X, Y = np.meshgrid(x_vals, y_vals)
-
-        f_lambdified = sp.lambdify((x, y), f, 'numpy')
-        Z = f_lambdified(X, Y)
-        Z_tangent = float(f_val) + float(fx_val)*(X - x0) + float(fy_val)*(Y - y0)
-
-        fig = plt.figure(figsize=(10, 6))
-        ax = fig.add_subplot(111, projection='3d')
-        ax.plot_surface(X, Y, Z, alpha=0.7, cmap='viridis')
-        ax.plot_surface(X, Y, Z_tangent, alpha=0.5, color='red')
-        ax.set_title("Permukaan f(x, y) dan bidang singgungnya")
-        ax.set_xlabel('x')
-        ax.set_ylabel('y')
-        ax.set_zlabel('z')
-        st.pyplot(fig)
-
-    except Exception as e:
-        st.error(f"Terjadi kesalahan: {e}")
+# =====================
