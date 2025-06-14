@@ -38,7 +38,7 @@ tab1, tab2, tab3, tab4 = st.tabs([
 with tab1:
     st.header("1️⃣ Optimasi & Jumlah Mesin & Operator")
 
-    mode = st.radio("Pilih Mode", ["Optimasi Biaya (LP)", "Jumlah Mesin & Operator (Integer)"])
+    mode = st.radio("Pilih Mode", ["Optimasi Biaya (LP)", "Jumlah Mesin & Operator (Integer)", "Simulasi Manual"])
 
     target = st.number_input("🎯 Target Produksi Harian (unit)", min_value=1, value=600, step=10)
     jam_kerja = st.number_input("🕒 Jam Kerja per Hari (jam)", min_value=1, value=8)
@@ -103,6 +103,23 @@ with tab1:
 
         if not solusi_ditemukan:
             st.error("❌ Tidak ditemukan kombinasi mesin & operator untuk target tersebut.")
+
+    elif mode == "Simulasi Manual":
+        st.subheader("Simulasi Manual Jumlah Mesin & Operator")
+
+        mesin = st.number_input("🔧 Jumlah Mesin (input manual)", min_value=0, step=1)
+        operator = st.number_input("👷 Jumlah Operator (input manual)", min_value=0, step=1)
+
+        produksi_aktual = (mesin + operator) * kapasitas_harian
+        total_biaya = (mesin * biaya_mesin) + (operator * biaya_operator)
+
+        st.write(f"🏭 Total Produksi Aktual: **{produksi_aktual} unit/hari**")
+        st.write(f"💵 Total Biaya Harian: **Rp {total_biaya * 1000:,.0f}**")
+
+        fig, ax = plt.subplots()
+        ax.bar(["Mesin", "Operator"], [mesin, operator], color=["skyblue", "orange"])
+        ax.set_ylabel("Jumlah")
+        st.pyplot(fig)
 
 # =========================
 # TAB 2: EOQ
@@ -178,8 +195,8 @@ with tab4:
         fy_val = fy.subs({x: x0, y: y0})
 
         st.latex(f"f(x, y) = {sp.latex(f)}")
-        st.latex(f"\\frac{{\\partial f}}{{\\partial x}} = {sp.latex(fx)}")
-        st.latex(f"\\frac{{\\partial f}}{{\\partial y}} = {sp.latex(fy)}")
+        st.latex(f"\\frac{\\partial f}{\\partial x} = {sp.latex(fx)}")
+        st.latex(f"\\frac{\\partial f}{\\partial y} = {sp.latex(fy)}")
 
         st.write(f"Nilai f: {f_val}, Gradien: ({fx_val}, {fy_val})")
 
