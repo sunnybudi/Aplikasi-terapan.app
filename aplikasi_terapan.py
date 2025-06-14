@@ -1,5 +1,6 @@
 import streamlit as st
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 import sympy as sp
 from scipy.optimize import linprog
@@ -7,11 +8,11 @@ from scipy.optimize import linprog
 # =============================
 # SIDEBAR - PETUNJUK
 # =============================
-st.sidebar.title("📘 Petunjuk Penggunaan")
+st.sidebar.title("\ud83d\udcd8\ufe0f Petunjuk Penggunaan")
 st.sidebar.markdown("""
 Aplikasi ini memiliki 4 model matematika industri:
 
-1. **Optimasi Mesin & Operator**  
+1. **Optimasi Mesin & Operator (5 tipe)**  
 2. **Model Persediaan EOQ**  
 3. **Model Antrian (M/M/1)**  
 4. **Analisis Turunan Parsial**
@@ -22,7 +23,7 @@ Masukkan data sesuai tab. Hasil & grafik akan muncul secara otomatis.
 # =============================
 # TAB UTAMA
 # =============================
-st.title("📊 Aplikasi Model Matematika Industri")
+st.title("\ud83d\udcca Aplikasi Model Matematika Industri")
 
 tab1, tab2, tab3, tab4 = st.tabs([
     "1. Optimasi Mesin & Operator",
@@ -32,181 +33,154 @@ tab1, tab2, tab3, tab4 = st.tabs([
 ])
 
 # =============================
-# TAB 1: Optimasi Mesin & Operator
+# TAB 1: Optimasi 5 Mesin & 5 Operator
 # =============================
 with tab1:
-    st.header("1️⃣ Optimasi Jumlah Mesin dan Operator")
+    st.header("1\ufe0f\ufe0f\ufe0f Optimasi 5 Mesin dan 5 Operator")
 
-    st.markdown("**Studi Kasus: Kombinasi Mesin dan Operator untuk Produksi Harian**")
-    st.markdown("""
-    Sebuah pabrik ingin memproduksi **minimal 100 unit per hari** dengan kombinasi mesin dan operator.  
-    Tujuan: **Minimalkan biaya total**.
+    target = st.number_input("\ud83c\udf1f Target Produksi Harian (unit)", min_value=1, value=500, step=1)
 
-    - **Mesin (x)**: memproses 5 unit/jam, biaya Rp200.000/hari  
-    - **Operator (y)**: memproses 4 unit/jam, biaya Rp150.000/hari  
-    """)
+    kapasitas_mesin = [8, 7, 6, 5, 4]  # unit/jam
+    biaya_mesin = [300, 280, 260, 240, 220]  # ribu/hari
+    kapasitas_operator = [6, 5.5, 5, 4.5, 4]  # unit/jam
+    biaya_operator = [200, 190, 180, 170, 160]  # ribu/hari
+    jam_kerja = 8
 
-    target_unit = st.number_input("Target unit yang harus diproduksi", value=100.0)
+    total_kap_mesin = [k * jam_kerja for k in kapasitas_mesin]
+    total_kap_op = [k * jam_kerja for k in kapasitas_operator]
 
-    st.subheader("📐 Model Matematika")
-    st.latex(r"\text{Minimalkan: } Z = 200x + 150y")
-    st.latex(r"\text{Kendala: } 5x + 4y \geq " + str(target_unit))
-    st.latex(r"x \geq 0, \quad y \geq 0")
+    c = biaya_mesin + biaya_operator
+    A_ub = [-np.array(total_kap_mesin + total_kap_op)]
+    b_ub = [-target]
+    bounds = [(0, None)] * 10
 
-    if st.button("🔍 Hitung Kombinasi Optimal"):
-        c = [200, 150]
-        A = [[-5, -4]]  # dikali -1 karena linprog hanya mendukung <=
-        b = [-target_unit]
-        bounds = [(0, None), (0, None)]
+    res = linprog(c=c, A_ub=A_ub, b_ub=b_ub, bounds=bounds, method='highs')
 
-        result = linprog(c, A_ub=A, b_ub=b, bounds=bounds, method='highs')
+    if res.success:
+        x_opt = res.x
+        total_biaya = res.fun
+        prod_mesin = np.dot(x_opt[:5], total_kap_mesin)
+        prod_op = np.dot(x_opt[5:], total_kap_op)
 
-        if result.success:
-            x_opt = result.x[0]
-            y_opt = result.x[1]
-            cost = result.fun
+        st.success(f"\u2705 Biaya Minimum: Rp {total_biaya*1000:,.0f}")
 
-            st.success(f"✅ Biaya minimum: Rp{cost:,.0f}")
-            st.markdown(f"""
-            **Kombinasi Optimal:**
-            - Mesin: {x_opt:.2f} unit  
-            - Operator: {y_opt:.2f} orang  
-            """)
+        st.subheader("\ud83e\uddf9 Mesin")
+        mesin_df = pd.DataFrame({
+            "Mesin": [f"M{i+1}" for i in range(5)],
+            "Kapasitas": total_kap_mesin,
+            "Biaya": biaya_mesin,
+            "Jumlah": np.round(x_opt[:5], 2)
+        })
+        st.dataframe(mesin_df)
 
-            # Grafik kontur biaya
-            x_vals = np.linspace(0, x_opt*2, 100)
-            y_vals = np.linspace(0, y_opt*2, 100)
-            X, Y = np.meshgrid(x_vals, y_vals)
-            Z = 200*X + 150*Y
-            feasible = (5*X + 4*Y) >= target_unit
-            Z_masked = np.where(feasible, Z, np.nan)
+        st.subheader("\ud83d\udc69\u200d\ud83d\udcbc Operator")
+        operator_df = pd.DataFrame({
+            "Operator": [f"O{i+1}" for i in range(5)],
+            "Kapasitas": total_kap_op,
+            "Biaya": biaya_operator,
+            "Jumlah": np.round(x_opt[5:], 2)
+        })
+        st.dataframe(operator_df)
 
-            fig, ax = plt.subplots()
-            cs = ax.contourf(X, Y, Z_masked, levels=20, cmap='viridis')
-            ax.plot(x_opt, y_opt, 'ro', label='Solusi Optimal')
-            ax.set_xlabel("Jumlah Mesin")
-            ax.set_ylabel("Jumlah Operator")
-            ax.set_title("Kontur Biaya Total")
-            fig.colorbar(cs, ax=ax, label='Biaya')
-            ax.legend()
-            st.pyplot(fig)
-        else:
-            st.error("❌ Gagal menemukan solusi.")
-
-# =============================
-# TAB 2: EOQ Model
-# =============================
-with tab2:
-    st.header("2️⃣ Model Persediaan (EOQ)")
-
-    D = st.number_input("Permintaan per tahun (D)", value=1000.0)
-    S = st.number_input("Biaya pesan per pesanan (S)", value=50.0)
-    H = st.number_input("Biaya simpan per unit per tahun (H)", value=2.0)
-
-    st.subheader("📐 Rumus EOQ")
-    st.latex(r"\text{EOQ} = \sqrt{\frac{2DS}{H}}")
-
-    if D > 0 and S > 0 and H > 0:
-        EOQ = np.sqrt((2 * D * S) / H)
-        st.success(f"🔢 EOQ = {EOQ:.2f} unit per pesanan")
-
-        Q = np.linspace(1, 2 * EOQ, 100)
-        TC = (D / Q) * S + (Q / 2) * H
-
+        st.subheader("\ud83d\udcca Grafik Produksi")
         fig, ax = plt.subplots()
-        ax.plot(Q, TC, label='Total Biaya')
-        ax.axvline(EOQ, color='red', linestyle='--', label='EOQ')
-        ax.set_xlabel("Jumlah Pesanan (Q)")
-        ax.set_ylabel("Total Biaya")
-        ax.set_title("Total Biaya vs Jumlah Pesanan")
+        ax.bar(["Mesin", "Operator"], [prod_mesin, prod_op], color=["skyblue", "orange"])
+        ax.axhline(target, color='red', linestyle='--', label="Target")
+        ax.set_ylabel("Produksi (unit/hari)")
         ax.legend()
         st.pyplot(fig)
     else:
-        st.warning("❗ D, S, dan H harus lebih besar dari 0.")
+        st.error("\u274c Gagal menemukan solusi optimal.")
+
+# =============================
+# TAB 2: EOQ
+# =============================
+with tab2:
+    st.header("2\ufe0f\ufe0f\ufe0f Model Persediaan EOQ")
+    D = st.number_input("Permintaan Tahunan (D)", value=1000.0)
+    S = st.number_input("Biaya Pemesanan (S)", value=50.0)
+    H = st.number_input("Biaya Simpan (H)", value=2.0)
+
+    if D > 0 and S > 0 and H > 0:
+        EOQ = np.sqrt((2 * D * S) / H)
+        st.success(f"EOQ: {EOQ:.2f} unit")
+
+        Q = np.linspace(1, 2 * EOQ, 100)
+        TC = (D / Q) * S + (Q / 2) * H
+        fig, ax = plt.subplots()
+        ax.plot(Q, TC)
+        ax.axvline(EOQ, color='red', linestyle='--', label='EOQ')
+        ax.set_xlabel("Jumlah Pesanan")
+        ax.set_ylabel("Total Biaya")
+        ax.set_title("Total Biaya vs EOQ")
+        ax.legend()
+        st.pyplot(fig)
+    else:
+        st.warning("D, S, H harus > 0")
 
 # =============================
 # TAB 3: Antrian M/M/1
 # =============================
 with tab3:
-    st.header("3️⃣ Model Antrian (M/M/1)")
+    st.header("3\ufe0f\ufe0f\ufe0f Model Antrian M/M/1")
+    lambd = st.number_input("Tingkat Kedatangan (λ)", value=2.0)
+    mu = st.number_input("Tingkat Pelayanan (μ)", value=3.0)
 
-    λ = st.number_input("Tingkat kedatangan (λ)", value=2.0)
-    μ = st.number_input("Tingkat pelayanan (μ)", value=3.0)
+    if mu > lambd and lambd > 0:
+        rho = lambd / mu
+        L = rho / (1 - rho)
+        Lq = rho**2 / (1 - rho)
+        W = 1 / (mu - lambd)
+        Wq = rho / (mu - lambd)
 
-    if μ > λ and λ > 0:
-        ρ = λ / μ
-        L = ρ / (1 - ρ)
-        Lq = ρ**2 / (1 - ρ)
-        W = 1 / (μ - λ)
-        Wq = ρ / (μ - λ)
+        st.write(f"\nUtilisasi: {rho:.2f}, L: {L:.2f}, Lq: {Lq:.2f}, W: {W:.2f}, Wq: {Wq:.2f}")
 
-        st.markdown(f"""
-        **📈 Hasil Perhitungan M/M/1:**
-
-        - Utilisasi sistem (ρ): {ρ:.2f}  
-        - Rata-rata jumlah dalam sistem (L): {L:.2f}  
-        - Rata-rata jumlah dalam antrean (Lq): {Lq:.2f}  
-        - Rata-rata waktu dalam sistem (W): {W:.2f}  
-        - Rata-rata waktu tunggu (Wq): {Wq:.2f}
-        """)
-
-        ρ_vals = np.linspace(0.01, 0.99, 100)
-        L_vals = ρ_vals / (1 - ρ_vals)
-
+        rho_vals = np.linspace(0.01, 0.99, 100)
+        L_vals = rho_vals / (1 - rho_vals)
         fig, ax = plt.subplots()
-        ax.plot(ρ_vals, L_vals)
-        ax.set_xlabel("Utilisasi (ρ)")
-        ax.set_ylabel("Jumlah rata-rata dalam sistem (L)")
-        ax.set_title("Hubungan Utilisasi dan L")
+        ax.plot(rho_vals, L_vals)
+        ax.set_xlabel("ρ")
+        ax.set_ylabel("L")
+        ax.set_title("Utilisasi vs L")
         st.pyplot(fig)
-    elif λ >= μ:
-        st.error("λ harus lebih kecil dari μ agar sistem stabil.")
+    else:
+        st.error("λ < μ agar sistem stabil")
 
 # =============================
 # TAB 4: Turunan Parsial
 # =============================
 with tab4:
-    st.header("4️⃣ Analisis Turunan Parsial f(x, y)")
-
+    st.header("4\ufe0f\ufe0f\ufe0f Turunan Parsial")
     x, y = sp.symbols('x y')
-    fungsi_str = st.text_input("Masukkan fungsi f(x, y):", "x**3 + y + y**2")
+    fungsi = st.text_input("Masukkan f(x, y):", "x**3 + y + y**2")
 
     try:
-        f = sp.sympify(fungsi_str)
+        f = sp.sympify(fungsi)
         fx = sp.diff(f, x)
         fy = sp.diff(f, y)
 
-        st.latex(f"f(x, y) = {sp.latex(f)}")
-        st.latex(f"\\frac{{\\partial f}}{{\\partial x}} = {sp.latex(fx)}")
-        st.latex(f"\\frac{{\\partial f}}{{\\partial y}} = {sp.latex(fy)}")
-
-        x0 = st.number_input("Nilai x₀:", value=1.0)
-        y0 = st.number_input("Nilai y₀:", value=2.0)
+        x0 = st.number_input("x₀:", value=1.0)
+        y0 = st.number_input("y₀:", value=2.0)
 
         f_val = f.subs({x: x0, y: y0})
         fx_val = fx.subs({x: x0, y: y0})
         fy_val = fy.subs({x: x0, y: y0})
 
-        st.write(f"Nilai fungsi di titik (x₀, y₀): {f_val}")
-        st.write(f"Gradien di titik (x₀, y₀): ({fx_val}, {fy_val})")
+        st.latex(f"f(x, y) = {sp.latex(f)}")
+        st.latex(f"\\frac{{\\partial f}}{{\\partial x}} = {sp.latex(fx)}")
+        st.latex(f"\\frac{{\\partial f}}{{\\partial y}} = {sp.latex(fy)}")
+        st.write(f"Nilai f: {f_val}, Gradien: ({fx_val}, {fy_val})")
 
-        x_vals = np.linspace(x0 - 2, x0 + 2, 50)
-        y_vals = np.linspace(y0 - 2, y0 + 2, 50)
-        X, Y = np.meshgrid(x_vals, y_vals)
-
-        f_lambdified = sp.lambdify((x, y), f, 'numpy')
-        Z = f_lambdified(X, Y)
+        X, Y = np.meshgrid(np.linspace(x0-2, x0+2, 50), np.linspace(y0-2, y0+2, 50))
+        f_np = sp.lambdify((x, y), f, 'numpy')
+        Z = f_np(X, Y)
         Z_tangent = float(f_val) + float(fx_val)*(X - x0) + float(fy_val)*(Y - y0)
 
         fig = plt.figure(figsize=(10, 6))
         ax = fig.add_subplot(111, projection='3d')
-        ax.plot_surface(X, Y, Z, alpha=0.7, cmap='viridis')
-        ax.plot_surface(X, Y, Z_tangent, alpha=0.5, color='red')
-        ax.set_title("Permukaan f(x, y) dan bidang singgungnya")
-        ax.set_xlabel('x')
-        ax.set_ylabel('y')
-        ax.set_zlabel('z')
+        ax.plot_surface(X, Y, Z, cmap='viridis', alpha=0.7)
+        ax.plot_surface(X, Y, Z_tangent, color='red', alpha=0.5)
+        ax.set_title("Permukaan dan Bidang Singgung")
         st.pyplot(fig)
-
-    except Exception as e:
-        st.error(f"Terjadi kesalahan: {e}")
+    except:
+        st.error("Kesalahan dalam ekspresi fungsi.")
