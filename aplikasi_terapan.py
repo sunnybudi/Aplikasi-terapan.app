@@ -90,8 +90,6 @@ with tab1:
                 total_biaya = (mesin * biaya_mesin) + (operator * biaya_operator)
 
                 st.success("✅ Solusi Ditemukan")
-                st.write(f"🔧 Jumlah Mesin: **{mesin} unit**")
-                st.write(f"👷 Jumlah Operator: **{operator} orang**")
                 st.write(f"🏭 Total Produksi Aktual: **{produksi_aktual} unit/hari**")
                 st.write(f"💵 Total Biaya Harian: **Rp {total_biaya * 1000:,.0f}**")
 
