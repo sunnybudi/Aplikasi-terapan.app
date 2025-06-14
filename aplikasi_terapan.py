@@ -35,21 +35,23 @@ tab1, tab2, tab3, tab4 = st.tabs([
 # TAB 1: Simulasi Manual Mesin & Operator
 # =========================
 with tab1:
-    st.header("1️⃣ Optimasi Produksi")
+    st.header("1️⃣ Simulasi Manual Jumlah Mesin & Operator")
 
     target = st.number_input("🎯 Target Produksi Harian (unit)", min_value=1, value=600, step=10)
     jam_kerja = st.number_input("🕒 Jam Kerja per Hari (jam)", min_value=1, value=8)
     kapasitas = st.number_input("⚙️ Kapasitas Mesin & Operator (unit/jam)", value=6)
-    biaya_mesin = st.number_input("💰 Biaya Mesin (biaya/hari)", value=300)
-    biaya_operator = st.number_input("💰 Biaya Operator (upah/hari)", value=200)
+    biaya_mesin = st.number_input("💰 Biaya Mesin (ribu/hari)", value=300)
+    biaya_operator = st.number_input("💰 Biaya Operator (ribu/hari)", value=200)
     kapasitas_harian = kapasitas * jam_kerja
 
     mesin = st.number_input("🔧 Jumlah Mesin (input manual)", min_value=0, step=1)
     operator = st.number_input("👷 Jumlah Operator (input manual)", min_value=0, step=1)
 
-    produksi_aktual = (mesin + operator) * kapasitas_harian
+    pasangan_kerja = min(mesin, operator)
+    produksi_aktual = pasangan_kerja * kapasitas_harian
     total_biaya = (mesin * biaya_mesin) + (operator * biaya_operator)
 
+    st.write(f"🔁 Jumlah Pasangan Mesin-Operator: **{pasangan_kerja}**")
     st.write(f"🏭 Total Produksi Aktual: **{produksi_aktual} unit/hari**")
     st.write(f"💵 Total Biaya Harian: **Rp {total_biaya * 1000:,.0f}**")
 
@@ -82,71 +84,3 @@ with tab2:
         fig, ax = plt.subplots()
         ax.plot(Q, TC)
         ax.axvline(EOQ, color='red', linestyle='--')
-        ax.set_xlabel("Jumlah Pesanan")
-        ax.set_ylabel("Total Biaya")
-        st.pyplot(fig)
-    else:
-        st.warning("Input harus lebih besar dari 0")
-
-# =========================
-# TAB 3: M/M/1 Queueing
-# =========================
-with tab3:
-    st.header("4️⃣ Model Antrian M/M/1")
-
-    lambd = st.number_input("Tingkat Kedatangan (λ)", value=2.0)
-    mu = st.number_input("Tingkat Pelayanan (μ)", value=3.0)
-
-    if mu > lambd and lambd > 0:
-        rho = lambd / mu
-        L = rho / (1 - rho)
-        Lq = rho**2 / (1 - rho)
-        W = 1 / (mu - lambd)
-        Wq = rho / (mu - lambd)
-
-        st.write(f"Utilisasi ρ: {rho:.2f}")
-        st.write(f"Rata-rata dalam sistem (L): {L:.2f}")
-        st.write(f"Rata-rata dalam antrian (Lq): {Lq:.2f}")
-        st.write(f"Waktu dalam sistem (W): {W:.2f}")
-        st.write(f"Waktu tunggu (Wq): {Wq:.2f}")
-    else:
-        st.warning("λ harus < μ dan > 0")
-
-# =========================
-# TAB 4: Turunan Parsial
-# =========================
-with tab4:
-    st.header("5️⃣ Turunan Parsial")
-    x, y = sp.symbols('x y')
-    fungsi = st.text_input("Masukkan f(x, y):", "x**3 + y + y**2")
-
-    try:
-        f = sp.sympify(fungsi)
-        fx = sp.diff(f, x)
-        fy = sp.diff(f, y)
-        x0 = st.number_input("x₀:", value=1.0)
-        y0 = st.number_input("y₀:", value=2.0)
-
-        f_val = f.subs({x: x0, y: y0})
-        fx_val = fx.subs({x: x0, y: y0})
-        fy_val = fy.subs({x: x0, y: y0})
-
-        st.latex(rf"f(x, y) = {sp.latex(f)}")
-        st.latex(rf"\frac{{\partial f}}{{\partial x}} = {sp.latex(fx)}")
-        st.latex(rf"\frac{{\partial f}}{{\partial y}} = {sp.latex(fy)}")
-
-        st.write(f"Nilai f: {f_val}, Gradien: ({fx_val}, {fy_val})")
-
-        X, Y = np.meshgrid(np.linspace(x0-2, x0+2, 50), np.linspace(y0-2, y0+2, 50))
-        f_np = sp.lambdify((x, y), f, 'numpy')
-        Z = f_np(X, Y)
-        Z_tangent = float(f_val) + float(fx_val)*(X - x0) + float(fy_val)*(Y - y0)
-
-        fig = plt.figure(figsize=(10, 6))
-        ax = fig.add_subplot(111, projection='3d')
-        ax.plot_surface(X, Y, Z, cmap='viridis', alpha=0.7)
-        ax.plot_surface(X, Y, Z_tangent, color='red', alpha=0.5)
-        ax.set_title("f(x, y) dan Bidang Singgung di (x₀, y₀)")
-        st.pyplot(fig)
-    except:
-        st.error("Fungsi tidak valid. Gunakan format Python: x**2 + y**2")
