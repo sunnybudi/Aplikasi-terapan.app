@@ -84,26 +84,37 @@ with tab1b:
     st.header("2️⃣ Hitung Jumlah Mesin & Operator (Integer)")
 
     target_int = st.number_input("🎯 Target Produksi Harian", min_value=1, value=600, step=10)
-    jam_kerja_int = st.number_input("🕒 Jam Kerja (jam/hari)", min_value=1, value=8)
+    jam_kerja_int = st.number_input("🕒 Jam Kerja per Hari (jam)", min_value=1, value=8)
     kapasitas_int = st.number_input("⚙️ Kapasitas Mesin dan Operator (unit/jam)", value=6)
 
     kapasitas_per_hari = kapasitas_int * jam_kerja_int
 
-    st.markdown("### 🔍 Perhitungan Jumlah Minimum Mesin & Operator")
-    found = False
-    for m in range(1, 100):
-        for o in range(1, 100):
-            total = (m + o) * kapasitas_per_hari
-            if total >= target_int:
-                st.success(f"✅ Minimum Mesin: {m}, Operator: {o}")
-                st.write(f"Total Produksi: {total} unit")
-                found = True
-                break
-        if found:
+    st.markdown("### 🔍 Perhitungan Jumlah Minimum Mesin & Operator (Integer)")
+
+    solusi_ditemukan = False
+    for total_orang in range(1, 100):  # total gabungan mesin+operator
+        produksi = total_orang * kapasitas_per_hari
+        if produksi >= target_int:
+            mesin = total_orang // 2
+            operator = total_orang - mesin
+            produksi_aktual = (mesin + operator) * kapasitas_per_hari
+            st.success("✅ Solusi Ditemukan:")
+            st.write(f"Jumlah Mesin: **{mesin} unit**")
+            st.write(f"Jumlah Operator: **{operator} orang**")
+            st.write(f"Total Kapasitas Produksi: **{produksi_aktual} unit/hari**")
+            
+            # Visualisasi
+            fig, ax = plt.subplots()
+            ax.bar(["Mesin", "Operator"], [mesin, operator], color=["skyblue", "orange"])
+            ax.set_ylabel("Jumlah")
+            ax.set_title("Jumlah Mesin & Operator")
+            st.pyplot(fig)
+            
+            solusi_ditemukan = True
             break
 
-    if not found:
-        st.error("❌ Tidak ditemukan kombinasi mesin & operator untuk target yang diberikan.")
+    if not solusi_ditemukan:
+        st.error("❌ Tidak ditemukan solusi dalam rentang pencarian.")
 
 # =========================
 # TAB 2: EOQ
