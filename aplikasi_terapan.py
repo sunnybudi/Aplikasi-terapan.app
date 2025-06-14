@@ -45,8 +45,6 @@ with tab1:
     kapasitas = st.number_input("⚙️ Kapasitas Mesin & Operator (unit/jam)", value=6)
     biaya_mesin = st.number_input("💰 Biaya Mesin (ribu/hari)", value=300)
     biaya_operator = st.number_input("💰 Biaya Operator (ribu/hari)", value=200)
-    jumlah_operator = st.number_input("@Jumlah Operator (orang)", value=5)
-    jumlah_mesin = st.number_input("!Jumlah Mesin (unit)", value=1)
     kapasitas_harian = kapasitas * jam_kerja
 
     if mode == "Optimasi Biaya (LP)":
@@ -90,6 +88,8 @@ with tab1:
                 total_biaya = (mesin * biaya_mesin) + (operator * biaya_operator)
 
                 st.success("✅ Solusi Ditemukan")
+                st.write(f"🔧 Jumlah Mesin: **{mesin} unit**")
+                st.write(f"👷 Jumlah Operator: **{operator} orang**")
                 st.write(f"🏭 Total Produksi Aktual: **{produksi_aktual} unit/hari**")
                 st.write(f"💵 Total Biaya Harian: **Rp {total_biaya * 1000:,.0f}**")
 
