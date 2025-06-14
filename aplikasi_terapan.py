@@ -178,8 +178,8 @@ with tab4:
         fy_val = fy.subs({x: x0, y: y0})
 
         st.latex(f"f(x, y) = {sp.latex(f)}")
-        st.latex(f"\\frac{\\partial f}{\\partial x} = {sp.latex(fx)}")
-        st.latex(f"\\frac{\\partial f}{\\partial y} = {sp.latex(fy)}")
+        st.latex(f"\\frac{{\\partial f}}{{\\partial x}} = {sp.latex(fx)}")
+        st.latex(f"\\frac{{\\partial f}}{{\\partial y}} = {sp.latex(fy)}")
 
         st.write(f"Nilai f: {f_val}, Gradien: ({fx_val}, {fy_val})")
 
