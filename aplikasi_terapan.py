@@ -2,7 +2,6 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 import sympy as sp
-from scipy.optimize import linprog
 import math
 
 # =========================
@@ -12,7 +11,7 @@ st.sidebar.title("\U0001F4D8 Petunjuk Penggunaan")
 st.sidebar.markdown("""
 Aplikasi ini memiliki 4 model matematika industri:
 
-1. **Optimasi & Jumlah Mesin & Operator**  
+1. **Simulasi Manual Mesin & Operator**  
 2. **Model Persediaan EOQ**  
 3. **Model Antrian (M/M/1)**  
 4. **Turunan Parsial**
@@ -26,19 +25,17 @@ Masukkan data sesuai tab. Hasil & grafik akan muncul secara otomatis.
 st.title("\U0001F4CA Aplikasi Model Matematika Industri")
 
 tab1, tab2, tab3, tab4 = st.tabs([
-    "1. Optimasi & Jumlah Mesin & Operator",
+    "1. Simulasi Manual Mesin & Operator",
     "2. Model Persediaan (EOQ)",
     "3. Model Antrian (M/M/1)",
     "4. Turunan Parsial"
 ])
 
 # =========================
-# TAB 1: Optimasi & Jumlah Mesin & Operator
+# TAB 1: Simulasi Manual Mesin & Operator
 # =========================
 with tab1:
-    st.header("1️⃣ Optimasi & Jumlah Mesin & Operator")
-
-    mode = st.radio("Pilih Mode", ["Optimasi Biaya (LP)", "Jumlah Mesin & Operator (Integer)", "Simulasi Manual"])
+    st.header("1️⃣ Simulasi Manual Jumlah Mesin & Operator")
 
     target = st.number_input("🎯 Target Produksi Harian (unit)", min_value=1, value=600, step=10)
     jam_kerja = st.number_input("🕒 Jam Kerja per Hari (jam)", min_value=1, value=8)
@@ -47,79 +44,19 @@ with tab1:
     biaya_operator = st.number_input("💰 Biaya Operator (ribu/hari)", value=200)
     kapasitas_harian = kapasitas * jam_kerja
 
-    if mode == "Optimasi Biaya (LP)":
-        st.subheader("Optimasi Biaya dengan Linear Programming")
+    mesin = st.number_input("🔧 Jumlah Mesin (input manual)", min_value=0, step=1)
+    operator = st.number_input("👷 Jumlah Operator (input manual)", min_value=0, step=1)
 
-        bounds = [(0, None), (0, None)]
-        c = [biaya_mesin, biaya_operator]
-        A_ub = [[-kapasitas_harian, -kapasitas_harian]]
-        b_ub = [-target]
+    produksi_aktual = (mesin + operator) * kapasitas_harian
+    total_biaya = (mesin * biaya_mesin) + (operator * biaya_operator)
 
-        res = linprog(c=c, A_ub=A_ub, b_ub=b_ub, bounds=bounds, method='highs')
+    st.write(f"🏭 Total Produksi Aktual: **{produksi_aktual} unit/hari**")
+    st.write(f"💵 Total Biaya Harian: **Rp {total_biaya * 1000:,.0f}**")
 
-        if res.success:
-            mesin, operator = res.x
-            total_biaya = res.fun
-            total_produksi = (mesin + operator) * kapasitas_harian
-            biaya_per_unit = (total_biaya * 1000) / total_produksi
-
-            st.success(f"✅ Biaya Minimum: Rp {total_biaya * 1000:,.0f}")
-            st.write(f"🏭 Total Produksi: **{total_produksi:.0f} unit/hari**")
-            st.write(f"💸 Biaya per Unit Produksi: Rp {biaya_per_unit:,.2f}")
-
-            fig, ax = plt.subplots()
-            ax.bar(["Mesin", "Operator"], [mesin, operator], color=["skyblue", "orange"])
-            ax.set_ylabel("Jumlah Unit")
-            st.pyplot(fig)
-        else:
-            st.error("❌ Gagal menemukan solusi optimal.")
-
-    elif mode == "Jumlah Mesin & Operator (Integer)":
-        st.subheader("Perhitungan Jumlah Mesin & Operator (Integer)")
-
-        solusi_ditemukan = False
-
-        for total_personil in range(1, 100):
-            produksi = total_personil * kapasitas_harian
-            if produksi >= target:
-                mesin = total_personil // 2
-                operator = total_personil - mesin
-                produksi_aktual = (mesin + operator) * kapasitas_harian
-                total_biaya = (mesin * biaya_mesin) + (operator * biaya_operator)
-
-                st.success("✅ Solusi Ditemukan")
-                st.write(f"🔧 Jumlah Mesin: **{mesin} unit**")
-                st.write(f"👷 Jumlah Operator: **{operator} orang**")
-                st.write(f"🏭 Total Produksi Aktual: **{produksi_aktual} unit/hari**")
-                st.write(f"💵 Total Biaya Harian: **Rp {total_biaya * 1000:,.0f}**")
-
-                fig, ax = plt.subplots()
-                ax.bar(["Mesin", "Operator"], [mesin, operator], color=["skyblue", "orange"])
-                ax.set_ylabel("Jumlah")
-                st.pyplot(fig)
-
-                solusi_ditemukan = True
-                break
-
-        if not solusi_ditemukan:
-            st.error("❌ Tidak ditemukan kombinasi mesin & operator untuk target tersebut.")
-
-    elif mode == "Simulasi Manual":
-        st.subheader("Simulasi Manual Jumlah Mesin & Operator")
-
-        mesin = st.number_input("🔧 Jumlah Mesin (input manual)", min_value=0, step=1)
-        operator = st.number_input("👷 Jumlah Operator (input manual)", min_value=0, step=1)
-
-        produksi_aktual = (mesin + operator) * kapasitas_harian
-        total_biaya = (mesin * biaya_mesin) + (operator * biaya_operator)
-
-        st.write(f"🏭 Total Produksi Aktual: **{produksi_aktual} unit/hari**")
-        st.write(f"💵 Total Biaya Harian: **Rp {total_biaya * 1000:,.0f}**")
-
-        fig, ax = plt.subplots()
-        ax.bar(["Mesin", "Operator"], [mesin, operator], color=["skyblue", "orange"])
-        ax.set_ylabel("Jumlah")
-        st.pyplot(fig)
+    fig, ax = plt.subplots()
+    ax.bar(["Mesin", "Operator"], [mesin, operator], color=["skyblue", "orange"])
+    ax.set_ylabel("Jumlah")
+    st.pyplot(fig)
 
 # =========================
 # TAB 2: EOQ
