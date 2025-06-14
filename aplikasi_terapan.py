@@ -147,32 +147,39 @@ with tab1b:
 # TAB 2: EOQ
 # =========================
 with tab2:
-    st.header("📦 Model Persediaan untuk Produksi")
+    st.header("📦 Model Persediaan Bahan Baku (EOQ)")
 
     st.markdown("""
-    Hitung berapa banyak bahan baku yang harus disiapkan untuk memenuhi target produksi.
+    Gunakan model EOQ untuk menghitung *berapa banyak bahan baku harus dipesan* dan *kapan* harus memesan ulang.
     """)
 
-    # Input produksi
-    target_produksi = st.number_input("🎯 Target Produksi (unit produk)", min_value=1, value=1000)
+    D = st.number_input("📅 Permintaan Tahunan (unit bahan baku)", min_value=1.0, value=10000.0)
+    S = st.number_input("🛒 Biaya Pemesanan per Order (Rp)", min_value=0.0, value=50000.0)
+    H = st.number_input("🏬 Biaya Penyimpanan per Unit per Tahun (Rp)", min_value=0.0, value=2000.0)
 
-    st.subheader("🧮 Bahan Baku per Unit Produk")
-    bahan_baku = {}
+    if D > 0 and S > 0 and H > 0:
+        EOQ = math.sqrt((2 * D * S) / H)
+        frekuensi_pesan = D / EOQ
+        siklus_hari = 365 / frekuensi_pesan
 
-    with st.form("form_bahan_baku"):
-        jumlah_bahan = st.number_input("Berapa jenis bahan baku yang digunakan?", min_value=1, value=3)
-        for i in range(jumlah_bahan):
-            nama = st.text_input(f"Nama Bahan Baku #{i+1}", key=f"nama_{i}")
-            satuan = st.text_input(f"Satuan untuk {nama}", key=f"satuan_{i}")
-            rasio = st.number_input(f"Jumlah {nama} per unit produk", min_value=0.0, value=1.0, key=f"rasio_{i}")
-            bahan_baku[nama] = (rasio, satuan)
-        submit = st.form_submit_button("Hitung Kebutuhan")
+        st.success(f"🔢 EOQ (Jumlah Pesan Optimal): {EOQ:.2f} unit")
+        st.write(f"📦 Frekuensi Pesan per Tahun: {frekuensi_pesan:.2f} kali")
+        st.write(f"⏳ Interval Pemesanan: setiap **{siklus_hari:.0f} hari**")
 
-    if submit:
-        st.subheader("📊 Total Kebutuhan Bahan Baku")
-        for nama, (rasio, satuan) in bahan_baku.items():
-            total = rasio * target_produksi
-            st.write(f"🔹 {nama}: **{total:.2f} {satu**
+        # Grafik EOQ terhadap Total Cost
+        Q = np.linspace(1, 2 * EOQ, 100)
+        TC = (D / Q) * S + (Q / 2) * H
+
+        fig, ax = plt.subplots()
+        ax.plot(Q, TC, label="Total Cost")
+        ax.axvline(EOQ, color='red', linestyle='--', label='EOQ')
+        ax.set_xlabel("Jumlah Pemesanan (unit)")
+        ax.set_ylabel("Total Biaya (Rp)")
+        ax.set_title("Kurva Biaya Total vs EOQ")
+        ax.legend()
+        st.pyplot(fig)
+    else:
+        st.warning("❗ Semua input harus lebih dari 0.")
 
 # =========================
 # TAB 3: Antrian M/M/1
