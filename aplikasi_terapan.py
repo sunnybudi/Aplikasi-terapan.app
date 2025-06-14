@@ -48,7 +48,7 @@ with tab1:
     biaya_mesin = st.number_input("💰 Biaya Mesin (ribu/hari)", value=300)
     biaya_operator = st.number_input("💰 Biaya Operator (ribu/hari)", value=200)
     jumlah_mesin = st.number_input("Jumlah Mesin (unit)", value=10)
-    jumlah_operatot = st.number_input("Jumlah Operator (orang)", value=20)
+    jumlah_operator = st.number_input("Jumlah Operator (orang)", value=20)
 
     kapasitas_harian = kapasitas * jam_kerja
     c = [biaya_mesin, biaya_operator]
@@ -85,7 +85,9 @@ with tab1b:
 
     target_int = st.number_input("🎯 Target Produksi Harian", min_value=1, value=600, step=10)
     jam_kerja_int = st.number_input("🕒 Jam Kerja (jam/hari)", min_value=1, value=8)
-    kapasitas_int = st.number_input("⚙️ Kapasitas Mesin dan Operator (unit/jam)", value=6.0)
+    kapasitas_int = st.number_input("⚙️ Kapasitas Mesin dan Operator (unit/jam)", value=6)
+    jumlah_operator = st.number_input("Jumlah Operator (orang)", value=20)
+    jumlah_mesin = st.number_input("jumlah Mesin (unit)", value=10)
 
     kapasitas_hari = kapasitas_int * jam_kerja_int
 
