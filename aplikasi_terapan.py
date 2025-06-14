@@ -150,37 +150,47 @@ with tab3:
 # TAB 4: Turunan Parsial
 # =============================
 with tab4:
-    st.header("4\ufe0f\ufe0f\ufe0f Turunan Parsial")
+    st.header("4️⃣ Turunan Parsial")
     x, y = sp.symbols('x y')
     fungsi = st.text_input("Masukkan f(x, y):", "x**3 + y + y**2")
 
     try:
         f = sp.sympify(fungsi)
-        fx = sp.diff(f, x)
-        fy = sp.diff(f, y)
+        # Validasi simbol
+        if not (x in f.free_symbols and y in f.free_symbols):
+            st.warning("Fungsi harus mengandung variabel x dan y.")
+        else:
+            fx = sp.diff(f, x)
+            fy = sp.diff(f, y)
 
-        x0 = st.number_input("x₀:", value=1.0)
-        y0 = st.number_input("y₀:", value=2.0)
+            x0 = st.number_input("x₀:", value=1.0)
+            y0 = st.number_input("y₀:", value=2.0)
 
-        f_val = f.subs({x: x0, y: y0})
-        fx_val = fx.subs({x: x0, y: y0})
-        fy_val = fy.subs({x: x0, y: y0})
+            f_val = f.subs({x: x0, y: y0}).evalf()
+            fx_val = fx.subs({x: x0, y: y0}).evalf()
+            fy_val = fy.subs({x: x0, y: y0}).evalf()
 
-        st.latex(f"f(x, y) = {sp.latex(f)}")
-        st.latex(f"\\frac{{\\partial f}}{{\\partial x}} = {sp.latex(fx)}")
-        st.latex(f"\\frac{{\\partial f}}{{\\partial y}} = {sp.latex(fy)}")
-        st.write(f"Nilai f: {f_val}, Gradien: ({fx_val}, {fy_val})")
+            st.latex(f"f(x, y) = {sp.latex(f)}")
+            st.latex(f"\\frac{{\\partial f}}{{\\partial x}} = {sp.latex(fx)}")
+            st.latex(f"\\frac{{\\partial f}}{{\\partial y}} = {sp.latex(fy)}")
+            st.write(f"Nilai f(x₀, y₀): {f_val}")
+            st.write(f"Gradien di titik ({x0}, {y0}): (∂f/∂x = {fx_val}, ∂f/∂y = {fy_val})")
 
-        X, Y = np.meshgrid(np.linspace(x0-2, x0+2, 50), np.linspace(y0-2, y0+2, 50))
-        f_np = sp.lambdify((x, y), f, 'numpy')
-        Z = f_np(X, Y)
-        Z_tangent = float(f_val) + float(fx_val)*(X - x0) + float(fy_val)*(Y - y0)
+            # Buat meshgrid dan evaluasi fungsi
+            X, Y = np.meshgrid(np.linspace(x0 - 2, x0 + 2, 50), np.linspace(y0 - 2, y0 + 2, 50))
+            f_np = sp.lambdify((x, y), f, 'numpy')
+            Z = f_np(X, Y)
+            Z_tangent = float(f_val) + float(fx_val)*(X - x0) + float(fy_val)*(Y - y0)
 
-        fig = plt.figure(figsize=(10, 6))
-        ax = fig.add_subplot(111, projection='3d')
-        ax.plot_surface(X, Y, Z, cmap='viridis', alpha=0.7)
-        ax.plot_surface(X, Y, Z_tangent, color='red', alpha=0.5)
-        ax.set_title("Permukaan dan Bidang Singgung")
-        st.pyplot(fig)
-    except:
-        st.error("Kesalahan dalam ekspresi fungsi.")
+            # Plot 3D
+            fig = plt.figure(figsize=(10, 6))
+            ax = fig.add_subplot(111, projection='3d')
+            ax.plot_surface(X, Y, Z, cmap='viridis', alpha=0.7)
+            ax.plot_surface(X, Y, Z_tangent, color='red', alpha=0.5)
+            ax.set_title("Permukaan dan Bidang Singgung")
+            ax.set_xlabel("x")
+            ax.set_ylabel("y")
+            ax.set_zlabel("f(x, y)")
+            st.pyplot(fig)
+    except Exception as e:
+        st.error(f"Terjadi kesalahan: {e}")
