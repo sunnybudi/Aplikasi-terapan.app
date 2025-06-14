@@ -147,46 +147,32 @@ with tab1b:
 # TAB 2: EOQ
 # =========================
 with tab2:
-    st.header("📦 Model Persediaan Bahan Baku (EOQ + Reorder Point)")
+    st.header("📦 Model Persediaan untuk Produksi")
 
     st.markdown("""
-    Model ini digunakan untuk menentukan **berapa banyak dan kapan** harus memesan bahan baku:
-    - EOQ → Jumlah optimal setiap kali pesan
-    - ROP → Titik saat kita harus memesan kembali
+    Hitung berapa banyak bahan baku yang harus disiapkan untuk memenuhi target produksi.
     """)
 
-    # Input
-    D = st.number_input("📈 Permintaan Tahunan (unit)", min_value=1, value=12000, step=100)
-    S = st.number_input("📥 Biaya Pemesanan per Order (Rp)", min_value=1, value=200000, step=10000)
-    H = st.number_input("🏪 Biaya Penyimpanan per Unit per Tahun (Rp)", min_value=1, value=10000, step=500)
-    L = st.number_input("⏳ Lead Time (hari)", min_value=1, value=5, step=1)
-    hari_kerja = st.number_input("📅 Hari Kerja per Tahun", min_value=1, value=360, step=10)
+    # Input produksi
+    target_produksi = st.number_input("🎯 Target Produksi (unit produk)", min_value=1, value=1000)
 
-    if D > 0 and S > 0 and H > 0 and hari_kerja > 0:
-        EOQ = np.sqrt((2 * D * S) / H)
-        d = D / hari_kerja  # permintaan harian
-        ROP = d * L
+    st.subheader("🧮 Bahan Baku per Unit Produk")
+    bahan_baku = {}
 
-        # Output
-        st.subheader("📊 Hasil Perhitungan:")
-        st.write(f"🔹 EOQ (Jumlah Optimal per Pesanan): **{EOQ:.2f} unit**")
-        st.write(f"🔹 ROP (Titik Pemesanan Ulang): **{ROP:.2f} unit**")
-        st.write(f"🔹 Permintaan Harian (d): **{d:.2f} unit/hari**")
+    with st.form("form_bahan_baku"):
+        jumlah_bahan = st.number_input("Berapa jenis bahan baku yang digunakan?", min_value=1, value=3)
+        for i in range(jumlah_bahan):
+            nama = st.text_input(f"Nama Bahan Baku #{i+1}", key=f"nama_{i}")
+            satuan = st.text_input(f"Satuan untuk {nama}", key=f"satuan_{i}")
+            rasio = st.number_input(f"Jumlah {nama} per unit produk", min_value=0.0, value=1.0, key=f"rasio_{i}")
+            bahan_baku[nama] = (rasio, satuan)
+        submit = st.form_submit_button("Hitung Kebutuhan")
 
-        # Visualisasi
-        q_vals = np.linspace(1, EOQ*2, 200)
-        TC = (D/q_vals)*S + (q_vals/2)*H
-
-        fig, ax = plt.subplots()
-        ax.plot(q_vals, TC, label="Total Biaya")
-        ax.axvline(EOQ, color='red', linestyle='--', label=f"EOQ = {EOQ:.0f}")
-        ax.set_title("Total Biaya vs Kuantitas Pesanan")
-        ax.set_xlabel("Jumlah Pesanan (unit)")
-        ax.set_ylabel("Total Biaya Tahunan (Rp)")
-        ax.legend()
-        st.pyplot(fig)
-    else:
-        st.warning("🔔 Semua input harus bernilai positif.")
+    if submit:
+        st.subheader("📊 Total Kebutuhan Bahan Baku")
+        for nama, (rasio, satuan) in bahan_baku.items():
+            total = rasio * target_produksi
+            st.write(f"🔹 {nama}: **{total:.2f} {satu**
 
 # =========================
 # TAB 3: Antrian M/M/1
