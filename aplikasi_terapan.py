@@ -101,7 +101,7 @@ with tab1b:
     st.header("2️⃣ Hitung Jumlah Mesin & Operator (Integer)")
 
     # Input data
-    target_int = st.number_input("🎯 Target Produksi Harian (unit)", min_value=1, value=600, step=10)
+    target_int = st.number_input("🎯 Target Produksi Harian (unit) [Integer Model]", min_value=1, value=600, step=10)
     jam_kerja_int = st.number_input("🕒 Jam Kerja per Hari (jam)", min_value=1, value=8)
     kapasitas_int = st.number_input("⚙️ Kapasitas Mesin & Operator (unit per jam)", value=6)
     biaya_mesin_int = st.number_input("💰 Biaya Mesin per Hari (ribu)", value=300)
