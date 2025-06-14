@@ -79,8 +79,6 @@ with tab1:
 
         # Tampilkan hasil
         st.success(f"✅ Biaya Minimum: Rp {total_biaya*1000:,.0f}")
-        st.write(f"🔧 Jumlah Mesin: **{mesin:.2f}**")
-        st.write(f"👷 Jumlah Operator: **{operator:.2f}**")
         st.write(f"🏭 Total Produksi: **{total_produksi:.0f} unit/hari**")
         st.write(f"📈 **Rata-rata Produksi Harian:** {total_produksi:.0f} unit")
         st.write(f"💸 **Biaya per Unit Produksi:** Rp {biaya_per_unit:,.2f}")
