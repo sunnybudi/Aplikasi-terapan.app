@@ -59,7 +59,7 @@ with tab1:
     b_ub = [-target]
 
     # Batasan variabel keputusan
-    bounds = [(0, jumlah_mesin), (0, jumlah_operator)]
+    bounds = [(0, jumlah_mesin_int), (0, jumlah_operator_int)]
 
     # Optimasi Linear Programming
     res = linprog(c=c, A_ub=A_ub, b_ub=b_ub, bounds=bounds, method='highs')
