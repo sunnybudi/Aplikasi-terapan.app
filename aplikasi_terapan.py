@@ -48,9 +48,7 @@ with tab1:
     kapasitas = st.number_input("⚙️ Kapasitas Mesin & Operator (unit/jam)", value=6)
     biaya_mesin = st.number_input("💰 Biaya Mesin (ribu/hari)", value=300)
     biaya_operator = st.number_input("💰 Biaya Operator (ribu/hari)", value=200)
-    jumlah_mesin = st.number_input("Jumlah Maksimal Mesin (unit)", value=10)
-    jumlah_operator = st.number_input("Jumlah Maksimal Operator (orang)", value=20)
-
+    
     kapasitas_harian = kapasitas * jam_kerja  # per mesin/operator per hari
 
     # Fungsi tujuan: Minimalkan biaya
