@@ -78,14 +78,14 @@ with tab2:
         st.write(f"Frekuensi Pemesanan: {freq:.2f} kali/tahun")
         st.write(f"Interval Pemesanan: {cycle_days:.0f} hari")
 
-        Q = np.linspace(1, 2 * EOQ, 100)
-        TC = (D / Q) * S + (Q / 2) * H
+        # Grafik EOQ mirip gaya model antrian (bar chart untuk ilustrasi frekuensi)
+        x_vals = ["Permintaan", "EOQ"]
+        y_vals = [D, EOQ]
 
         fig, ax = plt.subplots()
-        ax.plot(Q, TC)
-        ax.axvline(EOQ, color='red', linestyle='--')
-        ax.set_xlabel("Jumlah Pesanan")
-        ax.set_ylabel("Total Biaya")
+        ax.bar(x_vals, y_vals, color=['blue', 'red'])
+        ax.set_ylabel("Jumlah Unit")
+        ax.set_title("EOQ dan Permintaan Tahunan")
         st.pyplot(fig)
     else:
         st.warning("Input harus lebih besar dari 0")
