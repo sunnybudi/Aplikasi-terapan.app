@@ -9,7 +9,7 @@ import math
 # =========================
 st.sidebar.title("\U0001F4D8 Petunjuk Penggunaan")
 st.sidebar.markdown("""
-Aplikasi ini memiliki 4 model matematika industri:
+Aplikasi ini memiliki 3 model matematika industri:
 
 1. **Simulasi Manual Mesin & Operator**  
 2. **Model Persediaan EOQ**  
