@@ -86,17 +86,24 @@ with tab1b:
     target_int = st.number_input("🎯 Target Produksi Harian", min_value=1, value=600, step=10)
     jam_kerja_int = st.number_input("🕒 Jam Kerja (jam/hari)", min_value=1, value=8)
     kapasitas_int = st.number_input("⚙️ Kapasitas Mesin dan Operator (unit/jam)", value=6)
-    jumlah_operator = st.number_input("Jumlah Operator (orang)", value=20)
-    jumlah_mesin = st.number_input("jumlah Mesin (unit)", value=10)
 
-    kapasitas_hari = kapasitas_int * jam_kerja_int
+    kapasitas_per_hari = kapasitas_int * jam_kerja_int
 
-    total_produksi = (jumlah_mesin + jumlah_operator) * kapasitas_hari
+    st.markdown("### 🔍 Perhitungan Jumlah Minimum Mesin & Operator")
+    found = False
+    for m in range(1, 100):
+        for o in range(1, 100):
+            total = (m + o) * kapasitas_per_hari
+            if total >= target_int:
+                st.success(f"✅ Minimum Mesin: {m}, Operator: {o}")
+                st.write(f"Total Produksi: {total} unit")
+                found = True
+                break
+        if found:
+            break
 
-    st.success("🔢 Jumlah Minimum Mesin & Operator (Integer)")
-    st.write(f"Jumlah Mesin yang dibutuhkan: {jumlah_mesin}")
-    st.write(f"Jumlah Operator yang dibutuhkan: {jumlah_operator}")
-    st.write(f"Total Produksi per Hari: {total_produksi} unit")
+    if not found:
+        st.error("❌ Tidak ditemukan kombinasi mesin & operator untuk target yang diberikan.")
 
 # =========================
 # TAB 2: EOQ
