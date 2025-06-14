@@ -147,29 +147,42 @@ with tab1b:
 # TAB 2: EOQ
 # =========================
 with tab2:
-    st.header("3️⃣ Model Persediaan EOQ")
+    st.header("📦 Model Persediaan EOQ (Economic Order Quantity)")
 
-    D = st.number_input("Permintaan Tahunan (D)", value=1000.0)
-    S = st.number_input("Biaya Pemesanan per Order (S)", value=50.0)
-    H = st.number_input("Biaya Simpan per Unit per Tahun (H)", value=2.0)
+    st.markdown("""
+    Model ini digunakan untuk menentukan **berapa banyak dan kapan harus memesan** bahan baku secara optimal berdasarkan:
+    - Permintaan tahunan
+    - Biaya pemesanan
+    - Biaya penyimpanan
+    """)
 
-    if D > 0 and S > 0 and H > 0:
-        EOQ = np.sqrt((2 * D * S) / H)
-        st.success(f"EOQ: {EOQ:.2f} unit")
+    # Input pengguna
+    D = st.number_input("📈 Permintaan Tahunan (unit)", min_value=1, value=12000, step=100)
+    S = st.number_input("📥 Biaya Pemesanan per Pesanan (Rp)", min_value=1, value=200000, step=10000)
+    H = st.number_input("🏪 Biaya Penyimpanan per Unit per Tahun (Rp)", min_value=1, value=10000, step=500)
 
-        Q = np.linspace(1, 2 * EOQ, 100)
-        TC = (D / Q) * S + (Q / 2) * H
+    # Perhitungan EOQ
+    EOQ = np.sqrt((2 * D * S) / H)
+    n = D / EOQ  # frekuensi pemesanan
+    T = 360 / n  # siklus pemesanan dalam hari
 
-        fig, ax = plt.subplots()
-        ax.plot(Q, TC)
-        ax.axvline(EOQ, color='red', linestyle='--', label='EOQ')
-        ax.set_xlabel("Jumlah Pesanan")
-        ax.set_ylabel("Total Biaya")
-        ax.set_title("Total Biaya vs EOQ")
-        ax.legend()
-        st.pyplot(fig)
-    else:
-        st.warning("Input harus lebih dari 0.")
+    # Output
+    st.subheader("📊 Hasil Perhitungan:")
+    st.write(f"🔹 Jumlah Pesanan Optimal (EOQ): **{EOQ:.2f} unit**")
+    st.write(f"🔹 Frekuensi Pemesanan per Tahun: **{n:.2f} kali**")
+    st.write(f"🔹 Waktu antar Pesanan (Siklus): **{T:.2f} hari**")
+
+    # Visualisasi
+    fig, ax = plt.subplots()
+    q_range = np.linspace(1, EOQ * 2, 500)
+    total_cost = (D / q_range) * S + (q_range / 2) * H
+    ax.plot(q_range, total_cost, label="Total Biaya")
+    ax.axvline(EOQ, color='red', linestyle='--', label=f"EOQ = {EOQ:.0f}")
+    ax.set_xlabel("Jumlah Pesanan per Siklus")
+    ax.set_ylabel("Total Biaya Tahunan (Rp)")
+    ax.set_title("Kurva Total Biaya vs Jumlah Pesanan")
+    ax.legend()
+    st.pyplot(fig)
 
 # =========================
 # TAB 3: Antrian M/M/1
