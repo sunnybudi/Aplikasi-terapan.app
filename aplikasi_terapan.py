@@ -50,10 +50,10 @@ with tab1:
     operator = st.number_input("👷 Jumlah Operator (input manual)", min_value=0, step=1)
 
     produksi_aktual = min(mesin, operator) * kapasitas_harian
-    total_biaya = (mesin * biaya_mesin) + (operator * biaya_operator)
+    total_biaya = (mesin * biaya_mesin * 1000) + (operator * biaya_operator * 1000)
 
     st.write(f"🏭 Total Produksi Aktual: **{produksi_aktual} unit/hari**")
-    st.write(f"💵 Total Biaya Harian: **Rp {total_biaya * 1000:,.0f}**")
+    st.write(f"💵 Total Biaya Harian: **Rp {total_biaya:,.0f}**")
 
     fig, ax = plt.subplots()
     ax.bar(["Mesin", "Operator"], [mesin, operator], color=["skyblue", "orange"])
@@ -175,8 +175,4 @@ with tab5:
     st.write(f"🔹 {bahan1}: {total1} unit")
     st.write(f"🔹 {bahan2}: {total2} unit")
 
-    fig, ax = plt.subplots()
-    ax.bar([bahan1, bahan2], [total1, total2], color=['green', 'brown'])
-    ax.set_ylabel("Jumlah Kebutuhan")
-    ax.set_title("Total Kebutuhan Bahan Baku")
-    st.pyplot(fig)
+    fig, ax = plt.subplot
