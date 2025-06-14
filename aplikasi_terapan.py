@@ -107,6 +107,7 @@ with tab1b:
     jumlah_mesin_int = st.number_input("Jumlah Mesin (unit)",min_value=1, value=10)
     jumlah_operator_int = st.number_input("Jumlah Operator (orang)",min_value=1, value=20)
 
+    bounds = [(0, jumlah_mesin_int), (0, jumlah_operator_int)]
 
     kapasitas_harian = kapasitas_int * jam_kerja_int
 
