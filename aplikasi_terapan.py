@@ -153,9 +153,9 @@ with tab2:
     Gunakan model EOQ untuk menghitung *berapa banyak bahan baku harus dipesan* dan *kapan* harus memesan ulang.
     """)
 
-    D = st.number_input("📅 Permintaan Tahunan (unit bahan baku)", min_value=1.0, value=10000)
-    S = st.number_input("🛒 Biaya Pemesanan per Order (Rp)", min_value=0.0, value=50000)
-    H = st.number_input("🏬 Biaya Penyimpanan per Unit per Tahun (Rp)", min_value=0.0, value=2000)
+    D = st.number_input("📅 Permintaan Tahunan (unit bahan baku)", min_value=1, value=10000)
+    S = st.number_input("🛒 Biaya Pemesanan per Order (Rp)", min_value=0, value=50000)
+    H = st.number_input("🏬 Biaya Penyimpanan per Unit per Tahun (Rp)", min_value=0, value=2000)
 
     if D > 0 and S > 0 and H > 0:
         EOQ = math.sqrt((2 * D * S) / H)
