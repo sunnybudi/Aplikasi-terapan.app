@@ -1,6 +1,5 @@
 import streamlit as st
 import numpy as np
-import matplotlib
 import matplotlib.pyplot as plt
 import sympy as sp
 import math
@@ -50,7 +49,7 @@ with tab1:
     mesin = st.number_input("🔧 Jumlah Mesin (input manual)", min_value=0, step=1)
     operator = st.number_input("👷 Jumlah Operator (input manual)", min_value=0, step=1)
 
-    produksi_aktual = (mesin + operator) * kapasitas_harian
+    produksi_aktual = min(mesin, operator) * kapasitas_harian
     total_biaya = (mesin * biaya_mesin) + (operator * biaya_operator)
 
     st.write(f"🏭 Total Produksi Aktual: **{produksi_aktual} unit/hari**")
