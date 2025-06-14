@@ -83,33 +83,37 @@ with tab1:
 with tab1b:
     st.header("2️⃣ Hitung Jumlah Mesin & Operator (Integer)")
 
-    target_int = st.number_input("🎯 Target Produksi Harian", min_value=1, value=600, step=10)
+    # Input data
+    target_int = st.number_input("🎯 Target Produksi Harian (unit)", min_value=1, value=600, step=10)
     jam_kerja_int = st.number_input("🕒 Jam Kerja per Hari (jam)", min_value=1, value=8)
-    kapasitas_int = st.number_input("⚙️ Kapasitas Mesin & Operator (unit/jam)", value=6)
-
+    kapasitas_int = st.number_input("⚙️ Kapasitas Mesin & Operator (unit per jam)", value=6)
     biaya_mesin_int = st.number_input("💰 Biaya Mesin per Hari (ribu)", value=300)
     biaya_operator_int = st.number_input("💰 Biaya Operator per Hari (ribu)", value=200)
 
-    kapasitas_per_hari = kapasitas_int * jam_kerja_int
+    kapasitas_harian = kapasitas_int * jam_kerja_int
 
-    st.markdown("### 🔍 Perhitungan Jumlah Minimum Mesin & Operator (Integer)")
+    st.markdown("### 🔍 Hasil Perhitungan:")
 
     solusi_ditemukan = False
-    for total_orang in range(1, 100):  # total gabungan mesin+operator
-        produksi = total_orang * kapasitas_per_hari
+
+    # Cari kombinasi mesin + operator untuk memenuhi target
+    for total_personil in range(1, 100):  # Coba kombinasi sampai 100 orang
+        produksi = total_personil * kapasitas_harian
         if produksi >= target_int:
-            mesin = total_orang // 2
-            operator = total_orang - mesin
-            produksi_aktual = (mesin + operator) * kapasitas_per_hari
+            # Coba bagi rata antara mesin dan operator (boleh disesuaikan)
+            mesin = total_personil // 2
+            operator = total_personil - mesin
+            produksi_aktual = (mesin + operator) * kapasitas_harian
             total_biaya = (mesin * biaya_mesin_int) + (operator * biaya_operator_int)
 
-            st.success("✅ Solusi Ditemukan:")
-            st.write(f"Jumlah Mesin: **{mesin} unit**")
-            st.write(f"Jumlah Operator: **{operator} orang**")
-            st.write(f"Total Kapasitas Produksi: **{produksi_aktual} unit/hari**")
-            st.write(f"Total Biaya: **Rp {total_biaya * 1000:,.0f}**")
+            # Tampilkan hasil
+            st.success("✅ Solusi Ditemukan")
+            st.write(f"🔧 Jumlah Mesin: **{mesin} unit**")
+            st.write(f"👷 Jumlah Operator: **{operator} orang**")
+            st.write(f"🏭 Total Produksi Aktual: **{produksi_aktual} unit/hari**")
+            st.write(f"💵 Total Biaya Harian: **Rp {total_biaya * 1000:,.0f}**")
 
-            # Visualisasi
+            # Grafik batang
             fig, ax = plt.subplots()
             ax.bar(["Mesin", "Operator"], [mesin, operator], color=["skyblue", "orange"])
             ax.set_ylabel("Jumlah")
@@ -120,7 +124,7 @@ with tab1b:
             break
 
     if not solusi_ditemukan:
-        st.error("❌ Tidak ditemukan solusi dalam rentang pencarian.")
+        st.error("❌ Tidak ditemukan kombinasi mesin & operator untuk target tersebut.")
 
 # =========================
 # TAB 2: EOQ
