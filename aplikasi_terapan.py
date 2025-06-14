@@ -41,6 +41,7 @@ tab1, tab1b, tab2, tab3, tab4 = st.tabs([
 with tab1:
     st.header("1️⃣ Optimasi Biaya Mesin & Operator")
 
+    # Input dari user
     target = st.number_input("🎯 Target Produksi Harian (unit)", min_value=1, value=600, step=10)
     jam_kerja = st.number_input("🕒 Jam Kerja per Hari", min_value=1, value=8)
 
@@ -50,35 +51,46 @@ with tab1:
     jumlah_mesin = st.number_input("Jumlah Maksimal Mesin (unit)", value=10)
     jumlah_operator = st.number_input("Jumlah Maksimal Operator (orang)", value=20)
 
-    kapasitas_harian = kapasitas * jam_kerja
+    kapasitas_harian = kapasitas * jam_kerja  # per mesin/operator per hari
 
     # Fungsi tujuan: Minimalkan biaya
-    c = [biaya_mesin, biaya_operator]
+    c = [biaya_mesin, biaya_operator]  # dalam ribuan
 
-    # Kendala produksi: mesin + operator harus memenuhi target
+    # Kendala: Total produksi dari mesin dan operator ≥ target
     A_ub = [[-kapasitas_harian, -kapasitas_harian]]
     b_ub = [-target]
 
-    # Batasan: Tidak boleh lebih dari jumlah tersedia
+    # Batasan variabel keputusan
     bounds = [(0, jumlah_mesin), (0, jumlah_operator)]
 
+    # Optimasi Linear Programming
     res = linprog(c=c, A_ub=A_ub, b_ub=b_ub, bounds=bounds, method='highs')
 
     if res.success:
+        # Ambil hasil solusi
         mesin, operator = res.x
-        total_biaya = res.fun
+        total_biaya = res.fun  # dalam ribuan
+
         produksi_mesin = mesin * kapasitas_harian
         produksi_operator = operator * kapasitas_harian
+        total_produksi = produksi_mesin + produksi_operator
 
+        biaya_per_unit = (total_biaya * 1000) / total_produksi  # dalam rupiah per unit
+
+        # Tampilkan hasil
         st.success(f"✅ Biaya Minimum: Rp {total_biaya*1000:,.0f}")
-        st.write(f"Jumlah Mesin: {mesin:.2f}")
-        st.write(f"Jumlah Operator: {operator:.2f}")
-        st.write(f"Produksi Total: {produksi_mesin + produksi_operator:.0f} unit/hari")
+        st.write(f"🔧 Jumlah Mesin: **{mesin:.2f}**")
+        st.write(f"👷 Jumlah Operator: **{operator:.2f}**")
+        st.write(f"🏭 Total Produksi: **{total_produksi:.0f} unit/hari**")
+        st.write(f"📈 **Rata-rata Produksi Harian:** {total_produksi:.0f} unit")
+        st.write(f"💸 **Biaya per Unit Produksi:** Rp {biaya_per_unit:,.2f}")
 
+        # Grafik produksi dari mesin & operator
         fig, ax = plt.subplots()
         ax.bar(["Mesin", "Operator"], [produksi_mesin, produksi_operator], color=["skyblue", "orange"])
         ax.axhline(target, color='red', linestyle='--', label="Target")
         ax.set_ylabel("Produksi (unit/hari)")
+        ax.set_title("Kontribusi Produksi per Sumber Daya")
         ax.legend()
         st.pyplot(fig)
     else:
