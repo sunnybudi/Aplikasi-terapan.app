@@ -47,14 +47,20 @@ with tab1:
     kapasitas = st.number_input("⚙️ Kapasitas Mesin & Operator (unit/jam)", value=6)
     biaya_mesin = st.number_input("💰 Biaya Mesin (ribu/hari)", value=300)
     biaya_operator = st.number_input("💰 Biaya Operator (ribu/hari)", value=200)
-    jumlah_mesin = st.number_input("Jumlah Mesin (unit)", value=10)
-    jumlah_operator = st.number_input("Jumlah Operator (orang)", value=20)
+    jumlah_mesin = st.number_input("Jumlah Maksimal Mesin (unit)", value=10)
+    jumlah_operator = st.number_input("Jumlah Maksimal Operator (orang)", value=20)
 
     kapasitas_harian = kapasitas * jam_kerja
+
+    # Fungsi tujuan: Minimalkan biaya
     c = [biaya_mesin, biaya_operator]
+
+    # Kendala produksi: mesin + operator harus memenuhi target
     A_ub = [[-kapasitas_harian, -kapasitas_harian]]
     b_ub = [-target]
-    bounds = [(0, None), (0, None)]
+
+    # Batasan: Tidak boleh lebih dari jumlah tersedia
+    bounds = [(0, jumlah_mesin), (0, jumlah_operator)]
 
     res = linprog(c=c, A_ub=A_ub, b_ub=b_ub, bounds=bounds, method='highs')
 
@@ -67,6 +73,7 @@ with tab1:
         st.success(f"✅ Biaya Minimum: Rp {total_biaya*1000:,.0f}")
         st.write(f"Jumlah Mesin: {mesin:.2f}")
         st.write(f"Jumlah Operator: {operator:.2f}")
+        st.write(f"Produksi Total: {produksi_mesin + produksi_operator:.0f} unit/hari")
 
         fig, ax = plt.subplots()
         ax.bar(["Mesin", "Operator"], [produksi_mesin, produksi_operator], color=["skyblue", "orange"])
