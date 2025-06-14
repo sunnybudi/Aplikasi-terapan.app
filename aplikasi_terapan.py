@@ -111,6 +111,18 @@ with tab3:
         st.write(f"Rata-rata dalam antrian (Lq): {Lq:.2f}")
         st.write(f"Waktu dalam sistem (W): {W:.2f}")
         st.write(f"Waktu tunggu (Wq): {Wq:.2f}")
+
+        # Grafik Distribusi Jumlah Pelanggan dalam Sistem
+        n_values = np.arange(0, 20)
+        Pn = (1 - rho) * rho**n_values
+
+        fig, ax = plt.subplots()
+        ax.bar(n_values, Pn, color='purple')
+        ax.set_xlabel('Jumlah Pelanggan dalam Sistem (n)')
+        ax.set_ylabel('Probabilitas Pn')
+        ax.set_title('Distribusi Probabilitas Jumlah Pelanggan dalam Sistem')
+        st.pyplot(fig)
+
     else:
         st.warning("λ harus < μ dan > 0")
 
@@ -175,4 +187,8 @@ with tab5:
     st.write(f"🔹 {bahan1}: {total1} unit")
     st.write(f"🔹 {bahan2}: {total2} unit")
 
-    fig, ax = plt.subplot
+    fig, ax = plt.subplots()
+    ax.bar([bahan1, bahan2], [total1, total2], color=['green', 'brown'])
+    ax.set_ylabel("Jumlah Kebutuhan")
+    ax.set_title("Total Kebutuhan Bahan Baku")
+    st.pyplot(fig)
