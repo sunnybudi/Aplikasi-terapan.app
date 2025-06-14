@@ -147,42 +147,46 @@ with tab1b:
 # TAB 2: EOQ
 # =========================
 with tab2:
-    st.header("📦 Model Persediaan EOQ (Economic Order Quantity)")
+    st.header("📦 Model Persediaan Bahan Baku (EOQ + Reorder Point)")
 
     st.markdown("""
-    Model ini digunakan untuk menentukan **berapa banyak dan kapan harus memesan** bahan baku secara optimal berdasarkan:
-    - Permintaan tahunan
-    - Biaya pemesanan
-    - Biaya penyimpanan
+    Model ini digunakan untuk menentukan **berapa banyak dan kapan** harus memesan bahan baku:
+    - EOQ → Jumlah optimal setiap kali pesan
+    - ROP → Titik saat kita harus memesan kembali
     """)
 
-    # Input pengguna
+    # Input
     D = st.number_input("📈 Permintaan Tahunan (unit)", min_value=1, value=12000, step=100)
-    S = st.number_input("📥 Biaya Pemesanan per Pesanan (Rp)", min_value=1, value=200000, step=10000)
+    S = st.number_input("📥 Biaya Pemesanan per Order (Rp)", min_value=1, value=200000, step=10000)
     H = st.number_input("🏪 Biaya Penyimpanan per Unit per Tahun (Rp)", min_value=1, value=10000, step=500)
+    L = st.number_input("⏳ Lead Time (hari)", min_value=1, value=5, step=1)
+    hari_kerja = st.number_input("📅 Hari Kerja per Tahun", min_value=1, value=360, step=10)
 
-    # Perhitungan EOQ
-    EOQ = np.sqrt((2 * D * S) / H)
-    n = D / EOQ  # frekuensi pemesanan
-    T = 360 / n  # siklus pemesanan dalam hari
+    if D > 0 and S > 0 and H > 0 and hari_kerja > 0:
+        EOQ = np.sqrt((2 * D * S) / H)
+        d = D / hari_kerja  # permintaan harian
+        ROP = d * L
 
-    # Output
-    st.subheader("📊 Hasil Perhitungan:")
-    st.write(f"🔹 Jumlah Pesanan Optimal (EOQ): **{EOQ:.2f} unit**")
-    st.write(f"🔹 Frekuensi Pemesanan per Tahun: **{n:.2f} kali**")
-    st.write(f"🔹 Waktu antar Pesanan (Siklus): **{T:.2f} hari**")
+        # Output
+        st.subheader("📊 Hasil Perhitungan:")
+        st.write(f"🔹 EOQ (Jumlah Optimal per Pesanan): **{EOQ:.2f} unit**")
+        st.write(f"🔹 ROP (Titik Pemesanan Ulang): **{ROP:.2f} unit**")
+        st.write(f"🔹 Permintaan Harian (d): **{d:.2f} unit/hari**")
 
-    # Visualisasi
-    fig, ax = plt.subplots()
-    q_range = np.linspace(1, EOQ * 2, 500)
-    total_cost = (D / q_range) * S + (q_range / 2) * H
-    ax.plot(q_range, total_cost, label="Total Biaya")
-    ax.axvline(EOQ, color='red', linestyle='--', label=f"EOQ = {EOQ:.0f}")
-    ax.set_xlabel("Jumlah Pesanan per Siklus")
-    ax.set_ylabel("Total Biaya Tahunan (Rp)")
-    ax.set_title("Kurva Total Biaya vs Jumlah Pesanan")
-    ax.legend()
-    st.pyplot(fig)
+        # Visualisasi
+        q_vals = np.linspace(1, EOQ*2, 200)
+        TC = (D/q_vals)*S + (q_vals/2)*H
+
+        fig, ax = plt.subplots()
+        ax.plot(q_vals, TC, label="Total Biaya")
+        ax.axvline(EOQ, color='red', linestyle='--', label=f"EOQ = {EOQ:.0f}")
+        ax.set_title("Total Biaya vs Kuantitas Pesanan")
+        ax.set_xlabel("Jumlah Pesanan (unit)")
+        ax.set_ylabel("Total Biaya Tahunan (Rp)")
+        ax.legend()
+        st.pyplot(fig)
+    else:
+        st.warning("🔔 Semua input harus bernilai positif.")
 
 # =========================
 # TAB 3: Antrian M/M/1
