@@ -35,7 +35,7 @@ tab1, tab2, tab3, tab4 = st.tabs([
 # TAB 1: Simulasi Manual Mesin & Operator
 # =========================
 with tab1:
-    st.header("1️⃣ Simulasi Manual Jumlah Mesin & Operator")
+    st.header("1️⃣ Optimasi Produksi")
 
     target = st.number_input("🎯 Target Produksi Harian (unit)", min_value=1, value=600, step=10)
     jam_kerja = st.number_input("🕒 Jam Kerja per Hari (jam)", min_value=1, value=8)
