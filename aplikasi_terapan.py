@@ -92,6 +92,9 @@ with tab2:
     else:
         st.warning("Input harus lebih besar dari 0")
 
+# =========================
+# TAB 3: Model Antrian M/M/1
+# =========================
 with tab3:
     st.header("3️⃣ Model Antrian M/M/1")
     st.write("""
@@ -135,6 +138,7 @@ with tab3:
         ax1.set_xlabel("Jumlah Pelanggan dalam Sistem (n)")
         ax1.set_ylabel("Probabilitas Pn")
         ax1.set_title("Distribusi Probabilitas Pelanggan dalam Sistem")
+        st.pyplot(fig1)
 
 # =========================
 # TAB 4: Turunan Parsial
