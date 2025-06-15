@@ -42,7 +42,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 # ====================================
 with tab1:
     st.header("1️⃣ Optimasi Produksi (Linear Programming)")
-    st.write("Tujuan: Menentukan kombinasi produk yang memaksimalkan keuntungan dengan keterbatasan sumber daya.")
+    st.write("Studi kasus: Menentukan kombinasi produk yang memaksimalkan keuntungan dengan keterbatasan sumber daya.")
     st.latex(r"Z = 40X + 60Y")
 
     st.markdown("### Harga per Unit")
@@ -94,7 +94,7 @@ with tab1:
 # =========================
 with tab2:
     st.header("📦 Model Persediaan EOQ")
-    st.write("Model EOQ digunakan untuk menentukan jumlah pemesanan ekonomis agar biaya minimum.")
+    st.write("Studi kasus: Untuk menentukan jumlah pemesanan ekonomis dalam permintaan pertahun.")
 
     st.subheader("📐 Rumus-Rumus:")
     st.latex(r"EOQ = \sqrt{\frac{2DS}{H}}")
@@ -131,7 +131,7 @@ with tab3:
     Model antrian M/M/1 digunakan untuk menganalisis sistem dengan satu server,
     di mana waktu antar kedatangan dan waktu pelayanan mengikuti distribusi eksponensial.
     """)
-    st.write("Studi efisiensi sebuah server dalam sebuah antrian pembelian.")
+    st.write("Studi kasus: Efisiensi sebuah server dalam sebuah antrian pembelian.")
 
     # Input parameter
     lambd = st.number_input("📥 Tingkat Kedatangan (λ) - pelanggan/jam", min_value=0, value=2)
@@ -239,6 +239,7 @@ with tab4:
 # =========================
 with tab5:
     st.header("5️⃣ Kebutuhan Bahan Baku")
+    st.write("Studi kasus: Kebutuhan bahan baku untuk pemenuhan produksi.")
     produk = st.text_input("Nama Produk:", "Meja")
     jumlah_produk = st.number_input("Jumlah Produk yang Akan Diproduksi:", min_value=0, value=100)
 
