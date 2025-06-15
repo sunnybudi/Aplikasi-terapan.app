@@ -175,7 +175,7 @@ with tab4:
 # =========================
 with tab5:
     st.header("5️⃣ Perencanaan Kebutuhan Bahan Baku")
-    st.write("Tujuan perencanaan kebutuhan bahan baku (dalam bahasa Inggris sering disebut Material Requirements Planning / MRP) adalah untuk memastikan bahwa bahan baku yang dibutuhkan dalam proses produksi.")
+    st.write("Tujuan perencanaan kebutuhan bahan baku (dalam bahasa Inggris sering disebut Material Requirements Planning / MRP) adalah untuk memastikan kesiapan bahan baku yang dibutuhkan dalam proses produksi selalu tersedia.")
 
 
     produk = st.text_input("Nama Produk:", "Meja")
