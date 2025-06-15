@@ -131,6 +131,7 @@ with tab3:
     Model antrian M/M/1 digunakan untuk menganalisis sistem dengan satu server,
     di mana waktu antar kedatangan dan waktu pelayanan mengikuti distribusi eksponensial.
     """)
+    st.write("Studi efisiensi sebuah server dalam sebuah antrian pembelian.")
 
     # Input parameter
     lambd = st.number_input("📥 Tingkat Kedatangan (λ) - pelanggan/jam", min_value=0, value=2)
