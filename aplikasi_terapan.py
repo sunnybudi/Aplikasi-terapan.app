@@ -107,18 +107,23 @@ with tab2:
         st.warning("Input harus lebih besar dari 0")
 
 # =========================
-# TAB 3: Model Antrian M/M/1
+# TAB 3: Model Antrian (M/M/1)
 # =========================
 with tab3:
-    st.header("📊 Model Antrian M/M/1")
-    st.write("Model antrian M/M/1 digunakan untuk sistem 1 server dengan waktu antar kedatangan dan pelayanan eksponensial.")
+    st.header("3️⃣ Model Antrian (M/M/1)")
+    st.write("""
+    Model antrian M/M/1 digunakan untuk menganalisis sistem dengan satu server,
+    di mana waktu antar kedatangan dan waktu pelayanan mengikuti distribusi eksponensial.
+    """)
 
-    lambd = st.number_input("Tingkat Kedatangan (λ) - pelanggan/jam", min_value=0.01, value=2.0)
-    mu = st.number_input("Tingkat Pelayanan (μ) - pelanggan/jam", min_value=0.01, value=3.0)
+    # Input parameter
+    lambd = st.number_input("📥 Tingkat Kedatangan (λ) - pelanggan/jam", min_value=0.01, value=2.0)
+    mu = st.number_input("⚙️ Tingkat Pelayanan (μ) - pelanggan/jam", min_value=0.01, value=3.0)
 
     if lambd >= mu:
         st.error("⚠️ Sistem tidak stabil (λ ≥ μ). Harap pastikan λ < μ.")
     else:
+        # Perhitungan
         rho = lambd / mu
         L = lambd / (mu - lambd)
         Lq = (lambd**2) / (mu * (mu - lambd))
@@ -128,15 +133,25 @@ with tab3:
 
         st.subheader("📈 Hasil Perhitungan")
         st.markdown(f"""
-        - **Utilisasi (ρ):** {rho:.3f}
-        - **L (rata-rata dalam sistem):** {L:.3f}
-        - **Lq (rata-rata dalam antrian):** {Lq:.3f}
-        - **W (waktu dalam sistem):** {W:.3f} jam ≈ {W*60:.0f} menit
-        - **Wq (waktu tunggu):** {Wq:.3f} jam ≈ {Wq*60:.0f} menit
-        - **P₀ (sistem kosong):** {P0:.3f}
+        - **Tingkat Utilisasi (ρ):** {rho:.3f}
+        - **Rata-rata pelanggan dalam sistem (L):** {L:.3f}
+        - **Rata-rata dalam antrean (Lq):** {Lq:.3f}
+        - **Waktu dalam sistem (W):** {W:.3f} jam ≈ {W*60:.0f} menit
+        - **Waktu tunggu dalam antrean (Wq):** {Wq:.3f} jam ≈ {Wq*60:.0f} menit
+        - **Probabilitas sistem kosong (P₀):** {P0:.3f}
         """)
 
+        # Tampilkan Rumus
+        st.subheader("🧮 Rumus-Rumus Model M/M/1")
+        st.latex(rf"\rho = \frac{{\lambda}}{{\mu}} = \frac{{{lambd}}}{{{mu}}} = {rho:.3f}")
+        st.latex(rf"L = \frac{{\lambda}}{{\mu - \lambda}} = \frac{{{lambd}}}{{{mu - lambd}}} = {L:.3f}")
+        st.latex(rf"L_q = \frac{{\lambda^2}}{{\mu(\mu - \lambda)}} = \frac{{{lambd}^2}}{{{mu}({mu - lambd})}} = {Lq:.3f}")
+        st.latex(rf"W = \frac{{1}}{{\mu - \lambda}} = \frac{{1}}{{{mu - lambd}}} = {W:.3f}")
+        st.latex(rf"W_q = \frac{{\lambda}}{{\mu(\mu - \lambda)}} = \frac{{{lambd}}}{{{mu}({mu - lambd})}} = {Wq:.3f}")
+        st.latex(rf"P_0 = 1 - \rho = 1 - {rho:.3f} = {P0:.3f}")
+
         # Grafik Ringkasan
+        st.subheader("📊 Grafik Ringkasan")
         labels = ["Utilisasi (ρ)", "L", "Lq", "W", "Wq"]
         values = [rho, L, Lq, W, Wq]
 
@@ -148,10 +163,11 @@ with tab3:
                         xytext=(0, 3), textcoords="offset points",
                         ha='center', va='bottom')
         ax.set_title("Ringkasan Parameter Antrian M/M/1")
+        ax.set_ylabel("Nilai")
         st.pyplot(fig)
 
         # Grafik Distribusi Pn
-        st.subheader("📉 Distribusi Probabilitas Pn")
+        st.subheader("📉 Distribusi Probabilitas Pn (Pelanggan ke-n)")
         n_vals = np.arange(0, 20)
         Pn_vals = (1 - rho) * rho ** n_vals
 
