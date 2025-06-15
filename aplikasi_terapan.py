@@ -51,7 +51,7 @@ with tab1:
     operator = st.number_input("👷 Jumlah Operator (input manual)", min_value=0, step=1)
 
     produksi_aktual = min(mesin, operator) * kapasitas_harian
-    total_biaya = (mesin * biaya_mesin) + (operator * biaya_operator)
+    total_biaya = (mesin * biaya_mesin * 1000) + (operator * biaya_operator * 1000)
 
     st.write(f"🏭 Total Produksi Aktual: **{produksi_aktual} unit/hari**")
     st.write(f"💵 Total Biaya Harian: **Rp {total_biaya:,.0f}**")
