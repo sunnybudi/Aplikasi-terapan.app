@@ -43,65 +43,50 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 with tab1:
     st.header("1️⃣ Optimasi Produksi (Linear Programming)")
     st.write("Studi kasus: Menentukan kombinasi produk yang memaksimalkan keuntungan dengan keterbatasan sumber daya.")
-    st.latex(r"Z = c_1X + c_2Y")
+    st.latex(r"Z = 40X + 60Y")
 
-    # Input koefisien fungsi objektif
-    st.markdown("### 💰 Harga per Unit Produk")
-    c1 = st.number_input("Harga per unit produk X (c1)", value=40)
-    c2 = st.number_input("Harga per unit produk Y (c2)", value=60)
+    st.markdown("### Harga per Unit")
+    c1 = st.number_input("Harga per unit produk X", value=40)
+    c2 = st.number_input("Harga per unit produk Y", value=60)
 
-    # Input titik pojok (misalnya hasil dari kendala)
-    st.markdown("### 📦 Banyaknya Barang Produksi di Titik Pojok")
+    st.markdown("### Banyaknya Jumlah Barang Produksi")
+    titik1 = (0, 0)
     x2 = st.number_input("Titik (0, Y): Y =", value=33)
     y3 = st.number_input("Titik (X, 0): X =", value=50)
 
-    # Hitung nilai Z pada 3 titik pojok
-    z1 = 0  # (0,0)
-    z2 = c2 * x2  # (0, x2)
-    z3 = c1 * y3  # (y3, 0)
+    z1 = 0
+    z2 = c2 * x2
+    z3 = c1 * y3
 
-    # Tampilkan hasil perhitungan Z
-    st.markdown("### 🔎 Hasil Perhitungan Fungsi Objektif:")
-    st.write(f"Z(0, 0) = {z1:,.0f}")
+    st.write("### 🔎 Hasil Perhitungan:")
+    st.write(f"Z(0, 0) = {z1}")
     st.write(f"Z(0, {x2}) = {z2:,.0f}")
     st.write(f"Z({y3}, 0) = {z3:,.0f}")
 
-    # Tentukan solusi optimal
     z_opt = max(z1, z2, z3)
     if z_opt == z2:
-        solusi_x, solusi_y = 0, x2
+        solusi = f"(0, {x2})"
     elif z_opt == z3:
-        solusi_x, solusi_y = y3, 0
+        solusi = f"({y3}, 0)"
     else:
-        solusi_x, solusi_y = 0, 0
+        solusi = "(0, 0)"
 
-    st.success(f"💡 Solusi optimal: ({solusi_x}, {solusi_y}) dengan keuntungan maksimum sebesar Rp {z_opt:,.0f}")
+    st.success(f"💡 Solusi optimal: {solusi} dengan keuntungan maksimum sebesar Rp {z_opt:,.0f}")
 
-    # Visualisasi grafik
     st.markdown("### 📊 Visualisasi Titik Pojok dan Fungsi Objektif")
     fig, ax = plt.subplots()
-
-    # Plot titik pojok
     ax.plot([0, 0, y3], [0, x2, 0], 'bo', label="Titik Pojok")
     ax.text(0, 0, ' (0,0)', fontsize=9)
     ax.text(0, x2, f' (0,{x2})', fontsize=9)
     ax.text(y3, 0, f' ({y3},0)', fontsize=9)
 
-    # Plot garis fungsi objektif (hanya ilustrasi garis lurus dari dua titik pojok)
-    ax.plot([0, y3], [x2, 0], 'r--', label='Garis Fungsi Objektif (Z konstanta)')
-
-    # Plot solusi optimal
-    ax.scatter(solusi_x, solusi_y, color='green', s=100, label='Solusi Optimal')
-    ax.annotate(f"Z = {z_opt:,.0f}", (solusi_x, solusi_y), textcoords="offset points", xytext=(10, 10), ha='left')
-
-    # Format grafik
+    ax.plot([0, y3], [x2, 0], 'r--', label='Garis Fungsi Objektif')
     ax.set_xlim(-5, max(60, y3 + 10))
     ax.set_ylim(-5, max(40, x2 + 10))
     ax.set_xlabel("X (Produk 1)")
     ax.set_ylabel("Y (Produk 2)")
     ax.set_title("Visualisasi Titik Pojok & Fungsi Objektif")
     ax.legend()
-    ax.grid(True)
     st.pyplot(fig)
 
 # =========================
