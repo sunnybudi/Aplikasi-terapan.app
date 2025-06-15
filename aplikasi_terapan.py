@@ -175,10 +175,10 @@ with tab5:
 
     st.markdown("Masukkan kebutuhan bahan baku per unit produk:")
     bahan1 = st.text_input("Nama Bahan Baku 1:", "Kayu")
-    jumlah1 = st.number_input(f"Jumlah {bahan1} per unit {produk}:", min_value=0.0, value=5.0)
+    jumlah1 = st.number_input(f"Jumlah {bahan1} per unit {produk}:", min_value=0, value=5)
 
     bahan2 = st.text_input("Nama Bahan Baku 2:", "Paku")
-    jumlah2 = st.number_input(f"Jumlah {bahan2} per unit {produk}:", min_value=0.0, value=10.0)
+    jumlah2 = st.number_input(f"Jumlah {bahan2} per unit {produk}:", min_value=0, value=10)
 
     total1 = jumlah_produk * jumlah1
     total2 = jumlah_produk * jumlah2
