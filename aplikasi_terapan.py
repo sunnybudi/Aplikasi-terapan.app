@@ -251,7 +251,10 @@ with tab5:
     total1 = jumlah_produk * jumlah1
     total2 = jumlah_produk * jumlah2
 
-    st.success("Total Kebutuhan Bahan Baku:")
+    st.subheader("📐 Rumus Perhitungan")
+    st.latex(r"\text{Total Bahan Baku} = \text{Jumlah Produk} \times \text{Jumlah Bahan Baku per Unit}")
+
+    st.success("✅ Total Kebutuhan Bahan Baku:")
     st.write(f"🔹 {bahan1}: {total1} unit")
     st.write(f"🔹 {bahan2}: {total2} unit")
 
