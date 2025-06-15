@@ -102,83 +102,81 @@ with tab2:
     else:
         st.warning("Input harus lebih besar dari 0")
 
-# =========================
-# TAB 3: Model Antrian M/M/1
-# =========================
-with tab3:
-    st.header("3️⃣ Model Antrian M/M/1")
-    st.write("""
-    Model antrian M/M/1 digunakan untuk menganalisis sistem antrian dengan satu server, 
-    di mana waktu antar kedatangan pelanggan dan waktu pelayanan bersifat acak (eksponensial/Poisson).
+import streamlit as st
+import numpy as np
+import matplotlib.pyplot as plt
+
+st.set_page_config(page_title="Model Antrian M/M/1", layout="centered")
+
+st.title("📊 Model Antrian M/M/1")
+st.write("""
+Model antrian M/M/1 digunakan untuk menganalisis sistem dengan satu server,
+di mana waktu antar kedatangan dan waktu pelayanan mengikuti distribusi eksponensial.
+""")
+
+# Input parameter
+lambd = st.number_input("Tingkat Kedatangan (λ) - pelanggan/jam", min_value=0.01, value=2.0)
+mu = st.number_input("Tingkat Pelayanan (μ) - pelanggan/jam", min_value=0.01, value=3.0)
+
+if lambd >= mu:
+    st.error("⚠️ Sistem tidak stabil (λ ≥ μ). Harap pastikan λ < μ.")
+else:
+    # Perhitungan rumus antrian
+    rho = lambd / mu
+    L = lambd / (mu - lambd)
+    Lq = (lambd**2) / (mu * (mu - lambd))
+    W = 1 / (mu - lambd)
+    Wq = lambd / (mu * (mu - lambd))
+    P0 = 1 - rho
+
+    st.subheader("📈 Hasil Perhitungan")
+    st.markdown(f"""
+    - **Tingkat Utilisasi (ρ):** {rho:.3f}
+    - **Rata-rata pelanggan dalam sistem (L):** {L:.3f}
+    - **Rata-rata pelanggan dalam antrean (Lq):** {Lq:.3f}
+    - **Waktu rata-rata dalam sistem (W):** {W:.3f} jam ≈ {W*60:.0f} menit
+    - **Waktu rata-rata menunggu dalam antrean (Wq):** {Wq:.3f} jam ≈ {Wq*60:.0f} menit
+    - **Probabilitas sistem kosong (P₀):** {P0:.3f}
     """)
 
-    # Input pengguna
-    lambd = st.number_input("Tingkat Kedatangan (λ) - pelanggan/jam", min_value=0.01, value=2.0)
-    mu = st.number_input("Tingkat Pelayanan (μ) - pelanggan/jam", min_value=0.01, value=3.0)
+    # Rumus-rumus penting
+    st.subheader("🧮 Rumus-Rumus")
+    st.markdown(rf"""
+    - \( \rho = \frac{{\lambda}}{{\mu}} = \frac{{{lambd}}}{{{mu}}} = {rho:.3f} \)
+    - \( L = \frac{{\lambda}}{{\mu - \lambda}} = \frac{{{lambd}}}{{{mu - lambd}}} = {L:.3f} \)
+    - \( L_q = \frac{{\lambda^2}}{{\mu(\mu - \lambda)}} = \frac{{{lambd}^2}}{{{mu}({mu - lambd})}} = {Lq:.3f} \)
+    - \( W = \frac{{1}}{{\mu - \lambda}} = \frac{{1}}{{{mu - lambd}}} = {W:.3f} \)
+    - \( W_q = \frac{{\lambda}}{{\mu(\mu - \lambda)}} = \frac{{{lambd}}}{{{mu}({mu - lambd})}} = {Wq:.3f} \)
+    - \( P_0 = 1 - \rho = 1 - {rho:.3f} = {P0:.3f} \)
+    """)
 
-    # Validasi kestabilan sistem
-    if lambd >= mu:
-        st.warning("⚠️ Sistem tidak stabil (λ ≥ μ). Harap pastikan λ < μ agar sistem dapat dianalisis.")
-    else:
-        # Perhitungan nilai antrian
-        rho = lambd / mu
-        L = rho / (1 - rho)
-        Lq = rho**2 / (1 - rho)
-        W = 1 / (mu - lambd)
-        Wq = rho / (mu - lambd)
+    # Grafik ringkasan
+    st.subheader("📊 Grafik Ringkasan")
+    labels = ["Utilisasi (ρ)", "L", "Lq", "W", "Wq"]
+    values = [rho, L, Lq, W, Wq]
 
-        # Hasil perhitungan
-        st.subheader("📊 Hasil Perhitungan Antrian M/M/1")
-        st.write(f"Utilisasi Sistem (ρ): **{rho:.2f}**")
-        st.write(f"Rata-rata pelanggan dalam sistem (L): **{L:.2f}**")
-        st.write(f"Rata-rata pelanggan dalam antrian (Lq): **{Lq:.2f}**")
-        st.write(f"Waktu rata-rata dalam sistem (W): **{W:.2f} jam**")
-        st.write(f"Waktu tunggu rata-rata dalam antrian (Wq): **{Wq:.2f} jam**")
+    fig, ax = plt.subplots()
+    bars = ax.bar(labels, values, color=['skyblue', 'orange', 'green', 'salmon', 'violet'])
+    for bar in bars:
+        height = bar.get_height()
+        ax.annotate(f"{height:.2f}", xy=(bar.get_x() + bar.get_width() / 2, height),
+                    xytext=(0, 3), textcoords="offset points",
+                    ha='center', va='bottom')
+    ax.set_title("Ringkasan Parameter Antrian M/M/1")
+    ax.set_ylabel("Nilai")
+    st.pyplot(fig)
 
-        # =========================
-        # Rumus-Rumus Penting
-        # =========================
-        st.subheader("🧮 Rumus-Rumus Penting")
-        st.markdown(rf'''
-        - **Tingkat utilisasi server:** \( \rho = \frac{{\lambda}}{{\mu}} = \frac{{{lambd}}}{{{mu}}} = {rho:.3f} \)
-        - **Rata-rata jumlah pelanggan dalam sistem (L):** \( L = \frac{{\lambda}}{{\mu - \lambda}} = \frac{{{lambd}}}{{{mu - lambd}}} = {L:.2f} \)
-        - **Rata-rata waktu dalam sistem (W):** \( W = \frac{{1}}{{\mu - \lambda}} = \frac{{1}}{{{mu - lambd}}} = {W:.2f} \) jam atau sekitar {W*60:.0f} menit
-        - **Rata-rata waktu menunggu dalam antrean (Wq):** \( W_q = \frac{{\lambda}}{{\mu(\mu - \lambda)}} = \frac{{{lambd}}}{{{mu}({mu - lambd})}} = {Wq:.3f} \) jam atau sekitar {Wq*60:.0f} menit
-        - **Rata-rata pelanggan dalam antrean (Lq):** \( L_q = \frac{{\lambda^2}}{{\mu(\mu - \lambda)}} = \frac{{{lambd}^2}}{{{mu}({mu - lambd})}} = {Lq:.2f} \)
-        ''')
+    # Grafik Distribusi Pn
+    st.subheader("📉 Distribusi Probabilitas Pn")
+    n_vals = np.arange(0, 20)
+    Pn_vals = (1 - rho) * rho ** n_vals
 
-        # =========================
-        # GRAFIK RINGKASAN SISTEM
-        # =========================
-        st.subheader("📉 Ringkasan Sistem dalam Bentuk Grafik")
-        labels = ["ρ: Utilisasi", "L: Dalam Sistem", "Lq: Dalam Antrian", "W: Waktu di Sistem", "Wq: Waktu di Antrian"]
-        values = [rho, L, Lq, W, Wq]
-
-        fig, ax = plt.subplots()
-        bars = ax.bar(labels, values, color=['skyblue', 'orange', 'lightgreen', 'salmon', 'violet'])
-        ax.set_ylabel("Nilai")
-        ax.set_title("Ringkasan Parameter Antrian M/M/1")
-        for bar in bars:
-            height = bar.get_height()
-            ax.annotate(f"{height:.2f}", xy=(bar.get_x() + bar.get_width() / 2, height),
-                        xytext=(0, 3), textcoords="offset points",
-                        ha='center', va='bottom')
-        st.pyplot(fig)
-
-        # =========================
-        # GRAFIK 1: Distribusi Pn
-        # =========================
-        st.subheader("📈 Distribusi Probabilitas Jumlah Pelanggan dalam Sistem (Pn)")
-
-        n = np.arange(0, 20)
-        Pn = (1 - rho) * rho ** n
-
-        fig1, ax1 = plt.subplots()
-        ax1.bar(n, Pn, color='cornflowerblue', alpha=0.8)
-        ax1.set_xlabel("Jumlah Pelanggan dalam Sistem (n)")
-        ax1.set_ylabel("Probabilitas Pn")
-        ax1.set_title("Distribusi Probabilitas Pelanggan dalam Sistem")
-        st.pyplot(fig1)
+    fig2, ax2 = plt.subplots()
+    ax2.bar(n_vals, Pn_vals, color='cornflowerblue')
+    ax2.set_xlabel("n (jumlah pelanggan)")
+    ax2.set_ylabel("P(n)")
+    ax2.set_title("Distribusi Probabilitas Pelanggan dalam Sistem")
+    st.pyplot(fig2)
 
 # =========================
 # TAB 4: Turunan Parsial
