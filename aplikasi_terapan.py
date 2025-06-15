@@ -139,7 +139,7 @@ with tab3:
         # Rumus-Rumus Penting
         # =========================
         st.subheader("🧮 Rumus-Rumus Penting")
-        st.markdown(fr'''
+        st.markdown(rf'''
         - **Tingkat utilisasi server:** \( \rho = \frac{{\lambda}}{{\mu}} = \frac{{{lambd}}}{{{mu}}} = {rho:.3f} \)
         - **Rata-rata jumlah pelanggan dalam sistem (L):** \( L = \frac{{\lambda}}{{\mu - \lambda}} = \frac{{{lambd}}}{{{mu - lambd}}} = {L:.2f} \)
         - **Rata-rata waktu dalam sistem (W):** \( W = \frac{{1}}{{\mu - \lambda}} = \frac{{1}}{{{mu - lambd}}} = {W:.2f} \) jam atau sekitar {W*60:.0f} menit
