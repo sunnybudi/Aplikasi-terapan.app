@@ -51,8 +51,8 @@ with tab1:
 
     st.markdown("### Banyaknya Jumlah Barang Produksi")
     titik1 = (0, 0)
-    x2 = st.number_input("Titik (0, Y): Y =", value=33.33)
-    y3 = st.number_input("Titik (X, 0): X =", value=50.0)
+    x2 = st.number_input("Titik (0, Y): Y =", value=33)
+    y3 = st.number_input("Titik (X, 0): X =", value=50)
 
     z1 = 0
     z2 = c2 * x2
