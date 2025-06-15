@@ -95,30 +95,42 @@ with tab1:
 
    # === GRAFIK 2: Perbandingan Jumlah Produk vs Keuntungan ===
     st.markdown("### 📈 Grafik Perbandingan Jumlah Produk dan Keuntungan")
-
+    
+    # Buat data produk dan keuntungan
     produk_x = list(range(0, y3 + 100, 10))
     keuntungan_x = [c1 * x for x in produk_x]
-
+    
     produk_y = list(range(0, x2 + 100, 10))
     keuntungan_y = [c2 * y for y in produk_y]
-
+    
     fig2, ax2 = plt.subplots()
-
-    # Plot Produk X
+    
+    # Plot garis Produk X
     ax2.plot(produk_x, keuntungan_x, 'o-b', label='Produk X vs Keuntungan')
-    for i in range(len(produk_x)):
-        if i % 5 == 0:  # hanya tiap 5 titik
-            ax2.text(produk_x[i], keuntungan_x[i], f"Z={keuntungan_x[i]:,.0f}",
-                     fontsize=7, rotation=30, ha='left', va='bottom')
-
-    # Plot Produk Y
+    
+    # Plot garis Produk Y
     ax2.plot(produk_y, keuntungan_y, 'o-g', label='Produk Y vs Keuntungan')
-    for i in range(len(produk_y)):
-        if i % 5 == 0:  # hanya tiap 5 titik
-            ax2.text(produk_y[i], keuntungan_y[i], f"Z={keuntungan_y[i]:,.0f}",
-                     fontsize=7, rotation=30, ha='left', va='bottom')
-
-    # Set axis & title
+    
+    # Fungsi untuk format angka (contoh: 1000000 → Rp 1 jt)
+    def format_rupiah_singkat(nilai):
+        if nilai >= 1_000_000:
+            return f"Rp {nilai/1_000_000:.0f} jt"
+        elif nilai >= 1_000:
+            return f"Rp {nilai/1_000:.0f} rb"
+        else:
+            return f"Rp {nilai}"
+    
+    # Tambahkan label hanya di awal, tengah, akhir
+    def tambahkan_label(produk, keuntungan, warna):
+        idx_label = [0, len(produk)//2, len(produk)-1]
+        for i in idx_label:
+            ax2.text(produk[i], keuntungan[i], f"Z={format_rupiah_singkat(keuntungan[i])}",
+                     fontsize=8, rotation=0, color=warna, ha='left', va='bottom')
+    
+    tambahkan_label(produk_x, keuntungan_x, 'blue')
+    tambahkan_label(produk_y, keuntungan_y, 'green')
+    
+    # Set tampilan grafik
     ax2.set_xlabel("Jumlah Produk")
     ax2.set_ylabel("Keuntungan (Z)")
     ax2.set_title("Perbandingan Jumlah Produk dan Keuntungan")
