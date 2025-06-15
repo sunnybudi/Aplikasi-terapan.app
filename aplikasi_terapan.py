@@ -23,7 +23,7 @@ Masukkan data sesuai tab. Hasil & grafik akan muncul secara otomatis.
 # =========================
 # TAB UTAMA
 # =========================
-st.title("\U0001F4CA Aplikasi Model Matematika Industri")
+st.title("\U0001F4CA Aplikasi Matematika Terapan")
 
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "1. Optimasi Produksi",
