@@ -11,7 +11,7 @@ st.sidebar.title("\U0001F4D8 Petunjuk Penggunaan")
 st.sidebar.markdown("""
 Aplikasi ini memiliki 5 model matematika industri:
 
-1. **Simulasi Manual Mesin & Operator**
+1. **Optimasi Produksi**
 2. **Model Persediaan EOQ**  
 3. **Model Antrian (M/M/1)**  
 4. **Turunan Parsial**  
