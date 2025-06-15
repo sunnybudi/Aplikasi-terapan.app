@@ -95,20 +95,20 @@ with tab1:
 
     # === GRAFIK 2: Perbandingan Jumlah Produk vs Keuntungan ===
     st.markdown("### 📈 Grafik Perbandingan Jumlah Produk dan Keuntungan")
-    produk_x = [i for i in range(0, y3+10, 10)]
+    produk_x = [i for i in range(0, y3 + 1, 10)]
     keuntungan_x = [c1 * x for x in produk_x]
 
-    produk_y = [i for i in range(0, x2+10, 10)]
+    produk_y = [i for i in range(0, x2 + 1, 10)]
     keuntungan_y = [c2 * y for y in produk_y]
 
     fig2, ax2 = plt.subplots()
     ax2.plot(produk_x, keuntungan_x, 'o-b', label='Produk X vs Keuntungan')
-    for i in range(len(produk_x)):
-        ax2.text(produk_x[i], keuntungan_x[i], f"Z={keuntungan_x[i]}", fontsize=8)
+    for i in range(0, len(produk_x), 1):
+        ax2.text(produk_x[i], keuntungan_x[i], f"Z={keuntungan_x[i]:,.0f}", fontsize=6, rotation=45)
 
     ax2.plot(produk_y, keuntungan_y, 'o-g', label='Produk Y vs Keuntungan')
-    for i in range(len(produk_y)):
-        ax2.text(produk_y[i], keuntungan_y[i], f"Z={keuntungan_y[i]}", fontsize=8)
+    for i in range(0, len(produk_y), 1):
+        ax2.text(produk_y[i], keuntungan_y[i], f"Z={keuntungan_y[i]:,.0f}", fontsize=6, rotation=45)
 
     ax2.set_xlabel("Jumlah Produk")
     ax2.set_ylabel("Keuntungan (Z)")
