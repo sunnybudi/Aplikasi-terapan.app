@@ -65,7 +65,10 @@ with tab1:
 # =========================
 with tab2:
     st.header("📦 Model Persediaan EOQ")
-    st.write("Model persediaan EOQ (Economic Order Quantity) atau Model Jumlah Pemesanan Ekonomis adalah model matematika yang digunakan dalam manajemen persediaan untuk menentukan jumlah pembelian atau produksi yang paling efisien guna meminimalkan total biaya persediaan, yaitu biaya pemesanan dan biaya penyimpanan.")
+    st.write("Model persediaan EOQ (Economic Order Quantity) atau Model Jumlah Pemesanan Ekonomis adalah 
+    model matematika yang digunakan dalam manajemen persediaan untuk menentukan jumlah pembelian 
+    atau produksi yang paling efisien guna meminimalkan total biaya persediaan, yaitu biaya pemesanan dan 
+    biaya penyimpanan.")
     D = st.number_input("📅 Permintaan Tahunan (unit)", value=10000)
     S = st.number_input("🛒 Biaya Pemesanan per Order (Rp)", value=50000)
     H = st.number_input("🏬 Biaya Penyimpanan per Unit per Tahun (Rp)", value=2000)
