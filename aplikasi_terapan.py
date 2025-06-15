@@ -49,7 +49,7 @@ with tab1:
     c1 = st.number_input("Harga per unit produk X", value=40)
     c2 = st.number_input("Harga per unit produk Y", value=60)
 
-    st.markdown("### Banyaknya Jumlah Barang Produksi")
+    st.markdown("### Banyaknya Jumlah Barang Yang Diproduksi (/hari)")
     titik1 = (0, 0)
     x2 = st.number_input("Titik (0, Y): Y =", value=33)
     y3 = st.number_input("Titik (X, 0): X =", value=50)
