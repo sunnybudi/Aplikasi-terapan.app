@@ -144,6 +144,7 @@ with tab3:
         - **Rata-rata jumlah pelanggan dalam sistem (L):** \( L = \frac{{\lambda}}{{\mu - \lambda}} = \frac{{{lambd}}}{{{mu - lambd}}} = {L:.2f} \)
         - **Rata-rata waktu dalam sistem (W):** \( W = \frac{{1}}{{\mu - \lambda}} = \frac{{1}}{{{mu - lambd}}} = {W:.2f} \) jam atau sekitar {W*60:.0f} menit
         - **Rata-rata waktu menunggu dalam antrean (Wq):** \( W_q = \frac{{\lambda}}{{\mu(\mu - \lambda)}} = \frac{{{lambd}}}{{{mu}({mu - lambd})}} = {Wq:.3f} \) jam atau sekitar {Wq*60:.0f} menit
+        - **Rata-rata pelanggan dalam antrean (Lq):** \( L_q = \frac{{\lambda^2}}{{\mu(\mu - \lambda)}} = \frac{{{lambd}^2}}{{{mu}({mu - lambd})}} = {Lq:.2f} \)
         ''')
 
         # =========================
