@@ -30,7 +30,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "2. Model Persediaan (EOQ)",
     "3. Model Antrian (M/M/1)",
     "4. Turunan Parsial",
-    "5. Kebutuhan Bahan Baku"
+    "5. Model Lain"
 ])
 
 # =========================
