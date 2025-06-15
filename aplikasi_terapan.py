@@ -15,7 +15,7 @@ Aplikasi ini memiliki 5 model matematika industri:
 2. **Model Persediaan EOQ**  
 3. **Model Antrian (M/M/1)**  
 4. **Turunan Parsial**  
-5. **Perencanaan Bahan Baku (Inventory Requirement)**
+5. **Model Lain**
 
 Masukkan data sesuai tab. Hasil & grafik akan muncul secara otomatis.
 """)
@@ -211,7 +211,7 @@ with tab4:
 # TAB 5: Perencanaan Bahan Baku
 # =========================
 with tab5:
-    st.header("5️⃣ Model Lain")
+    st.header("5️⃣ Kebutuhan Bahan Baku")
     st.write("Tujuan perencanaan kebutuhan bahan baku (dalam bahasa Inggris sering disebut Material Requirements Planning / MRP) adalah untuk memastikan kesiapan bahan baku yang dibutuhkan dalam proses produksi selalu tersedia.")
 
 
