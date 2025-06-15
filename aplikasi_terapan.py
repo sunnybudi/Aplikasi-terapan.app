@@ -1,4 +1,8 @@
 import streamlit as st
+
+# SET CONFIG HARUS PALING ATAS
+st.set_page_config(page_title="Aplikasi Matematika Industri", layout="centered")
+
 import numpy as np
 import matplotlib.pyplot as plt
 import sympy as sp
@@ -15,7 +19,7 @@ Aplikasi ini memiliki 5 model matematika industri:
 2. **Model Persediaan EOQ**  
 3. **Model Antrian (M/M/1)**  
 4. **Turunan Parsial**  
-5. **Model Lain**
+5. **Model Lain (Kebutuhan Bahan Baku)**
 
 Masukkan data sesuai tab. Hasil & grafik akan muncul secara otomatis.
 """)
@@ -38,7 +42,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 # =========================
 with tab1:
     st.header("1️⃣ Optimasi Produksi")
-    st.write("Tujuan optimasi produksi adalah untuk memaksimalkan efisiensi dan menghasilkan output terbaik dari sumber daya yang terbatas (seperti tenaga kerja, mesin, bahan baku, dan waktu) guna mencapai tujuan bisnis tertentu.")
+    st.write("Tujuan optimasi produksi adalah untuk memaksimalkan efisiensi dan menghasilkan output terbaik dari sumber daya yang terbatas.")
 
     target = st.number_input("🎯 Target Produksi Harian (unit)", min_value=1, value=600, step=10)
     jam_kerja = st.number_input("🕒 Jam Kerja per Hari (jam)", min_value=1, value=8)
@@ -71,12 +75,12 @@ with tab1:
     for i, v in enumerate([target, produksi_aktual]):
         ax2.text(i, v + 5, str(int(v)), ha='center', va='bottom')
     st.pyplot(fig2)
+
 # =========================
 # TAB 2: EOQ
 # =========================
 with tab2:
     st.header("📦 Model Persediaan EOQ")
-    st.write("Model persediaan EOQ (Economic Order Quantity) atau Model Jumlah Pemesanan Ekonomis adalah model matematika yang digunakan dalam manajemen persediaan untuk menentukan jumlah pembelian atau produksi yang paling efisien guna meminimalkan total biaya persediaan, yaitu biaya pemesanan dan biaya penyimpanan.")
     D = st.number_input("📅 Permintaan Tahunan (unit)", value=10000)
     S = st.number_input("🛒 Biaya Pemesanan per Order (Rp)", value=50000)
     H = st.number_input("🏬 Biaya Penyimpanan per Unit per Tahun (Rp)", value=2000)
@@ -90,7 +94,7 @@ with tab2:
         st.write(f"Frekuensi Pemesanan: {freq:.2f} kali/tahun")
         st.write(f"Interval Pemesanan: {cycle_days:.0f} hari")
 
-        # Grafik EOQ mirip gaya model antrian (bar chart untuk ilustrasi frekuensi)
+        # Grafik EOQ
         x_vals = ["Permintaan", "EOQ"]
         y_vals = [D, EOQ]
 
@@ -102,81 +106,61 @@ with tab2:
     else:
         st.warning("Input harus lebih besar dari 0")
 
-import streamlit as st
-import numpy as np
-import matplotlib.pyplot as plt
+# =========================
+# TAB 3: Model Antrian M/M/1
+# =========================
+with tab3:
+    st.header("📊 Model Antrian M/M/1")
+    st.write("Model antrian M/M/1 digunakan untuk sistem 1 server dengan waktu antar kedatangan dan pelayanan eksponensial.")
 
-st.set_page_config(page_title="Model Antrian M/M/1", layout="centered")
+    lambd = st.number_input("Tingkat Kedatangan (λ) - pelanggan/jam", min_value=0.01, value=2.0)
+    mu = st.number_input("Tingkat Pelayanan (μ) - pelanggan/jam", min_value=0.01, value=3.0)
 
-st.title("📊 Model Antrian M/M/1")
-st.write("""
-Model antrian M/M/1 digunakan untuk menganalisis sistem dengan satu server,
-di mana waktu antar kedatangan dan waktu pelayanan mengikuti distribusi eksponensial.
-""")
+    if lambd >= mu:
+        st.error("⚠️ Sistem tidak stabil (λ ≥ μ). Harap pastikan λ < μ.")
+    else:
+        rho = lambd / mu
+        L = lambd / (mu - lambd)
+        Lq = (lambd**2) / (mu * (mu - lambd))
+        W = 1 / (mu - lambd)
+        Wq = lambd / (mu * (mu - lambd))
+        P0 = 1 - rho
 
-# Input parameter
-lambd = st.number_input("Tingkat Kedatangan (λ) - pelanggan/jam", min_value=0.01, value=2.0)
-mu = st.number_input("Tingkat Pelayanan (μ) - pelanggan/jam", min_value=0.01, value=3.0)
+        st.subheader("📈 Hasil Perhitungan")
+        st.markdown(f"""
+        - **Utilisasi (ρ):** {rho:.3f}
+        - **L (rata-rata dalam sistem):** {L:.3f}
+        - **Lq (rata-rata dalam antrian):** {Lq:.3f}
+        - **W (waktu dalam sistem):** {W:.3f} jam ≈ {W*60:.0f} menit
+        - **Wq (waktu tunggu):** {Wq:.3f} jam ≈ {Wq*60:.0f} menit
+        - **P₀ (sistem kosong):** {P0:.3f}
+        """)
 
-if lambd >= mu:
-    st.error("⚠️ Sistem tidak stabil (λ ≥ μ). Harap pastikan λ < μ.")
-else:
-    # Perhitungan rumus antrian
-    rho = lambd / mu
-    L = lambd / (mu - lambd)
-    Lq = (lambd**2) / (mu * (mu - lambd))
-    W = 1 / (mu - lambd)
-    Wq = lambd / (mu * (mu - lambd))
-    P0 = 1 - rho
+        # Grafik Ringkasan
+        labels = ["Utilisasi (ρ)", "L", "Lq", "W", "Wq"]
+        values = [rho, L, Lq, W, Wq]
 
-    st.subheader("📈 Hasil Perhitungan")
-    st.markdown(f"""
-    - **Tingkat Utilisasi (ρ):** {rho:.3f}
-    - **Rata-rata pelanggan dalam sistem (L):** {L:.3f}
-    - **Rata-rata pelanggan dalam antrean (Lq):** {Lq:.3f}
-    - **Waktu rata-rata dalam sistem (W):** {W:.3f} jam ≈ {W*60:.0f} menit
-    - **Waktu rata-rata menunggu dalam antrean (Wq):** {Wq:.3f} jam ≈ {Wq*60:.0f} menit
-    - **Probabilitas sistem kosong (P₀):** {P0:.3f}
-    """)
+        fig, ax = plt.subplots()
+        bars = ax.bar(labels, values, color=['skyblue', 'orange', 'green', 'salmon', 'violet'])
+        for bar in bars:
+            height = bar.get_height()
+            ax.annotate(f"{height:.2f}", xy=(bar.get_x() + bar.get_width() / 2, height),
+                        xytext=(0, 3), textcoords="offset points",
+                        ha='center', va='bottom')
+        ax.set_title("Ringkasan Parameter Antrian M/M/1")
+        st.pyplot(fig)
 
-    # Rumus-rumus penting
-    st.subheader("🧮 Rumus-Rumus")
-    st.markdown(rf"""
-    - \( \rho = \frac{{\lambda}}{{\mu}} = \frac{{{lambd}}}{{{mu}}} = {rho:.3f} \)
-    - \( L = \frac{{\lambda}}{{\mu - \lambda}} = \frac{{{lambd}}}{{{mu - lambd}}} = {L:.3f} \)
-    - \( L_q = \frac{{\lambda^2}}{{\mu(\mu - \lambda)}} = \frac{{{lambd}^2}}{{{mu}({mu - lambd})}} = {Lq:.3f} \)
-    - \( W = \frac{{1}}{{\mu - \lambda}} = \frac{{1}}{{{mu - lambd}}} = {W:.3f} \)
-    - \( W_q = \frac{{\lambda}}{{\mu(\mu - \lambda)}} = \frac{{{lambd}}}{{{mu}({mu - lambd})}} = {Wq:.3f} \)
-    - \( P_0 = 1 - \rho = 1 - {rho:.3f} = {P0:.3f} \)
-    """)
+        # Grafik Distribusi Pn
+        st.subheader("📉 Distribusi Probabilitas Pn")
+        n_vals = np.arange(0, 20)
+        Pn_vals = (1 - rho) * rho ** n_vals
 
-    # Grafik ringkasan
-    st.subheader("📊 Grafik Ringkasan")
-    labels = ["Utilisasi (ρ)", "L", "Lq", "W", "Wq"]
-    values = [rho, L, Lq, W, Wq]
-
-    fig, ax = plt.subplots()
-    bars = ax.bar(labels, values, color=['skyblue', 'orange', 'green', 'salmon', 'violet'])
-    for bar in bars:
-        height = bar.get_height()
-        ax.annotate(f"{height:.2f}", xy=(bar.get_x() + bar.get_width() / 2, height),
-                    xytext=(0, 3), textcoords="offset points",
-                    ha='center', va='bottom')
-    ax.set_title("Ringkasan Parameter Antrian M/M/1")
-    ax.set_ylabel("Nilai")
-    st.pyplot(fig)
-
-    # Grafik Distribusi Pn
-    st.subheader("📉 Distribusi Probabilitas Pn")
-    n_vals = np.arange(0, 20)
-    Pn_vals = (1 - rho) * rho ** n_vals
-
-    fig2, ax2 = plt.subplots()
-    ax2.bar(n_vals, Pn_vals, color='cornflowerblue')
-    ax2.set_xlabel("n (jumlah pelanggan)")
-    ax2.set_ylabel("P(n)")
-    ax2.set_title("Distribusi Probabilitas Pelanggan dalam Sistem")
-    st.pyplot(fig2)
+        fig2, ax2 = plt.subplots()
+        ax2.bar(n_vals, Pn_vals, color='cornflowerblue')
+        ax2.set_xlabel("n (jumlah pelanggan)")
+        ax2.set_ylabel("P(n)")
+        ax2.set_title("Distribusi Probabilitas Pelanggan dalam Sistem")
+        st.pyplot(fig2)
 
 # =========================
 # TAB 4: Turunan Parsial
@@ -218,13 +202,10 @@ with tab4:
         st.error("Fungsi tidak valid. Gunakan format Python: x**2 + y**2")
 
 # =========================
-# TAB 5: Perencanaan Bahan Baku
+# TAB 5: Kebutuhan Bahan Baku
 # =========================
 with tab5:
     st.header("5️⃣ Kebutuhan Bahan Baku")
-    st.write("Tujuan perencanaan kebutuhan bahan baku (dalam bahasa Inggris sering disebut Material Requirements Planning / MRP) adalah untuk memastikan kesiapan bahan baku yang dibutuhkan dalam proses produksi selalu tersedia.")
-
-
     produk = st.text_input("Nama Produk:", "Meja")
     jumlah_produk = st.number_input("Jumlah Produk yang Akan Diproduksi:", min_value=0, value=100)
 
