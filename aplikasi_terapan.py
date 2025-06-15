@@ -65,7 +65,7 @@ with tab1:
     # Grafik Perbandingan Target vs Aktual
     st.subheader("📊 Grafik Target vs Output Produksi")
     fig2, ax2 = plt.subplots()
-    ax2.bar(["Target Produksi", "Produksi Aktual"], [target, produksi_aktual], color=["lightgreen", "salmon"])
+    ax2.bar(["Target Produksi", "Aktual Produksi"], [target, produksi_aktual], color=["red", "Lightgreen"])
     ax2.set_ylabel("Unit")
     ax2.set_title("Perbandingan Target vs Output Produksi")
     for i, v in enumerate([target, produksi_aktual]):
