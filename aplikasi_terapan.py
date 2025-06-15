@@ -152,7 +152,7 @@ with tab3:
 
         # Grafik Ringkasan
         st.subheader("📊 Grafik Ringkasan")
-        labels = ["Utilisasi (ρ)", "L", "Lq", "W", "Wq"]
+        labels = ["ρ", "L", "Lq", "W", "Wq"]
         values = [rho, L, Lq, W, Wq]
 
         fig, ax = plt.subplots()
