@@ -126,6 +126,24 @@ with tab3:
         st.write(f"Waktu tunggu rata-rata dalam antrian (Wq): **{Wq:.2f} jam**")
 
         # =========================
+        # GRAFIK RINGKASAN SISTEM
+        # =========================
+        st.subheader("📉 Ringkasan Sistem dalam Bentuk Grafik")
+        labels = ["ρ: Utilisasi", "L: Dalam Sistem", "Lq: Dalam Antrian", "W: Waktu di Sistem", "Wq: Waktu di Antrian"]
+        values = [rho, L, Lq, W, Wq]
+
+        fig, ax = plt.subplots()
+        bars = ax.bar(labels, values, color=['skyblue', 'orange', 'lightgreen', 'salmon', 'violet'])
+        ax.set_ylabel("Nilai")
+        ax.set_title("Ringkasan Parameter Antrian M/M/1")
+        for bar in bars:
+            height = bar.get_height()
+            ax.annotate(f"{height:.2f}", xy=(bar.get_x() + bar.get_width() / 2, height),
+                        xytext=(0, 3), textcoords="offset points",
+                        ha='center', va='bottom')
+        st.pyplot(fig)
+
+        # =========================
         # GRAFIK 1: Distribusi Pn
         # =========================
         st.subheader("📈 Distribusi Probabilitas Jumlah Pelanggan dalam Sistem (Pn)")
