@@ -43,7 +43,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 with tab1:
     st.header("1️⃣ Optimasi Produksi (Linear Programming)")
     st.write("Studi kasus: Menentukan kombinasi produk yang memaksimalkan keuntungan dengan keterbatasan sumber daya.")
-    st.latex(r"Z = 40X + 60Y")
+    st.latex(r"Z = c1 * X + c2 * Y")
 
     # Harga per unit
     st.markdown("### Harga per Unit")
