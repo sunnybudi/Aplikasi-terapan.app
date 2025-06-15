@@ -37,59 +37,57 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "5. Model Lain"
 ])
 
-# =========================
-# TAB 1: Optimasi Produksi (Z = 40X + 60Y)
-# =========================
+# ====================================
+# TAB 1: Optimasi Produksi (Linear Programming)
+# ====================================
 with tab1:
-    st.header("1️⃣ Optimasi Produksi")
-    st.write("Model optimasi produksi bertujuan untuk memaksimalkan keuntungan dengan fungsi tujuan: **Z = 40X + 60Y**, di mana X dan Y adalah jumlah produk yang diproduksi.")
+    st.header("1️⃣ Optimasi Produksi (Linear Programming)")
+    st.write("Tujuan: Menentukan kombinasi produk yang memaksimalkan keuntungan dengan keterbatasan sumber daya.")
+    st.latex(r"Z = 40X + 60Y")
 
-    st.subheader("📥 Input Data")
-    jam_kerja = st.number_input("🕒 Jam Kerja per Hari (jam)", min_value=1, value=8)
-    mesin = st.number_input("🔧 Jumlah Mesin", min_value=1, value=5)
-    operator = st.number_input("👷 Jumlah Operator", min_value=1, value=6)
+    st.markdown("### Masukkan Koefisien Fungsi Objektif")
+    c1 = st.number_input("Keuntungan per unit produk X", value=40)
+    c2 = st.number_input("Keuntungan per unit produk Y", value=60)
 
-    # Total jam tersedia
-    jam_mesin_total = mesin * jam_kerja
-    jam_operator_total = operator * jam_kerja
+    st.markdown("### Masukkan Titik Pojok Solusi")
+    titik1 = (0, 0)
+    x2 = st.number_input("Titik (0, Y): Y =", value=33.33)
+    y3 = st.number_input("Titik (X, 0): X =", value=50.0)
 
-    st.write(f"Total jam mesin tersedia: {jam_mesin_total} jam")
-    st.write(f"Total jam operator tersedia: {jam_operator_total} jam")
+    z1 = 0
+    z2 = c2 * x2
+    z3 = c1 * y3
 
-    # Fungsi objektif: Z = 40X + 60Y
-    # Kendala:
-    # 2X + 1Y <= jam_mesin_total
-    # 1X + 3Y <= jam_operator_total
+    st.write("### 🔎 Hasil Perhitungan:")
+    st.write(f"Z(0, 0) = {z1}")
+    st.write(f"Z(0, {x2}) = {z2:,.0f}")
+    st.write(f"Z({y3}, 0) = {z3:,.0f}")
 
-    from scipy.optimize import linprog
-
-    c = [-40, -60]  # Maksimasi Z = 40X + 60Y
-    A = [
-        [2, 1],
-        [1, 3]
-    ]
-    b = [jam_mesin_total, jam_operator_total]
-    bounds = [(0, None), (0, None)]
-
-    res = linprog(c, A_ub=A, b_ub=b, bounds=bounds, method='highs')
-
-    if res.success:
-        x_opt, y_opt = res.x
-        z_opt = -res.fun
-        st.success(f"🔹 Produksi Optimal: X = {x_opt:.0f} unit, Y = {y_opt:.0f} unit")
-        st.success(f"💰 Keuntungan Maksimum: Rp {z_opt:,.0f}")
-
-        # Visualisasi hasil
-        fig, ax = plt.subplots()
-        bars = ax.bar(["Produk X", "Produk Y"], [x_opt, y_opt], color=["skyblue", "orange"])
-        ax.set_ylabel("Unit")
-        ax.set_title("Produksi Optimal")
-        for bar in bars:
-            yval = bar.get_height()
-            ax.text(bar.get_x() + bar.get_width()/2, yval + 0.5, f"{yval:.0f}", ha='center')
-        st.pyplot(fig)
+    z_opt = max(z1, z2, z3)
+    if z_opt == z2:
+        solusi = f"(0, {x2})"
+    elif z_opt == z3:
+        solusi = f"({y3}, 0)"
     else:
-        st.error("❌ Optimasi gagal. Cek kembali jumlah mesin dan operator.")
+        solusi = "(0, 0)"
+
+    st.success(f"💡 Solusi optimal: {solusi} dengan keuntungan maksimum sebesar Rp {z_opt:,.0f}")
+
+    st.markdown("### 📊 Visualisasi Titik Pojok dan Fungsi Objektif")
+    fig, ax = plt.subplots()
+    ax.plot([0, 0, y3], [0, x2, 0], 'bo', label="Titik Pojok")
+    ax.text(0, 0, ' (0,0)', fontsize=9)
+    ax.text(0, x2, f' (0,{x2})', fontsize=9)
+    ax.text(y3, 0, f' ({y3},0)', fontsize=9)
+
+    ax.plot([0, y3], [x2, 0], 'r--', label='Garis Fungsi Objektif')
+    ax.set_xlim(-5, max(60, y3 + 10))
+    ax.set_ylim(-5, max(40, x2 + 10))
+    ax.set_xlabel("X (Produk 1)")
+    ax.set_ylabel("Y (Produk 2)")
+    ax.set_title("Visualisasi Titik Pojok & Fungsi Objektif")
+    ax.legend()
+    st.pyplot(fig)
 
 # =========================
 # TAB 2: EOQ
