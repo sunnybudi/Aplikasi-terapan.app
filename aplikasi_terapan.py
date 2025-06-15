@@ -147,16 +147,6 @@ with tab3:
         Wq = lambd / (mu * (mu - lambd))
         P0 = 1 - rho
 
-        st.subheader("📈 Hasil Perhitungan")
-        st.markdown(f"""
-        - **Tingkat Utilisasi (ρ):** {rho:.3f}
-        - **Rata-rata pelanggan dalam sistem (L):** {L:.3f}
-        - **Rata-rata dalam antrean (Lq):** {Lq:.3f}
-        - **Waktu dalam sistem (W):** {W:.3f} jam ≈ {W*60:.0f} menit
-        - **Waktu tunggu dalam antrean (Wq):** {Wq:.3f} jam ≈ {Wq*60:.0f} menit
-        - **Probabilitas sistem kosong (P₀):** {P0:.3f}
-        """)
-
         # Tampilkan Rumus
         st.subheader("🧮 Rumus-Rumus Model M/M/1")
         st.latex(rf"\rho = \frac{{\lambda}}{{\mu}} = \frac{{{lambd}}}{{{mu}}} = {rho:.3f}")
@@ -181,6 +171,16 @@ with tab3:
         ax.set_title("Ringkasan Parameter Antrian M/M/1")
         ax.set_ylabel("Nilai")
         st.pyplot(fig)
+
+          st.subheader("📈 Hasil Perhitungan")
+        st.markdown(f"""
+        - **Tingkat Utilisasi (ρ):** {rho:.3f}
+        - **Rata-rata pelanggan dalam sistem (L):** {L:.3f}
+        - **Rata-rata dalam antrean (Lq):** {Lq:.3f}
+        - **Waktu dalam sistem (W):** {W:.3f} jam ≈ {W*60:.0f} menit
+        - **Waktu tunggu dalam antrean (Wq):** {Wq:.3f} jam ≈ {Wq*60:.0f} menit
+        - **Probabilitas sistem kosong (P₀):** {P0:.3f}
+        """)
 
         # Grafik Distribusi Pn
         st.subheader("📉 Distribusi Probabilitas Pn (Pelanggan ke-n)")
