@@ -38,94 +38,56 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 ])
 
 # =========================
-# TAB 1: Optimasi Produksi
+# TAB 1: Optimasi Produksi (Z = 40X + 60Y)
 # =========================
 with tab1:
     st.header("1️⃣ Optimasi Produksi")
-    st.write("Tujuan optimasi produksi adalah untuk memaksimalkan efisiensi dan menghasilkan output terbaik dari sumber daya yang terbatas.")
+    st.write("Model optimasi produksi bertujuan untuk memaksimalkan keuntungan dengan fungsi tujuan: **Z = 40X + 60Y**, di mana X dan Y adalah jumlah produk yang diproduksi.")
 
-    # INPUT DATA
-    target = st.number_input("🎯 Target Produksi Harian (unit)", min_value=1, value=600, step=10)
+    st.subheader("📥 Input Data")
     jam_kerja = st.number_input("🕒 Jam Kerja per Hari (jam)", min_value=1, value=8)
-    kapasitas = st.number_input("⚙️ Kapasitas Mesin & Operator (unit/jam)", value=6)
-    biaya_mesin = st.number_input("💰 Biaya Mesin (biaya/hari)", value=300)
-    biaya_operator = st.number_input("💰 Biaya Operator (upah/hari)", value=200)
-    kapasitas_harian = kapasitas * jam_kerja
+    mesin = st.number_input("🔧 Jumlah Mesin", min_value=1, value=5)
+    operator = st.number_input("👷 Jumlah Operator", min_value=1, value=6)
 
-    mesin = st.number_input("🔧 Jumlah Mesin", min_value=0, step=1)
-    operator = st.number_input("👷 Jumlah Operator", min_value=0, step=1)
-
-    # PERHITUNGAN PRODUKSI AKTUAL
-    produksi_aktual = min(mesin, operator) * kapasitas_harian
-    total_biaya = (mesin * biaya_mesin * 1000) + (operator * biaya_operator * 1000)
-
-    st.write(f"🏭 **Produksi Aktual:** {produksi_aktual} unit/hari")
-    st.write(f"💵 **Total Biaya Harian:** Rp {total_biaya:,.0f}")
-
-    # GRAFIK MESIN & OPERATOR
-    fig, ax = plt.subplots()
-    ax.bar(["Mesin", "Operator"], [mesin, operator], color=["skyblue", "orange"])
-    ax.set_ylabel("Jumlah")
-    ax.set_title("Jumlah Mesin dan Operator")
-    st.pyplot(fig)
-
-    # GRAFIK PRODUKSI: Target vs Aktual
-    st.subheader("📊 Grafik Target vs Produksi Aktual")
-    fig2, ax2 = plt.subplots()
-    ax2.bar(["Target Produksi", "Aktual Produksi"], [target, produksi_aktual], color=["red", "lightgreen"])
-    ax2.set_ylabel("Unit")
-    ax2.set_title("Perbandingan Target vs Produksi Aktual")
-    for i, v in enumerate([target, produksi_aktual]):
-        ax2.text(i, v + 5, str(int(v)), ha='center', va='bottom')
-    st.pyplot(fig2)
-
-    # =============================
-    # OPTIMASI LINEAR: Z = 40X + 60Y
-    # =============================
-    from scipy.optimize import linprog
-
-    st.subheader("📈 Optimasi Linear: Z = 40X + 60Y")
-
-    st.markdown("""
-    Misalnya:
-    - Produk **X** butuh 2 jam mesin dan 1 jam operator
-    - Produk **Y** butuh 1 jam mesin dan 3 jam operator
-    """)
-
+    # Total jam tersedia
     jam_mesin_total = mesin * jam_kerja
     jam_operator_total = operator * jam_kerja
 
-    # Fungsi objektif (dikalikan -1 untuk linprog karena minimisasi)
-    c = [-40, -60]
+    st.write(f"Total jam mesin tersedia: {jam_mesin_total} jam")
+    st.write(f"Total jam operator tersedia: {jam_operator_total} jam")
 
-    # Matriks kendala
+    # Fungsi objektif: Z = 40X + 60Y
+    # Kendala:
+    # 2X + 1Y <= jam_mesin_total
+    # 1X + 3Y <= jam_operator_total
+
+    from scipy.optimize import linprog
+
+    c = [-40, -60]  # Maksimasi Z = 40X + 60Y
     A = [
-        [2, 1],  # 2X + 1Y <= total jam mesin
-        [1, 3]   # 1X + 3Y <= total jam operator
+        [2, 1],
+        [1, 3]
     ]
     b = [jam_mesin_total, jam_operator_total]
-
-    # Batasan variabel
     bounds = [(0, None), (0, None)]
 
-    # Jalankan optimasi
     res = linprog(c, A_ub=A, b_ub=b, bounds=bounds, method='highs')
 
     if res.success:
         x_opt, y_opt = res.x
         z_opt = -res.fun
         st.success(f"🔹 Produksi Optimal: X = {x_opt:.0f} unit, Y = {y_opt:.0f} unit")
-        st.success(f"💡 Keuntungan Maksimum (Z): Rp {z_opt:,.0f}")
+        st.success(f"💰 Keuntungan Maksimum: Rp {z_opt:,.0f}")
 
-        # Grafik hasil optimasi
-        fig3, ax3 = plt.subplots()
-        bars = ax3.bar(["Produk X", "Produk Y"], [x_opt, y_opt], color=["cyan", "gold"])
-        ax3.set_ylabel("Unit")
-        ax3.set_title("Produksi Optimal berdasarkan Z = 40X + 60Y")
+        # Visualisasi hasil
+        fig, ax = plt.subplots()
+        bars = ax.bar(["Produk X", "Produk Y"], [x_opt, y_opt], color=["skyblue", "orange"])
+        ax.set_ylabel("Unit")
+        ax.set_title("Produksi Optimal")
         for bar in bars:
             yval = bar.get_height()
-            ax3.text(bar.get_x() + bar.get_width()/2, yval + 0.5, f"{yval:.0f}", ha='center')
-        st.pyplot(fig3)
+            ax.text(bar.get_x() + bar.get_width()/2, yval + 0.5, f"{yval:.0f}", ha='center')
+        st.pyplot(fig)
     else:
         st.error("❌ Optimasi gagal. Cek kembali jumlah mesin dan operator.")
 
