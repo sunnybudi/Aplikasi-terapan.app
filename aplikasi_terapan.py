@@ -113,8 +113,8 @@ with tab3:
     """)
 
     # Input pengguna
-    lambd = st.number_input("Tingkat Kedatangan (λ) - pelanggan/jam", min_value=0, value=2)
-    mu = st.number_input("Tingkat Pelayanan (μ) - pelanggan/jam", min_value=0, value=3)
+    lambd = st.number_input("Tingkat Kedatangan (λ) - pelanggan/jam", min_value=0.01, value=2.0)
+    mu = st.number_input("Tingkat Pelayanan (μ) - pelanggan/jam", min_value=0.01, value=3.0)
 
     # Validasi kestabilan sistem
     if lambd >= mu:
@@ -136,10 +136,21 @@ with tab3:
         st.write(f"Waktu tunggu rata-rata dalam antrian (Wq): **{Wq:.2f} jam**")
 
         # =========================
+        # Rumus-Rumus Penting
+        # =========================
+        st.subheader("🧮 Rumus-Rumus Penting")
+        st.markdown(r'''
+        - **Tingkat utilisasi server:** \( \rho = \frac{\lambda}{\mu} \)
+        - **Rata-rata jumlah pelanggan dalam sistem (L):** \( L = \frac{\lambda}{\mu - \lambda} \)
+        - **Rata-rata waktu dalam sistem (W):** \( W = \frac{1}{\mu - \lambda} \)
+        - **Rata-rata waktu menunggu dalam antrean (Wq):** \( W_q = \frac{\lambda}{\mu(\mu - \lambda)} \)
+        ''')
+
+        # =========================
         # GRAFIK RINGKASAN SISTEM
         # =========================
         st.subheader("📉 Ringkasan Sistem dalam Bentuk Grafik")
-        labels = ["ρ", "L", "Lq", "W", "Wq"]
+        labels = ["ρ: Utilisasi", "L: Dalam Sistem", "Lq: Dalam Antrian", "W: Waktu di Sistem", "Wq: Waktu di Antrian"]
         values = [rho, L, Lq, W, Wq]
 
         fig, ax = plt.subplots()
