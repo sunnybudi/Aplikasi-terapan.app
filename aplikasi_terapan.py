@@ -37,7 +37,8 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 # TAB 1: Simulasi Manual Mesin & Operator
 # =========================
 with tab1:
-    st.header("1️⃣ Simulasi Manual Mesin & Operator")
+    st.header("1️⃣ Optimasi Produksi")
+    st.write("Tujuan optimasi produksi adalah untuk memaksimalkan efisiensi dan menghasilkan output terbaik dari sumber daya yang terbatas (seperti tenaga kerja, mesin, bahan baku, dan waktu) guna mencapai tujuan bisnis tertentu.")
 
     target = st.number_input("🎯 Target Produksi Harian (unit)", min_value=1, value=600, step=10)
     jam_kerja = st.number_input("🕒 Jam Kerja per Hari (jam)", min_value=1, value=8)
@@ -174,6 +175,9 @@ with tab4:
 # =========================
 with tab5:
     st.header("5️⃣ Perencanaan Kebutuhan Bahan Baku")
+    st.write("Tujuan perencanaan kebutuhan bahan baku (dalam bahasa Inggris sering disebut Material Requirements Planning / MRP) adalah untuk memastikan bahwa bahan baku yang dibutuhkan dalam proses produksi.")
+
+
     produk = st.text_input("Nama Produk:", "Meja")
     jumlah_produk = st.number_input("Jumlah Produk yang Akan Diproduksi:", min_value=0, value=100)
 
