@@ -114,12 +114,8 @@ with tab2:
         st.write(f"Frekuensi Pemesanan: {freq:.2f} kali/tahun")
         st.write(f"Interval Pemesanan: {cycle_days:.0f} hari")
 
-        # Grafik EOQ
-        x_vals = ["Permintaan", "EOQ"]
-        y_vals = [D, EOQ]
-
         fig, ax = plt.subplots()
-        ax.bar(x_vals, y_vals, color=['red', 'green'])
+        ax.bar(["Permintaan", "EOQ"], [D, EOQ], color=['red', 'green'])
         ax.set_ylabel("Jumlah Unit")
         ax.set_title("EOQ dan Permintaan Tahunan")
         st.pyplot(fig)
