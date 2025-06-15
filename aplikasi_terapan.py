@@ -106,11 +106,11 @@ with tab3:
         W = 1 / (mu - lambd)
         Wq = rho / (mu - lambd)
 
-        st.write(f"Utilisasi ρ: {rho:.2f}")
-        st.write(f"Rata-rata dalam sistem (L): {L:.2f}")
-        st.write(f"Rata-rata dalam antrian (Lq): {Lq:.2f}")
-        st.write(f"Waktu dalam sistem (W): {W:.2f}")
-        st.write(f"Waktu tunggu (Wq): {Wq:.2f}")
+        st.write(f"ρ (Utilisasi server): {rho:.2f}")
+        st.write(f"L (Rata-rata pelanggan dalam server): {L:.2f}")
+        st.write(f"Lq (Rata-rata pelanggan dalam antrian) : {Lq:.2f}")
+        st.write(f"W (Waktu rata-rata dalam server): {W:.2f}")
+        st.write(f"Wq (Waktu rata-rata tunggu dalam server): {Wq:.2f}")
 
         # Grafik Distribusi Jumlah Pelanggan dalam Sistem
         n_values = np.arange(0, 20)
