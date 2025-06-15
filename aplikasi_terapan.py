@@ -99,8 +99,6 @@ with tab3:
     st.header("3️⃣ Model Antrian M/M/1")
     st.write("Model antrian M/M/1 adalah salah satu model dasar dalam teori antrian (queueing theory) yang digunakan untuk menganalisis sistem pelayanan satu jalur/saluran (single server). Model ini menggambarkan situasi di mana pelanggan datang secara acak, dilayani satu per satu, dan waktu pelayanannya juga bersifat acak.")
 
-
-
     lambd = st.number_input("Tingkat Kedatangan/jam(λ)", value=2)
     mu = st.number_input("Tingkat Pelayanan/jam (μ)", value=3)
 
@@ -116,6 +114,15 @@ with tab3:
         st.write(f"Lq (Rata-rata pelanggan dalam antrian) : {Lq:.2f}")
         st.write(f"W (Waktu rata-rata dalam server): {W:.2f}")
         st.write(f"Wq (Waktu rata-rata tunggu dalam server): {Wq:.2f}")
+
+        # ✅ Tabel ringkasan hasil
+        st.subheader("Tabel Ringkasan Hasil Perhitungan")
+        data = {
+            "Parameter": ["Utilisasi (ρ)", "Jumlah dalam sistem (L)", "Jumlah dalam antrian (Lq)",
+                          "Waktu dalam sistem (W)", "Waktu tunggu (Wq)"],
+            "Nilai": [f"{rho:.2f}", f"{L:.2f}", f"{Lq:.2f}", f"{W:.2f}", f"{Wq:.2f}"]
+        }
+        st.table(data)
 
         # Grafik Distribusi Jumlah Pelanggan dalam Sistem
         n_values = np.arange(0, 20)
