@@ -45,19 +45,22 @@ with tab1:
     st.write("Studi kasus: Menentukan kombinasi produk yang memaksimalkan keuntungan dengan keterbatasan sumber daya.")
     st.latex(r"Z = 40X + 60Y")
 
+    # Harga per unit
     st.markdown("### Harga per Unit")
     c1 = st.number_input("Harga per unit produk X", value=40)
     c2 = st.number_input("Harga per unit produk Y", value=60)
 
+    # Titik batas produksi
     st.markdown("### Banyaknya Jumlah Barang Produksi")
-    titik1 = (0, 0)
-    x2 = st.number_input("Titik (0, Y): Y =", value=600)
-    y3 = st.number_input("Titik (X, 0): X =", value=300)
+    x2 = st.number_input("Titik (0, Y): Y =", value=33)
+    y3 = st.number_input("Titik (X, 0): X =", value=50)
 
+    # Perhitungan nilai Z
     z1 = 0
     z2 = c2 * x2
     z3 = c1 * y3
 
+    # Menentukan solusi optimal
     st.write("### 🔎 Hasil Perhitungan:")
     st.write(f"Z(0, 0) = {z1}")
     st.write(f"Z(0, {x2}) = {z2:,.0f}")
@@ -73,13 +76,14 @@ with tab1:
 
     st.success(f"💡 Solusi optimal: {solusi} dengan keuntungan maksimum sebesar Rp {z_opt:,.0f}")
 
-    # === GRAFIK FUNGSI OBJEKTIF ===
+    # === GRAFIK 1: Titik Pojok & Fungsi Objektif ===
     st.markdown("### 📊 Visualisasi Titik Pojok dan Fungsi Objektif")
     fig1, ax1 = plt.subplots()
     ax1.plot([0, 0, y3], [0, x2, 0], 'bo', label="Titik Pojok")
     ax1.text(0, 0, ' (0,0)', fontsize=9)
     ax1.text(0, x2, f' (0,{x2})', fontsize=9)
     ax1.text(y3, 0, f' ({y3},0)', fontsize=9)
+
     ax1.plot([0, y3], [x2, 0], 'r--', label='Garis Fungsi Objektif')
     ax1.set_xlim(-5, max(60, y3 + 10))
     ax1.set_ylim(-5, max(40, x2 + 10))
@@ -89,13 +93,12 @@ with tab1:
     ax1.legend()
     st.pyplot(fig1)
 
-    # === GRAFIK PERBANDINGAN PRODUK vs KEUNTUNGAN ===
+    # === GRAFIK 2: Perbandingan Jumlah Produk vs Keuntungan ===
     st.markdown("### 📈 Grafik Perbandingan Jumlah Produk dan Keuntungan")
-
-    produk_x = [0, 100, 150, 200, 300]
+    produk_x = [i for i in range(0, y3+10, 10)]
     keuntungan_x = [c1 * x for x in produk_x]
 
-    produk_y = [0, 100, 150, 200, 300]
+    produk_y = [i for i in range(0, x2+10, 10)]
     keuntungan_y = [c2 * y for y in produk_y]
 
     fig2, ax2 = plt.subplots()
