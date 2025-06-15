@@ -96,6 +96,9 @@ with tab2:
 # =========================
 with tab3:
     st.header("3️⃣ Model Antrian M/M/1")
+    st.write("Model antrian M/M/1 adalah salah satu model dasar dalam teori antrian (queueing theory) yang digunakan untuk menganalisis sistem pelayanan satu jalur/saluran (single server). Model ini menggambarkan situasi di mana pelanggan datang secara acak, dilayani satu per satu, dan waktu pelayanannya juga bersifat acak.")
+
+
 
     lambd = st.number_input("Tingkat Kedatangan/jam(λ)", value=2)
     mu = st.number_input("Tingkat Pelayanan/jam (μ)", value=3)
