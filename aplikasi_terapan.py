@@ -93,50 +93,52 @@ with tab2:
         st.warning("Input harus lebih besar dari 0")
 
 # =========================
-# TAB 3: M/M/1 Queueing
+# TAB 3: Model Antrian M/M/1
 # =========================
 with tab3:
     st.header("3️⃣ Model Antrian M/M/1")
-    st.write("Model antrian M/M/1 adalah salah satu model dasar dalam teori antrian (queueing theory) yang digunakan untuk menganalisis sistem pelayanan satu jalur/saluran (single server). Model ini menggambarkan situasi di mana pelanggan datang secara acak, dilayani satu per satu, dan waktu pelayanannya juga bersifat acak.")
+    st.write("""
+    Model antrian M/M/1 digunakan untuk menganalisis sistem antrian dengan satu server, 
+    kedatangan acak (Poisson), dan waktu pelayanan eksponensial.
+    """)
 
-    lambd = st.number_input("Tingkat Kedatangan/jam(λ)", value=2)
-    mu = st.number_input("Tingkat Pelayanan/jam (μ)", value=3)
+    # Input user
+    lambd = st.number_input("Tingkat Kedatangan/jam (λ)", value=2.0, min_value=0.01)
+    mu = st.number_input("Tingkat Pelayanan/jam (μ)", value=3.0, min_value=0.01)
 
-    if mu > lambd and lambd > 0:
+    # Validasi
+    if lambd >= mu:
+        st.warning("Sistem tidak stabil! λ harus lebih kecil dari μ.")
+    else:
+        # Perhitungan M/M/1
         rho = lambd / mu
         L = rho / (1 - rho)
         Lq = rho**2 / (1 - rho)
         W = 1 / (mu - lambd)
         Wq = rho / (mu - lambd)
 
-        st.write(f"ρ (Utilisasi server): {rho:.2f}")
-        st.write(f"L (Rata-rata pelanggan dalam server): {L:.2f}")
-        st.write(f"Lq (Rata-rata pelanggan dalam antrian) : {Lq:.2f}")
-        st.write(f"W (Waktu rata-rata dalam server): {W:.2f}")
-        st.write(f"Wq (Waktu rata-rata tunggu dalam server): {Wq:.2f}")
+        # Tampilkan hasil perhitungan
+        st.subheader("📊 Hasil Perhitungan")
+        st.write(f"Utilisasi (ρ): **{rho:.2f}**")
+        st.write(f"Rata-rata pelanggan dalam sistem (L): **{L:.2f}**")
+        st.write(f"Rata-rata pelanggan dalam antrian (Lq): **{Lq:.2f}**")
+        st.write(f"Waktu rata-rata dalam sistem (W): **{W:.2f} jam**")
+        st.write(f"Waktu tunggu rata-rata (Wq): **{Wq:.2f} jam**")
 
-        # ✅ Tabel ringkasan hasil
-        st.subheader("Tabel Ringkasan Hasil Perhitungan")
-        data = {
-            "Parameter": ["Utilisasi (ρ)", "Jumlah dalam sistem (L)", "Jumlah dalam antrian (Lq)",
-                          "Waktu dalam sistem (W)", "Waktu tunggu (Wq)"],
-            "Nilai": [f"{rho:.2f}", f"{L:.2f}", f"{Lq:.2f}", f"{W:.2f}", f"{Wq:.2f}"]
-        }
-        st.table(data)
-
-        # Grafik Distribusi Jumlah Pelanggan dalam Sistem
-        n_values = np.arange(0, 20)
-        Pn = (1 - rho) * rho**n_values
+        # =====================
+        # 🎯 GRAFIK Distribusi Pn
+        # =====================
+        st.subheader("📈 Grafik Distribusi Probabilitas Jumlah Pelanggan (Pn)")
+        n = np.arange(0, 20)  # jumlah pelanggan 0-19
+        Pn = (1 - rho) * rho ** n
 
         fig, ax = plt.subplots()
-        ax.bar(n_values, Pn, color='purple')
-        ax.set_xlabel('Jumlah Pelanggan dalam Sistem (n)')
-        ax.set_ylabel('Probabilitas Pn')
-        ax.set_title('Distribusi Probabilitas Jumlah Pelanggan dalam Sistem')
+        ax.bar(n, Pn, color='cornflowerblue')
+        ax.set_xlabel("Jumlah Pelanggan dalam Sistem (n)")
+        ax.set_ylabel("Probabilitas Pn")
+        ax.set_title("Distribusi Probabilitas Pelanggan dalam Sistem (Pn)")
+        ax.grid(True, linestyle='--', alpha=0.5)
         st.pyplot(fig)
-
-    else:
-        st.warning("λ harus < μ dan > 0")
 
 # =========================
 # TAB 4: Turunan Parsial
