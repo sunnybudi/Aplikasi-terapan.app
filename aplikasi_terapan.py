@@ -44,6 +44,7 @@ with tab1:
     st.header("1️⃣ Optimasi Produksi")
     st.write("Tujuan optimasi produksi adalah untuk memaksimalkan efisiensi dan menghasilkan output terbaik dari sumber daya yang terbatas.")
 
+    # INPUT
     target = st.number_input("🎯 Target Produksi Harian (unit)", min_value=1, value=600, step=10)
     jam_kerja = st.number_input("🕒 Jam Kerja per Hari (jam)", min_value=1, value=8)
     kapasitas = st.number_input("⚙️ Kapasitas Mesin & Operator (unit/jam)", value=6)
@@ -54,27 +55,62 @@ with tab1:
     mesin = st.number_input("🔧 Jumlah Mesin (input manual)", min_value=0, step=1)
     operator = st.number_input("👷 Jumlah Operator (input manual)", min_value=0, step=1)
 
+    # PERHITUNGAN MANUAL
     produksi_aktual = min(mesin, operator) * kapasitas_harian
     total_biaya = (mesin * biaya_mesin * 1000) + (operator * biaya_operator * 1000)
 
     st.write(f"🏭 Total Produksi Aktual: **{produksi_aktual} unit/hari**")
     st.write(f"💵 Total Biaya Harian: **Rp {total_biaya:,.0f}**")
 
+    # GRAFIK: Mesin dan Operator
     fig, ax = plt.subplots()
     ax.bar(["Mesin", "Operator"], [mesin, operator], color=["skyblue", "orange"])
     ax.set_ylabel("Jumlah")
     ax.set_title("Jumlah Mesin dan Operator")
     st.pyplot(fig)
 
-    # Grafik Perbandingan Target vs Aktual
+    # GRAFIK: Target vs Aktual
     st.subheader("📊 Grafik Target vs Output Produksi")
     fig2, ax2 = plt.subplots()
-    ax2.bar(["Target Produksi", "Aktual Produksi"], [target, produksi_aktual], color=["red", "Lightgreen"])
+    ax2.bar(["Target Produksi", "Aktual Produksi"], [target, produksi_aktual], color=["red", "lightgreen"])
     ax2.set_ylabel("Unit")
     ax2.set_title("Perbandingan Target vs Output Produksi")
     for i, v in enumerate([target, produksi_aktual]):
         ax2.text(i, v + 5, str(int(v)), ha='center', va='bottom')
     st.pyplot(fig2)
+
+    # OPTIMASI LINEAR: Z = 40X + 60Y
+    from scipy.optimize import linprog
+
+    st.subheader("📈 Optimasi Linear: Z = 40X + 60Y")
+
+    # Fungsi Objektif: Maksimalkan Z = 40X + 60Y → linprog meminimalkan, jadi pakai -Z
+    c = [-40, -60]  # koefisien fungsi objektif
+
+    # Kendala:
+    # 2X + Y <= total jam kerja mesin
+    # X + 3Y <= total jam kerja operator
+    A = [
+        [2, 1],
+        [1, 3]
+    ]
+    b = [
+        mesin * jam_kerja,
+        operator * jam_kerja
+    ]
+
+    # X, Y >= 0
+    bounds = [(0, None), (0, None)]
+
+    res = linprog(c, A_ub=A, b_ub=b, bounds=bounds, method='highs')
+
+    if res.success:
+        x_opt, y_opt = res.x
+        z_opt = -res.fun
+        st.success(f"🔹 Produksi Optimal: X = {x_opt:.0f} unit, Y = {y_opt:.0f} unit")
+        st.success(f"💡 Keuntungan Maksimum (Z): Rp {z_opt:,.0f}")
+    else:
+        st.error("❌ Optimasi gagal. Cek kembali jumlah mesin, operator, dan jam kerja.")
 
 # =========================
 # TAB 2: EOQ
