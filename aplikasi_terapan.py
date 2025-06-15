@@ -139,11 +139,11 @@ with tab3:
         # Rumus-Rumus Penting
         # =========================
         st.subheader("🧮 Rumus-Rumus Penting")
-        st.markdown(r'''
-        - **Tingkat utilisasi server:** \( \rho = \frac{\lambda}{\mu} = \frac{''' + f"{lambd}" + r'''}{''' + f"{mu}" + r'''} = ''' + f"{rho:.3f}" + r''' \)
-        - **Rata-rata jumlah pelanggan dalam sistem (L):** \( L = \frac{\lambda}{\mu - \lambda} = \frac{''' + f"{lambd}" + r'''}{''' + f"{mu - lambd}" + r'''} = ''' + f"{L:.2f}" + r''' \)
-        - **Rata-rata waktu dalam sistem (W):** \( W = \frac{1}{\mu - \lambda} = \frac{1}{''' + f"{mu - lambd}" + r'''} = ''' + f"{W:.2f}" + r''' \) jam atau sekitar ''' + f"{W*60:.0f}" + r''' menit
-        - **Rata-rata waktu menunggu dalam antrean (Wq):** \( W_q = \frac{\lambda}{\mu(\mu - \lambda)} = \frac{''' + f"{lambd}" + r'''}{''' + f"{mu}({mu - lambd})" + r'''} = ''' + f"{Wq:.3f}" + r''' \) jam atau sekitar ''' + f"{Wq*60:.0f}" + r''' menit
+        st.markdown(fr'''
+        - **Tingkat utilisasi server:** \( \rho = \frac{{\lambda}}{{\mu}} = \frac{{{lambd}}}{{{mu}}} = {rho:.3f} \)
+        - **Rata-rata jumlah pelanggan dalam sistem (L):** \( L = \frac{{\lambda}}{{\mu - \lambda}} = \frac{{{lambd}}}{{{mu - lambd}}} = {L:.2f} \)
+        - **Rata-rata waktu dalam sistem (W):** \( W = \frac{{1}}{{\mu - \lambda}} = \frac{{1}}{{{mu - lambd}}} = {W:.2f} \) jam atau sekitar {W*60:.0f} menit
+        - **Rata-rata waktu menunggu dalam antrean (Wq):** \( W_q = \frac{{\lambda}}{{\mu(\mu - \lambda)}} = \frac{{{lambd}}}{{{mu}({mu - lambd})}} = {Wq:.3f} \) jam atau sekitar {Wq*60:.0f} menit
         ''')
 
         # =========================
@@ -178,6 +178,7 @@ with tab3:
         ax1.set_ylabel("Probabilitas Pn")
         ax1.set_title("Distribusi Probabilitas Pelanggan dalam Sistem")
         st.pyplot(fig1)
+
 # =========================
 # TAB 4: Turunan Parsial
 # =========================
