@@ -34,7 +34,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 ])
 
 # =========================
-# TAB 1: Simulasi Manual Mesin & Operator
+# TAB 1: Optimasi Produksi
 # =========================
 with tab1:
     st.header("1️⃣ Optimasi Produksi")
@@ -59,8 +59,18 @@ with tab1:
     fig, ax = plt.subplots()
     ax.bar(["Mesin", "Operator"], [mesin, operator], color=["skyblue", "orange"])
     ax.set_ylabel("Jumlah")
+    ax.set_title("Jumlah Mesin dan Operator")
     st.pyplot(fig)
 
+    # Grafik Perbandingan Target vs Aktual
+    st.subheader("📊 Grafik Target vs Output Produksi")
+    fig2, ax2 = plt.subplots()
+    ax2.bar(["Target Produksi", "Produksi Aktual"], [target, produksi_aktual], color=["lightgreen", "salmon"])
+    ax2.set_ylabel("Unit")
+    ax2.set_title("Perbandingan Target vs Output Produksi")
+    for i, v in enumerate([target, produksi_aktual]):
+        ax2.text(i, v + 5, str(int(v)), ha='center', va='bottom')
+    st.pyplot(fig2)
 # =========================
 # TAB 2: EOQ
 # =========================
