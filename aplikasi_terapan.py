@@ -94,7 +94,12 @@ with tab1:
 # =========================
 with tab2:
     st.header("📦 Model Persediaan EOQ")
-    st.write("EOQ = math.sqrt((2 * D * S) / H)")
+    st.write("Model EOQ digunakan untuk menentukan jumlah pemesanan ekonomis agar biaya minimum.")
+
+    st.subheader("📐 Rumus-Rumus:")
+    st.latex(r"EOQ = \sqrt{\frac{2DS}{H}}")
+    st.latex(r"\text{Frekuensi Pemesanan} = \frac{D}{EOQ}")
+    st.latex(r"\text{Interval Pemesanan} = \frac{365}{\text{Frekuensi}}")
 
     D = st.number_input("📅 Permintaan Tahunan (unit)", value=10000)
     S = st.number_input("🛒 Biaya Pemesanan per Order (Rp)", value=50000)
