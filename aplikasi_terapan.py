@@ -26,7 +26,7 @@ Masukkan data sesuai tab. Hasil & grafik akan muncul secara otomatis.
 st.title("\U0001F4CA Aplikasi Model Matematika Industri")
 
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
-    "1. Simulasi Manual Mesin & Operator",
+    "1. Optimasi Produksi",
     "2. Model Persediaan (EOQ)",
     "3. Model Antrian (M/M/1)",
     "4. Turunan Parsial",
