@@ -83,7 +83,7 @@ with tab2:
         y_vals = [D, EOQ]
 
         fig, ax = plt.subplots()
-        ax.bar(x_vals, y_vals, color=['blue', 'red'])
+        ax.bar(x_vals, y_vals, color=['red', 'green'])
         ax.set_ylabel("Jumlah Unit")
         ax.set_title("EOQ dan Permintaan Tahunan")
         st.pyplot(fig)
