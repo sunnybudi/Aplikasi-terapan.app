@@ -96,8 +96,8 @@ with tab2:
 with tab3:
     st.header("3️⃣ Model Antrian M/M/1")
 
-    lambd = st.number_input("Tingkat Kedatangan (λ)", value=2.0)
-    mu = st.number_input("Tingkat Pelayanan (μ)", value=3.0)
+    lambd = st.number_input("Tingkat Kedatangan (λ)", value=2)
+    mu = st.number_input("Tingkat Pelayanan (μ)", value=3)
 
     if mu > lambd and lambd > 0:
         rho = lambd / mu
