@@ -94,6 +94,8 @@ with tab1:
 # =========================
 with tab2:
     st.header("📦 Model Persediaan EOQ")
+    st.write("EOQ = math.sqrt((2 * D * S) / H)")
+
     D = st.number_input("📅 Permintaan Tahunan (unit)", value=10000)
     S = st.number_input("🛒 Biaya Pemesanan per Order (Rp)", value=50000)
     H = st.number_input("🏬 Biaya Penyimpanan per Unit per Tahun (Rp)", value=2000)
