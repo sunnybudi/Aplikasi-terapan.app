@@ -94,27 +94,30 @@ with tab1:
     st.pyplot(fig1)
 
     # === GRAFIK 2: Perbandingan Jumlah Produk vs Keuntungan ===
-    st.markdown("### 📈 Grafik Perbandingan Jumlah Produk dan Keuntungan")
-    produk_x = [i for i in range(0, y3 + 1, 10)]
-    keuntungan_x = [c1 * x for x in produk_x]
+st.markdown("### 📈 Grafik Perbandingan Jumlah Produk dan Keuntungan")
 
-    produk_y = [i for i in range(0, x2 + 1, 10)]
-    keuntungan_y = [c2 * y for y in produk_y]
+produk_x = [i for i in range(0, y3 + 100, 10)]
+keuntungan_x = [c1 * x for x in produk_x]
 
-    fig2, ax2 = plt.subplots()
-    ax2.plot(produk_x, keuntungan_x, 'o-b', label='Produk X vs Keuntungan')
-    for i in range(0, len(produk_x), 1):
-        ax2.text(produk_x[i], keuntungan_x[i], f"Z={keuntungan_x[i]:,.0f}", fontsize=6, rotation=45)
+produk_y = [i for i in range(0, x2 + 100, 10)]
+keuntungan_y = [c2 * y for y in produk_y]
 
-    ax2.plot(produk_y, keuntungan_y, 'o-g', label='Produk Y vs Keuntungan')
-    for i in range(0, len(produk_y), 1):
-        ax2.text(produk_y[i], keuntungan_y[i], f"Z={keuntungan_y[i]:,.0f}", fontsize=6, rotation=45)
+fig2, ax2 = plt.subplots()
+ax2.plot(produk_x, keuntungan_x, 'o-b', label='Produk X vs Keuntungan')
+for i in range(0, len(produk_x), 5):  # tampilkan hanya setiap 5 titik
+    ax2.text(produk_x[i], keuntungan_x[i], f"Z={keuntungan_x[i]:,.0f}", 
+             fontsize=6, rotation=45, ha='right')
 
-    ax2.set_xlabel("Jumlah Produk")
-    ax2.set_ylabel("Keuntungan (Z)")
-    ax2.set_title("Perbandingan Jumlah Produk dan Keuntungan")
-    ax2.legend()
-    st.pyplot(fig2)
+ax2.plot(produk_y, keuntungan_y, 'o-g', label='Produk Y vs Keuntungan')
+for i in range(0, len(produk_y), 5):  # tampilkan hanya setiap 5 titik
+    ax2.text(produk_y[i], keuntungan_y[i], f"Z={keuntungan_y[i]:,.0f}", 
+             fontsize=6, rotation=45, ha='right')
+
+ax2.set_xlabel("Jumlah Produk")
+ax2.set_ylabel("Keuntungan (Z)")
+ax2.set_title("Perbandingan Jumlah Produk dan Keuntungan")
+ax2.legend()
+st.pyplot(fig2)
 
 # =========================
 # TAB 2: EOQ
