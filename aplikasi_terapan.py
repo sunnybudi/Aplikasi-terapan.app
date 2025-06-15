@@ -45,9 +45,9 @@ with tab1:
     st.write("Tujuan: Menentukan kombinasi produk yang memaksimalkan keuntungan dengan keterbatasan sumber daya.")
     st.latex(r"Z = 40X + 60Y")
 
-    st.markdown("### Keuntungan per Unit")
-    c1 = st.number_input("Keuntungan per unit produk X", value=40)
-    c2 = st.number_input("Keuntungan per unit produk Y", value=60)
+    st.markdown("### Harga per Unit")
+    c1 = st.number_input("Harga per unit produk X", value=40)
+    c2 = st.number_input("Harga per unit produk Y", value=60)
 
     st.markdown("### Banyaknya Jumlah Barang Produksi")
     titik1 = (0, 0)
