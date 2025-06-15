@@ -172,7 +172,7 @@ with tab3:
         ax.set_ylabel("Nilai")
         st.pyplot(fig)
 
-          st.subheader("📈 Hasil Perhitungan")
+        st.subheader("📈 Hasil Perhitungan")
         st.markdown(f"""
         - **Tingkat Utilisasi (ρ):** {rho:.3f}
         - **Rata-rata pelanggan dalam sistem (L):** {L:.3f}
