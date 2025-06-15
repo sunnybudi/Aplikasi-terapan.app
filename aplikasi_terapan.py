@@ -92,53 +92,49 @@ with tab2:
     else:
         st.warning("Input harus lebih besar dari 0")
 
-# =========================
-# TAB 3: Model Antrian M/M/1
-# =========================
 with tab3:
     st.header("3️⃣ Model Antrian M/M/1")
     st.write("""
     Model antrian M/M/1 digunakan untuk menganalisis sistem antrian dengan satu server, 
-    kedatangan acak (Poisson), dan waktu pelayanan eksponensial.
+    di mana waktu antar kedatangan pelanggan dan waktu pelayanan bersifat acak (eksponensial/Poisson).
     """)
 
-    # Input user
-    lambd = st.number_input("Tingkat Kedatangan/jam (λ)", value=2.0, min_value=0.01)
-    mu = st.number_input("Tingkat Pelayanan/jam (μ)", value=3.0, min_value=0.01)
+    # Input pengguna
+    lambd = st.number_input("Tingkat Kedatangan (λ) - pelanggan/jam", min_value=0.01, value=2.0)
+    mu = st.number_input("Tingkat Pelayanan (μ) - pelanggan/jam", min_value=0.01, value=3.0)
 
-    # Validasi
+    # Validasi kestabilan sistem
     if lambd >= mu:
-        st.warning("Sistem tidak stabil! λ harus lebih kecil dari μ.")
+        st.warning("⚠️ Sistem tidak stabil (λ ≥ μ). Harap pastikan λ < μ agar sistem dapat dianalisis.")
     else:
-        # Perhitungan M/M/1
+        # Perhitungan nilai antrian
         rho = lambd / mu
         L = rho / (1 - rho)
         Lq = rho**2 / (1 - rho)
         W = 1 / (mu - lambd)
         Wq = rho / (mu - lambd)
 
-        # Tampilkan hasil perhitungan
-        st.subheader("📊 Hasil Perhitungan")
-        st.write(f"Utilisasi (ρ): **{rho:.2f}**")
+        # Hasil perhitungan
+        st.subheader("📊 Hasil Perhitungan Antrian M/M/1")
+        st.write(f"Utilisasi Sistem (ρ): **{rho:.2f}**")
         st.write(f"Rata-rata pelanggan dalam sistem (L): **{L:.2f}**")
         st.write(f"Rata-rata pelanggan dalam antrian (Lq): **{Lq:.2f}**")
         st.write(f"Waktu rata-rata dalam sistem (W): **{W:.2f} jam**")
-        st.write(f"Waktu tunggu rata-rata (Wq): **{Wq:.2f} jam**")
+        st.write(f"Waktu tunggu rata-rata dalam antrian (Wq): **{Wq:.2f} jam**")
 
-        # =====================
-        # 🎯 GRAFIK Distribusi Pn
-        # =====================
-        st.subheader("📈 Grafik Distribusi Probabilitas Jumlah Pelanggan (Pn)")
-        n = np.arange(0, 20)  # jumlah pelanggan 0-19
+        # =========================
+        # GRAFIK 1: Distribusi Pn
+        # =========================
+        st.subheader("📈 Distribusi Probabilitas Jumlah Pelanggan dalam Sistem (Pn)")
+
+        n = np.arange(0, 20)
         Pn = (1 - rho) * rho ** n
 
-        fig, ax = plt.subplots()
-        ax.bar(n, Pn, color='cornflowerblue')
-        ax.set_xlabel("Jumlah Pelanggan dalam Sistem (n)")
-        ax.set_ylabel("Probabilitas Pn")
-        ax.set_title("Distribusi Probabilitas Pelanggan dalam Sistem (Pn)")
-        ax.grid(True, linestyle='--', alpha=0.5)
-        st.pyplot(fig)
+        fig1, ax1 = plt.subplots()
+        ax1.bar(n, Pn, color='cornflowerblue', alpha=0.8)
+        ax1.set_xlabel("Jumlah Pelanggan dalam Sistem (n)")
+        ax1.set_ylabel("Probabilitas Pn")
+        ax1.set_title("Distribusi Probabilitas Pelanggan dalam Sistem")
 
 # =========================
 # TAB 4: Turunan Parsial
