@@ -144,34 +144,33 @@ with tab1:
     penjualan_y = [harga_kursi * i for i in produk_y]
     
     fig2, ax2 = plt.subplots()
+
+    # --- Garis Keuntungan Meja ---
+    ax2.plot(produk_x, keuntungan_x, color='blue', label='Keuntungan Meja (X)', linewidth=2)
+    ax2.scatter(produk_x[-1], keuntungan_x[-1], color='blue', s=50)
+    ax2.text(produk_x[-1], keuntungan_x[-1] + 100_000, f"Rp {keuntungan_x[-1]:,.0f}".replace(",", "."), color='blue')
     
-    # Garis Keuntungan Meja
-    ax2.plot(produk_x, keuntungan_x, color='blue', label='Keuntungan Meja (X)')
-    ax2.scatter(produk_x[-1], keuntungan_x[-1], color='blue')
-    ax2.text(produk_x[-1], keuntungan_x[-1] + 50_000, format_rupiah(keuntungan_x[-1]), fontsize=8, color='blue')
+    # --- Garis Keuntungan Kursi ---
+    ax2.plot(produk_y, keuntungan_y, color='green', label='Keuntungan Kursi (Y)', linewidth=2)
+    ax2.scatter(produk_y[-1], keuntungan_y[-1], color='green', s=50)
+    ax2.text(produk_y[-1], keuntungan_y[-1] + 100_000, f"Rp {keuntungan_y[-1]:,.0f}".replace(",", "."), color='green')
     
-    # Garis Keuntungan Kursi
-    ax2.plot(produk_y, keuntungan_y, color='green', label='Keuntungan Kursi (Y)')
-    ax2.scatter(produk_y[-1], keuntungan_y[-1], color='green')
-    ax2.text(produk_y[-1], keuntungan_y[-1] + 50_000, format_rupiah(keuntungan_y[-1]), fontsize=8, color='green')
+    # --- Garis Penjualan Meja ---
+    ax2.plot(produk_x, penjualan_x, color='navy', linestyle='--', label='Penjualan Meja (X)', linewidth=2)
+    ax2.scatter(produk_x[-1], penjualan_x[-1], color='navy', marker='x', s=60)
+    ax2.text(produk_x[-1], penjualan_x[-1] + 100_000, f"Rp {penjualan_x[-1]:,.0f}".replace(",", "."), color='navy')
     
-    # Garis Penjualan Meja
-    ax2.plot(produk_x, penjualan_x, linestyle='--', color='darkblue', alpha=0.7, label='Penjualan Meja (X)')
-    ax2.scatter(produk_x[-1], penjualan_x[-1], color='darkblue', marker='x')
-    ax2.text(produk_x[-1], penjualan_x[-1] + 100_000, format_rupiah(penjualan_x[-1]), fontsize=8, color='darkblue')
+    # --- Garis Penjualan Kursi ---
+    ax2.plot(produk_y, penjualan_y, color='darkgreen', linestyle='--', label='Penjualan Kursi (Y)', linewidth=2)
+    ax2.scatter(produk_y[-1], penjualan_y[-1], color='darkgreen', marker='x', s=60)
+    ax2.text(produk_y[-1], penjualan_y[-1] + 100_000, f"Rp {penjualan_y[-1]:,.0f}".replace(",", "."), color='darkgreen')
     
-    # Garis Penjualan Kursi
-    ax2.plot(produk_y, penjualan_y, linestyle='--', color='darkgreen', alpha=0.7, label='Penjualan Kursi (Y)')
-    ax2.scatter(produk_y[-1], penjualan_y[-1], color='darkgreen', marker='x')
-    ax2.text(produk_y[-1], penjualan_y[-1] + 100_000, format_rupiah(penjualan_y[-1]), fontsize=8, color='darkgreen')
-    
-    # Tampilan grafik
+    # --- Axis & Legend ---
     ax2.set_xlabel("Jumlah Produk")
     ax2.set_ylabel("Rupiah")
     ax2.set_title("Perbandingan Jumlah Produk vs Keuntungan & Penjualan")
     ax2.legend()
-    ax2.margins(y=0.1, x=0.3)
-    ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x):,}'))
+    ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x):,}'.replace(",", ".")))
     
     st.pyplot(fig2)
 
