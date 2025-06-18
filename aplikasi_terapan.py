@@ -165,14 +165,14 @@ with tab1:
             )
     
     # --- Axis & Layout dengan font lebih besar ---
-    ax2.set_xlabel("Jumlah Produk", fontsize=20)
-    ax2.set_ylabel("Rupiah", fontsize=20)
-    ax2.set_title("Perbandingan Jumlah Produk vs Keuntungan & Penjualan", fontsize=20)
-    ax2.legend(fontsize=12)
+    ax2.set_xlabel("Jumlah Produk", fontsize=26)
+    ax2.set_ylabel("Rupiah", fontsize=26)
+    ax2.set_title("Perbandingan Jumlah Produk vs Keuntungan & Penjualan", fontsize=26)
+    ax2.legend(fontsize=26)
     
     # Ukuran angka pada sumbu
-    ax2.tick_params(axis='x', labelsize=20)
-    ax2.tick_params(axis='y', labelsize=20)
+    ax2.tick_params(axis='x', labelsize=26)
+    ax2.tick_params(axis='y', labelsize=26)
     
     # Format angka sumbu Y
     ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x):,}'.replace(",", ".")))
