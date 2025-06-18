@@ -46,8 +46,8 @@ with tab1:
     st.header("1️⃣ Optimasi Produksi (Linear Programming)")
     st.markdown("""
     ### Studi Kasus
-    Sebuah perusahaan furnitur memproduksi **Meja (X)** dan **Kursi (Y)**. Pemiliknya menggunakan perhitungan matematika 
-    untuk mengetahui total penjualan dan keuntungan produksi di perusahaannya. 
+    Sebuah perusahaan furnitur memproduksi **Meja (X)** dan **Kursi (Y)**. Untuk mengetahui berapa banyak 
+    penjualan dan keuntungan pada hasil produksi, pemiliknya menggunakan perhitungan matematika dengan rumus:
     """)
 
     st.latex(r"Z = c₁X + c₂Y")
@@ -149,11 +149,11 @@ with tab1:
     
     # Atur label sumbu Y
     ax3.set_yticks(x_pos)
-    ax3.set_yticklabels(kategori, fontsize=24)
+    ax3.set_yticklabels(kategori, fontsize=30)
     
     # Label sumbu X dan judul
     ax3.set_xlabel("Rupiah", fontsize=24)
-    ax3.set_title("Perbandingan Penjualan dan Keuntungan", fontsize=24)
+    ax3.set_title("Perbandingan Penjualan dan Keuntungan", fontsize=30)
     
     # Legend dengan ukuran font lebih besar
     ax3.legend(loc='lower right', fontsize=24)
@@ -181,7 +181,7 @@ with tab1:
     ax3.set_yticks(x_pos)
     ax3.set_yticklabels(kategori)
     ax3.set_xlabel("Rupiah")
-    ax3.set_title("Perbandingan Penjualan dan Keuntungan")
+    ax3.set_title("Perbandingan Penjualan dan Keuntungan", fontsize=30)
     ax3.legend(loc='lower right')
     
     plt.tight_layout()
