@@ -164,7 +164,7 @@ with tab1:
     ax2.set_ylabel("Rupiah")
     ax2.set_title("Perbandingan Jumlah Produk vs Keuntungan & Penjualan")
     ax2.legend()
-    ax2.margins(x=0.3)  # Tambah ruang agar label tidak terpotong
+    ax2.margins(y=0.1, x=0.3)  # Tambah ruang agar label tidak terpotong
     st.pyplot(fig2)
 
     
