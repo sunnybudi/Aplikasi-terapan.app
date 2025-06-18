@@ -125,9 +125,8 @@ with tab1:
     total_laba_kursi = laba_kursi * y
     total_keuntungan_bersih = total_laba_meja + total_laba_kursi
 
-    st.write(f"🔹 Keuntungan Produksi Meja (X): {format_rupiah(total_biaya_meja)}")
-    st.write(f"🔹 Keuntungan Produksi Kursi (Y): {format_rupiah(total_biaya_kursi)}")
-    st.write(f"💸 Total Biaya Produksi: {format_rupiah(total_biaya_produksi)}")
+    st.write(f"🔹 Keuntungan Meja (X): {format_rupiah(total_biaya_meja)}")
+    st.write(f"🔹 Keuntungan Kursi (Y): {format_rupiah(total_biaya_kursi)}")
     st.write(f"✅ Total Keuntungan Bersih: {format_rupiah(total_keuntungan_bersih)}")
 
     # ===============================
