@@ -148,29 +148,32 @@ with tab1:
     # --- Garis Keuntungan Meja ---
     ax2.plot(produk_x, keuntungan_x, color='blue', label='Keuntungan Meja (X)', linewidth=2)
     ax2.scatter(produk_x[-1], keuntungan_x[-1], color='blue', s=50)
-    ax2.text(produk_x[-1], keuntungan_x[-1] + 100_000, f"Rp {keuntungan_x[-1]:,.0f}".replace(",", "."), color='blue')
+    ax2.text(produk_x[-1] + 0.5, keuntungan_x[-1], f"Rp {keuntungan_x[-1]:,.0f}".replace(",", "."), color='blue')
     
     # --- Garis Keuntungan Kursi ---
     ax2.plot(produk_y, keuntungan_y, color='green', label='Keuntungan Kursi (Y)', linewidth=2)
     ax2.scatter(produk_y[-1], keuntungan_y[-1], color='green', s=50)
-    ax2.text(produk_y[-1], keuntungan_y[-1] + 100_000, f"Rp {keuntungan_y[-1]:,.0f}".replace(",", "."), color='green')
+    ax2.text(produk_y[-1] + 0.5, keuntungan_y[-1], f"Rp {keuntungan_y[-1]:,.0f}".replace(",", "."), color='green')
     
     # --- Garis Penjualan Meja ---
     ax2.plot(produk_x, penjualan_x, color='navy', linestyle='--', label='Penjualan Meja (X)', linewidth=2)
     ax2.scatter(produk_x[-1], penjualan_x[-1], color='navy', marker='x', s=60)
-    ax2.text(produk_x[-1], penjualan_x[-1] + 100_000, f"Rp {penjualan_x[-1]:,.0f}".replace(",", "."), color='navy')
+    ax2.text(produk_x[-1] + 0.5, penjualan_x[-1], f"Rp {penjualan_x[-1]:,.0f}".replace(",", "."), color='navy')
     
     # --- Garis Penjualan Kursi ---
     ax2.plot(produk_y, penjualan_y, color='darkgreen', linestyle='--', label='Penjualan Kursi (Y)', linewidth=2)
     ax2.scatter(produk_y[-1], penjualan_y[-1], color='darkgreen', marker='x', s=60)
-    ax2.text(produk_y[-1], penjualan_y[-1] + 100_000, f"Rp {penjualan_y[-1]:,.0f}".replace(",", "."), color='darkgreen')
+    ax2.text(produk_y[-1] + 0.5, penjualan_y[-1], f"Rp {penjualan_y[-1]:,.0f}".replace(",", "."), color='darkgreen')
     
-    # --- Axis & Legend ---
+    # --- Axis & Layout ---
     ax2.set_xlabel("Jumlah Produk")
     ax2.set_ylabel("Rupiah")
     ax2.set_title("Perbandingan Jumlah Produk vs Keuntungan & Penjualan")
     ax2.legend()
     ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x):,}'.replace(",", ".")))
+    
+    # ⬅️ Ini dia yang penting:
+    plt.tight_layout()
     
     st.pyplot(fig2)
 
