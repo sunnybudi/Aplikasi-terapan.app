@@ -186,7 +186,12 @@ with tab1:
 # =========================
 with tab2:
     st.header("📦 Model Persediaan EOQ")
-    st.write("Studi kasus: Untuk menentukan jumlah pemesanan ekonomis dalam permintaan pertahun.")
+    st.markdown("""
+        ### Studi Kasus
+        Sebuah perusahaan manufaktur memproduksi alat musik piano. Pihak manajemen ingin mengetahui 
+        berapa banyak lembar kayu yang sebaiknya dipesan setiap untuk menghemat biaya total persediaan.
+        """)
+
 
     st.subheader("📐 Rumus-Rumus:")
     st.latex(r"EOQ = \sqrt{\frac{2DS}{H}}")
