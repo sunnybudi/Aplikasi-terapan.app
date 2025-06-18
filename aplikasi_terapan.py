@@ -46,12 +46,7 @@ with tab1:
     st.markdown("""
     ### Studi Kasus
     Sebuah perusahaan memproduksi **Meja (X)** dan **Kursi (Y)**.  
-    Setiap produk memerlukan waktu produksi:
-
-    | Produk | Waktu Kayu (jam) | Waktu Finishing (jam)  | 
-    |--------|------------------|------------------------|
-    | Meja (X) | 4 jam           | 2 jam                 | 
-    | Kursi (Y)| 2 jam           | 1 jam                 |         
+    Setiap produk memerlukan waktu produksi:       
     """)
 
     st.latex(r"Z = c₁X + c₂Y")
