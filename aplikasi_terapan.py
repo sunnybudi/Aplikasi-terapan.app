@@ -152,8 +152,9 @@ with tab1:
     def label_titik(produk, nilai, warna):
         indeks = [0, len(produk)//2, len(produk)-1]
         for i in indeks:
-            ax2.text(produk[i], nilai[i] + 50_000, format_rupiah(nilai[i]),
-                 fontsize=8, color=warna, ha='left', va='bottom')
+            if nilai[i] != 0:
+                 ax2.text(produk[i], nilai[i] + 50_000, format_rupiah(nilai[i]),
+                     fontsize=8, color=warna, ha='left', va='bottom')
 
     label_titik(produk_x, keuntungan_x, 'blue')
     label_titik(produk_y, keuntungan_y, 'green')
