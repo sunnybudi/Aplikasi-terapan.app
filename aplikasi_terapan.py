@@ -64,7 +64,7 @@ with tab1:
     c2 = st.number_input("Harga per unit produk Kursi (Y)", value=300_000)
 
     # Input Produksi Unit
-    st.markdown("Jumlah Produksi Unit")
+    st.markdown("###Jumlah Produksi Unit")
     x2 = st.number_input("Produksi Meja", value=80)
     y3 = st.number_input("Produksi Kursi", value=25)
 
