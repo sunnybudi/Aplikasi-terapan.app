@@ -164,15 +164,22 @@ with tab1:
                 fontweight='bold'
             )
     
-    # Atur label dan judul
-    ax3.set_yticks(x_pos)
-    ax3.set_yticklabels(kategori, fontsize=30)
-    ax3.set_xlabel("Rupiah", fontsize=30)
-    ax3.set_title("Perbandingan Penjualan dan Keuntungan", fontsize=30)
-    ax3.legend(loc='lower right', fontsize=24)
+    # --- Axis & Layout dengan font lebih besar ---
+    ax2.set_xlabel("Jumlah Produk", fontsize=14)
+    ax2.set_ylabel("Rupiah", fontsize=14)
+    ax2.set_title("Perbandingan Jumlah Produk vs Keuntungan & Penjualan", fontsize=16)
+    ax2.legend(fontsize=12)
+    
+    # Ukuran angka pada sumbu
+    ax2.tick_params(axis='x', labelsize=12)
+    ax2.tick_params(axis='y', labelsize=12)
+    
+    # Format angka sumbu Y
+    ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x):,}'.replace(",", ".")))
     
     plt.tight_layout()
-    st.pyplot(fig3)
+    fig2.subplots_adjust(right=0.85)
+    st.pyplot(fig2)
 
 # =========================
 # TAB 2: EOQ
