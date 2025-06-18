@@ -149,7 +149,6 @@ with tab1:
     # Batang horizontal
     bar1 = ax3.barh(x_pos - width, keuntungan, height=width, color='skyblue', label='Keuntungan')
     bar2 = ax3.barh(x_pos, penjualan, height=width, color='lightgreen', label='Penjualan')
-    bar3 = ax3.barh(x_pos + width, jumlah_produk, height=width, color='salmon', label='Jumlah Produk (x10rb)')
     
     # Tampilkan label nilai di ujung setiap batang
     for bars in [bar1, bar2, bar3]:
