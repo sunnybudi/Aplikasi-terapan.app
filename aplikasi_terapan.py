@@ -131,50 +131,41 @@ with tab1:
     st.write(f"✅ Total Keuntungan Bersih: {format_rupiah(z2 + z3)}")
 
     # ===============================
-    # Grafik Perbandingan
+    # Grafik Perbandingan (Diagram Batang)
     # ===============================
-    st.markdown("### 📈 Perbandingan Jumlah Produk terhadap Keuntungan & Penjualan")
+    st.markdown("### 📊 Diagram Batang: Perbandingan Penjualan, Keuntungan, dan Jumlah Produk")
     
-    produk_x = list(range(0, int(x)+10, 10)) if x > 0 else [0, 10, 20]
-    produk_y = list(range(0, int(y)+10, 10)) if y > 0 else [0, 10, 20]
+    # Data per kategori
+    kategori = ['Meja (X)', 'Kursi (Y)']
+    penjualan = [total_penjualan_meja, total_penjualan_kursi]
+    keuntungan = [total_laba_meja, total_laba_kursi]
+    jumlah_produk = [x * 10_000, y * 10_000]  # skala Rp
     
-    keuntungan_x = [laba_meja * i for i in produk_x]
-    keuntungan_y = [laba_kursi * i for i in produk_y]
-    penjualan_x = [harga_meja * i for i in produk_x]
-    penjualan_y = [harga_kursi * i for i in produk_y]
+    x_pos = np.arange(len(kategori))
+    width = 0.25  # lebar batang
     
-    fig2, ax2 = plt.subplots()
-
-    # --- Garis Keuntungan Meja ---
-    ax2.plot(produk_x, keuntungan_x, color='blue', label='Keuntungan Meja (X)', linewidth=2)
-    ax2.scatter(produk_x[-1], keuntungan_x[-1], color='blue', s=50)
-    ax2.text(produk_x[-1] + 0.5, keuntungan_x[-1], f"Rp {keuntungan_x[-1]:,.0f}".replace(",", "."), color='blue')
+    fig3, ax3 = plt.subplots(figsize=(10, 5))
     
-    # --- Garis Keuntungan Kursi ---
-    ax2.plot(produk_y, keuntungan_y, color='green', label='Keuntungan Kursi (Y)', linewidth=2)
-    ax2.scatter(produk_y[-1], keuntungan_y[-1], color='green', s=50)
-    ax2.text(produk_y[-1] + 0.5, keuntungan_y[-1], f"Rp {keuntungan_y[-1]:,.0f}".replace(",", "."), color='green')
+    # Batang horizontal
+    bar1 = ax3.barh(x_pos - width, keuntungan, height=width, color='skyblue', label='Keuntungan')
+    bar2 = ax3.barh(x_pos, penjualan, height=width, color='lightgreen', label='Penjualan')
+    bar3 = ax3.barh(x_pos + width, jumlah_produk, height=width, color='salmon', label='Jumlah Produk (x10rb)')
     
-    # --- Garis Penjualan Meja ---
-    ax2.plot(produk_x, penjualan_x, color='navy', linestyle='--', label='Penjualan Meja (X)', linewidth=2)
-    ax2.scatter(produk_x[-1], penjualan_x[-1], color='navy', marker='x', s=60)
-    ax2.text(produk_x[-1] + 0.5, penjualan_x[-1], f"Rp {penjualan_x[-1]:,.0f}".replace(",", "."), color='navy')
+    # Tampilkan label nilai di ujung setiap batang
+    for bars in [bar1, bar2, bar3]:
+        for bar in bars:
+            ax3.text(bar.get_width() + 100_000, bar.get_y() + bar.get_height()/2,
+                     f"Rp {int(bar.get_width()):,}".replace(",", "."), va='center', fontsize=9)
     
-    # --- Garis Penjualan Kursi ---
-    ax2.plot(produk_y, penjualan_y, color='darkgreen', linestyle='--', label='Penjualan Kursi (Y)', linewidth=2)
-    ax2.scatter(produk_y[-1], penjualan_y[-1], color='darkgreen', marker='x', s=60)
-    ax2.text(produk_y[-1] + 0.5, penjualan_y[-1], f"Rp {penjualan_y[-1]:,.0f}".replace(",", "."), color='darkgreen')
-    
-    # --- Axis & Layout ---
-    ax2.set_xlabel("Jumlah Produk")
-    ax2.set_ylabel("Rupiah")
-    ax2.set_title("Perbandingan Jumlah Produk vs Keuntungan & Penjualan")
-    ax2.legend()
-    ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x):,}'.replace(",", ".")))
+    # Label dan layout
+    ax3.set_yticks(x_pos)
+    ax3.set_yticklabels(kategori)
+    ax3.set_xlabel("Rupiah")
+    ax3.set_title("Perbandingan Penjualan, Keuntungan, dan Jumlah Produk")
+    ax3.legend(loc='lower right')
     
     plt.tight_layout()
-    fig2.subplots_adjust(right=0.85)
-    st.pyplot(fig2)
+    st.pyplot(fig3)
 
 # =========================
 # TAB 2: EOQ
