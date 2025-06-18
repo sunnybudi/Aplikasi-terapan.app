@@ -103,7 +103,7 @@ with tab1:
     # ===============================
     # Total Penjualan dan Keuntungan
     # ===============================
-    st.markdown("### 💰 Ringkasan Total Penjualan dan Keuntungan")
+    st.markdown("### 💰 Ringkasan Total Penjualan")
 
     total_penjualan_meja = harga_meja * x
     total_penjualan_kursi = harga_kursi * y
@@ -116,7 +116,7 @@ with tab1:
     # ===============================
     # Total Biaya Produksi & Laba Bersih
     # ===============================
-    st.markdown("### 🧾 Total Biaya Produksi dan Keuntungan Bersih")
+    st.markdown("### 🧾 Total Keuntungan Bersih")
 
     total_biaya_meja = biaya_meja * x
     total_biaya_kursi = biaya_kursi * y
