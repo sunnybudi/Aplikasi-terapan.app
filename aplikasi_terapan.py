@@ -146,8 +146,8 @@ with tab1:
     fig3, ax2 = plt.subplots(figsize=(20, 14))
     
     # Batang horizontal
-    bar1 = ax3.barh(x_pos - width/2, keuntungan, height=width, color='skyblue', label='Keuntungan')
-    bar2 = ax3.barh(x_pos + width/2, penjualan, height=width, color='lightgreen', label='Penjualan')
+    bar1 = ax2.barh(x_pos - width/2, keuntungan, height=width, color='skyblue', label='Keuntungan')
+    bar2 = ax2.barh(x_pos + width/2, penjualan, height=width, color='lightgreen', label='Penjualan')
     
     # Label di dalam batang
     for bars in [bar1, bar2]:
