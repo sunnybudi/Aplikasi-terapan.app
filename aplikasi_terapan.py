@@ -43,17 +43,15 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 
 with tab1:
     st.header("1️⃣ Optimasi Produksi (Linear Programming)")
-    st.write("Studi kasus: Menentukan kombinasi produk meja dan kursi yang memaksimalkan keuntungan dengan keterbatasan sumber daya.")
-
     st.markdown("""
     ### Studi Kasus
     Sebuah perusahaan memproduksi **Meja (X)** dan **Kursi (Y)**.  
     Setiap produk memerlukan waktu produksi:
 
-    | Produk | Waktu Kayu (jam) | Waktu Finishing (jam) | Keuntungan per unit |
-    |--------|------------------|------------------------|----------------------|
-    | Meja (X) | 4 jam           | 2 jam                 | Rp 400.000           |
-    | Kursi (Y)| 2 jam           | 1 jam                 | Rp 200.000           |
+    | Produk | Waktu Kayu (jam) | Waktu Finishing (jam)  | 
+    |--------|------------------|------------------------|
+    | Meja (X) | 4 jam           | 2 jam                 | 
+    | Kursi (Y)| 2 jam           | 1 jam                 |         
     """)
 
     st.latex(r"Z = c₁X + c₂Y")
@@ -75,8 +73,8 @@ with tab1:
     # Input Jumlah Produksi
     # ===============================
     st.markdown("### Jumlah Produksi")
-    x2 = st.number_input("Jumlah Produksi Meja (X)", value=10)
-    y3 = st.number_input("Jumlah Produksi Kursi (Y)", value=20)
+    x = st.number_input("Jumlah Produksi Meja (X)", value=10)
+    y = st.number_input("Jumlah Produksi Kursi (Y)", value=20)
 
     # ===============================
     # Fungsi Format Rupiah
@@ -88,19 +86,19 @@ with tab1:
     # Perhitungan Fungsi Tujuan Z
     # ===============================
     z1 = 0
-    z2 = laba_meja * x2
-    z3 = laba_kursi * y3
+    z2 = laba_meja * x
+    z3 = laba_kursi * y
 
     st.markdown("### 🔎 Hasil Fungsi Tujuan Z:")
     st.write(f"Z(0, 0) = {z1}")
-    st.write(f"Z(0, {x2}) = {format_rupiah(z2)}")
-    st.write(f"Z({y3}, 0) = {format_rupiah(z3)}")
+    st.write(f"Z(0, {x}) = {format_rupiah(z2)}")
+    st.write(f"Z({y}, 0) = {format_rupiah(z3)}")
 
     z_opt = max(z1, z2, z3)
     if z_opt == z2:
-        solusi = f"(0, {x2})"
+        solusi = f"(0, {x})"
     elif z_opt == z3:
-        solusi = f"({y3}, 0)"
+        solusi = f"({y}, 0)"
     else:
         solusi = "(0, 0)"
 
@@ -111,8 +109,8 @@ with tab1:
     # ===============================
     st.markdown("### 💰 Ringkasan Total Penjualan dan Keuntungan")
 
-    total_penjualan_meja = harga_meja * x2
-    total_penjualan_kursi = harga_kursi * y3
+    total_penjualan_meja = harga_meja * x
+    total_penjualan_kursi = harga_kursi * y
     total_penjualan = total_penjualan_meja + total_penjualan_kursi
 
     st.write(f"🪑 Penjualan Meja (X): {format_rupiah(total_penjualan_meja)}")
@@ -124,12 +122,12 @@ with tab1:
     # ===============================
     st.markdown("### 🧾 Total Biaya Produksi dan Keuntungan Bersih")
 
-    total_biaya_meja = biaya_meja * x2
-    total_biaya_kursi = biaya_kursi * y3
+    total_biaya_meja = biaya_meja * x
+    total_biaya_kursi = biaya_kursi * y
     total_biaya_produksi = total_biaya_meja + total_biaya_kursi
 
-    total_laba_meja = laba_meja * x2
-    total_laba_kursi = laba_kursi * y3
+    total_laba_meja = laba_meja * x
+    total_laba_kursi = laba_kursi * y
     total_keuntungan_bersih = total_laba_meja + total_laba_kursi
 
     st.write(f"🔹 Biaya Produksi Meja (X): {format_rupiah(total_biaya_meja)}")
@@ -142,8 +140,8 @@ with tab1:
     # ===============================
     st.markdown("### 📈 Perbandingan Jumlah Produk terhadap Keuntungan & Penjualan")
 
-    produk_x = list(range(0, int(x2)+10, 10))
-    produk_y = list(range(0, int(y3)+10, 10))
+    produk_x = list(range(0, int(x)+10, 10))
+    produk_y = list(range(0, int(y)+10, 10))
 
     keuntungan_x = [laba_meja * x for x in produk_x]
     keuntungan_y = [laba_kursi * y for y in produk_y]
