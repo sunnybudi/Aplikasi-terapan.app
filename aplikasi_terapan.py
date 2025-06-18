@@ -143,7 +143,7 @@ with tab1:
     x_pos = np.arange(len(kategori))
     width = 0.35  # lebar batang
     
-    fig3, ax3 = plt.subplots(figsize=(20, 14))
+    fig3, ax2 = plt.subplots(figsize=(20, 14))
     
     # Batang horizontal
     bar1 = ax3.barh(x_pos - width/2, keuntungan, height=width, color='skyblue', label='Keuntungan')
@@ -165,7 +165,7 @@ with tab1:
             )
     
     # --- Axis & Layout dengan font lebih besar ---
-    ax2.set_xlabel("Jumlah Produk", fontsize=14)
+    ax2.set_xlabel("Jumlah Produk", fontsize=20)
     ax2.set_ylabel("Rupiah", fontsize=20)
     ax2.set_title("Perbandingan Jumlah Produk vs Keuntungan & Penjualan", fontsize=20)
     ax2.legend(fontsize=12)
