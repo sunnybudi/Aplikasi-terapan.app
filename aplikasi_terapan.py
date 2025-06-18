@@ -133,35 +133,37 @@ with tab1:
     # ===============================
     # Grafik Perbandingan (Diagram Batang)
     # ===============================
-    st.markdown("### 📊 Diagram Batang: Perbandingan Penjualan, Keuntungan, dan Jumlah Produk")
+    st.markdown("### 📊 Diagram Batang: Perbandingan Penjualan dan Keuntungan")
     
     # Data per kategori
     kategori = ['Meja (X)', 'Kursi (Y)']
     penjualan = [total_penjualan_meja, total_penjualan_kursi]
     keuntungan = [total_laba_meja, total_laba_kursi]
-    jumlah_produk = [x * 10_000, y * 10_000]  # skala Rp
     
     x_pos = np.arange(len(kategori))
-    width = 0.25  # lebar batang
+    width = 0.35  # lebar batang
     
-    fig3, ax3 = plt.subplots(figsize=(10, 5))
+    fig3, ax3 = plt.subplots(figsize=(10, 4))
     
     # Batang horizontal
-    bar1 = ax3.barh(x_pos - width, keuntungan, height=width, color='skyblue', label='Keuntungan')
-    bar2 = ax3.barh(x_pos, penjualan, height=width, color='lightgreen', label='Penjualan')
-    bar3 = ax3.barh(x_pos + width, jumlah_produk, height=width, color='salmon', label='Jumlah Produk (x10rb)')
+    bar1 = ax3.barh(x_pos - width/2, keuntungan, height=width, color='skyblue', label='Keuntungan')
+    bar2 = ax3.barh(x_pos + width/2, penjualan, height=width, color='lightgreen', label='Penjualan')
     
-    # Tampilkan label nilai di ujung setiap batang
-    for bars in [bar1, bar2, bar3]:
+    # Tampilkan label di dalam batang
+    for bars in [bar1, bar2]:
         for bar in bars:
-            ax3.text(bar.get_width() + 100_000, bar.get_y() + bar.get_height()/2,
-                     f"Rp {int(bar.get_width()):,}".replace(",", "."), va='center', fontsize=9)
+            value = int(bar.get_width())
+            text = f"Rp {value:,.0f}".replace(",", ".")
+            ax3.text(bar.get_x() + bar.get_width() * 0.95,  # posisi dekat ujung dalam
+                     bar.get_y() + bar.get_height()/2,
+                     text,
+                     ha='right', va='center', fontsize=9, color='black')
     
     # Label dan layout
     ax3.set_yticks(x_pos)
     ax3.set_yticklabels(kategori)
     ax3.set_xlabel("Rupiah")
-    ax3.set_title("Perbandingan Penjualan, Keuntungan, dan Jumlah Produk")
+    ax3.set_title("Perbandingan Penjualan dan Keuntungan")
     ax3.legend(loc='lower right')
     
     plt.tight_layout()
