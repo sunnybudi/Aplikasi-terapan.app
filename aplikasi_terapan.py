@@ -40,7 +40,6 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 # ================================================
 # TAB 1: Optimasi Produksi (Linear Programming)
 # ================================================
-tab1, _ = st.tabs(["Optimasi Produksi", "Kosong"])
 
 with tab1:
     st.header("1️⃣ Optimasi Produksi (Linear Programming)")
@@ -59,26 +58,43 @@ with tab1:
 
     st.latex(r"Z = c₁X + c₂Y")
 
-    # Input harga per unit
-    st.markdown("### Harga per Unit (Keuntungan)")
-    c1 = st.number_input("Harga per unit produk Meja (X)", value=400_000)
-    c2 = st.number_input("Harga per unit produk Kursi (Y)", value=300_000)
+    # ===============================
+    # Input Harga dan Keuntungan
+    # ===============================
+    st.markdown("### Harga Jual dan Keuntungan per Unit")
+    harga_meja = st.number_input("💰 Harga Jual Meja (X)", value=800_000)
+    laba_meja = st.number_input("📈 Keuntungan per Meja (X)", value=400_000)
+    harga_kursi = st.number_input("💰 Harga Jual Kursi (Y)", value=500_000)
+    laba_kursi = st.number_input("📈 Keuntungan per Kursi (Y)", value=200_000)
 
-    # Input Produksi Unit
-    st.markdown("### Jumlah Produksi Unit")
-    x2 = st.number_input("Produksi Meja", value=80)
-    y3 = st.number_input("Produksi Kursi", value=25)
+    # Hitung biaya produksi dari selisih harga dan keuntungan
+    biaya_meja = harga_meja - laba_meja
+    biaya_kursi = harga_kursi - laba_kursi
 
-    # Hitung nilai Z
+    # ===============================
+    # Input Jumlah Produksi
+    # ===============================
+    st.markdown("### Jumlah Produksi")
+    x2 = st.number_input("Jumlah Produksi Meja (X)", value=10)
+    y3 = st.number_input("Jumlah Produksi Kursi (Y)", value=20)
+
+    # ===============================
+    # Fungsi Format Rupiah
+    # ===============================
+    def format_rupiah(nilai):
+        return f"Rp {nilai:,.0f}".replace(",", ".")
+
+    # ===============================
+    # Perhitungan Fungsi Tujuan Z
+    # ===============================
     z1 = 0
-    z2 = c2 * x2
-    z3 = c1 * y3
+    z2 = laba_meja * x2
+    z3 = laba_kursi * y3
 
-    # Menentukan solusi optimal
-    st.write("### 🔎 Hasil Perhitungan:")
+    st.markdown("### 🔎 Hasil Fungsi Tujuan Z:")
     st.write(f"Z(0, 0) = {z1}")
-    st.write(f"Z(0, {x2}) = Rp {z2:,.0f}")
-    st.write(f"Z({y3}, 0) = Rp {z3:,.0f}")
+    st.write(f"Z(0, {x2}) = {format_rupiah(z2)}")
+    st.write(f"Z({y3}, 0) = {format_rupiah(z3)}")
 
     z_opt = max(z1, z2, z3)
     if z_opt == z2:
@@ -88,32 +104,58 @@ with tab1:
     else:
         solusi = "(0, 0)"
 
-    st.success(f"💡 Solusi optimal: {solusi} dengan keuntungan maksimum sebesar Rp {z_opt:,.0f}")
+    st.success(f"💡 Solusi optimal: {solusi} dengan keuntungan maksimum sebesar {format_rupiah(z_opt)}")
 
-    # === GRAFIK: Perbandingan Produk vs Keuntungan dan Penjualan ===
+    # ===============================
+    # Total Penjualan dan Keuntungan
+    # ===============================
+    st.markdown("### 💰 Ringkasan Total Penjualan dan Keuntungan")
+
+    total_penjualan_meja = harga_meja * x2
+    total_penjualan_kursi = harga_kursi * y3
+    total_penjualan = total_penjualan_meja + total_penjualan_kursi
+
+    st.write(f"🪑 Penjualan Meja (X): {format_rupiah(total_penjualan_meja)}")
+    st.write(f"🪑 Penjualan Kursi (Y): {format_rupiah(total_penjualan_kursi)}")
+    st.write(f"📊 Total Penjualan: {format_rupiah(total_penjualan)}")
+
+    # ===============================
+    # Total Biaya Produksi & Laba Bersih
+    # ===============================
+    st.markdown("### 🧾 Total Biaya Produksi dan Keuntungan Bersih")
+
+    total_biaya_meja = biaya_meja * x2
+    total_biaya_kursi = biaya_kursi * y3
+    total_biaya_produksi = total_biaya_meja + total_biaya_kursi
+
+    total_laba_meja = laba_meja * x2
+    total_laba_kursi = laba_kursi * y3
+    total_keuntungan_bersih = total_laba_meja + total_laba_kursi
+
+    st.write(f"🔹 Biaya Produksi Meja (X): {format_rupiah(total_biaya_meja)}")
+    st.write(f"🔹 Biaya Produksi Kursi (Y): {format_rupiah(total_biaya_kursi)}")
+    st.write(f"💸 Total Biaya Produksi: {format_rupiah(total_biaya_produksi)}")
+    st.write(f"✅ Total Keuntungan Bersih: {format_rupiah(total_keuntungan_bersih)}")
+
+    # ===============================
+    # Grafik Perbandingan
+    # ===============================
     st.markdown("### 📈 Perbandingan Jumlah Produk terhadap Keuntungan & Penjualan")
 
-    produk_x = list(range(0, int(y3) + 10, 10))
-    keuntungan_x = [c1 * x for x in produk_x]
-    penjualan_x = [x * c1 for x in produk_x]
+    produk_x = list(range(0, int(x2)+10, 10))
+    produk_y = list(range(0, int(y3)+10, 10))
 
-    produk_y = list(range(0, int(x2) + 10, 10))
-    keuntungan_y = [c2 * y for y in produk_y]
-    penjualan_y = [y * c2 for y in produk_y]
+    keuntungan_x = [laba_meja * x for x in produk_x]
+    keuntungan_y = [laba_kursi * y for y in produk_y]
+    penjualan_x = [harga_meja * x for x in produk_x]
+    penjualan_y = [harga_kursi * y for y in produk_y]
 
     fig2, ax2 = plt.subplots()
 
-    # Garis keuntungan
     ax2.plot(produk_x, keuntungan_x, 'o-', color='blue', label='Keuntungan Meja (X)')
     ax2.plot(produk_y, keuntungan_y, 'o-', color='green', label='Keuntungan Kursi (Y)')
-
-    # Garis penjualan
     ax2.plot(produk_x, penjualan_x, 'x--', color='red', alpha=0.7, label='Penjualan Meja (X)')
     ax2.plot(produk_y, penjualan_y, 'x--', color='brown', alpha=0.7, label='Penjualan Kursi (Y)')
-
-    # Format Rupiah
-    def format_rupiah(nilai):
-        return f"Rp {nilai:,.0f}".replace(",", ".")
 
     def label_titik(produk, nilai, warna):
         indeks = [0, len(produk)//2, len(produk)-1]
@@ -129,20 +171,6 @@ with tab1:
     ax2.set_title("Perbandingan Jumlah Produk vs Keuntungan & Penjualan")
     ax2.legend()
     st.pyplot(fig2)
-
-    # ================================
-    # TOTAL PENJUALAN DAN KEUNTUNGAN
-    # ================================
-    st.markdown("### 🧾 Ringkasan Total Penjualan dan Keuntungan")
-
-    total_penjualan_x = y3 * c1
-    total_penjualan_y = x2 * c2
-    total_penjualan = total_penjualan_x + total_penjualan_y
-
-    st.write(f"💰 **Total Penjualan Meja (X)**: {format_rupiah(total_penjualan_x)}")
-    st.write(f"💰 **Total Penjualan Kursi (Y)**: {format_rupiah(total_penjualan_y)}")
-    st.write(f"🧮 **Total Penjualan Keseluruhan**: {format_rupiah(total_penjualan)}")
-    st.write(f"🎯 **Keuntungan Maksimum (Z opt)**: {format_rupiah(z_opt)}")    
     
 # =========================
 # TAB 2: EOQ
