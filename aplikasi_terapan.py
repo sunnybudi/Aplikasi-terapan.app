@@ -86,8 +86,8 @@ with tab1:
 
     st.markdown("### 🔎 Hasil Fungsi Tujuan Z:")
     st.write(f"Z(0, 0) = {z1}")
-    st.write(f"Z(0, {x}) = {format_rupiah(z2)}")
-    st.write(f"Z({y}, 0) = {format_rupiah(z3)}")
+    st.write(f"Z({x}, 0) = {format_rupiah(z2)}")
+    st.write(f"Z(0, {y}) = {format_rupiah(z3)}")
 
     z_opt = max(z1, z2, z3)
     if z_opt == z2:
@@ -125,9 +125,9 @@ with tab1:
     total_laba_kursi = laba_kursi * y
     total_keuntungan_bersih = total_laba_meja + total_laba_kursi
 
-    st.write(f"🔹 Keuntungan Meja (X): {format_rupiah(total_biaya_meja)}")
-    st.write(f"🔹 Keuntungan Kursi (Y): {format_rupiah(total_biaya_kursi)}")
-    st.write(f"✅ Total Keuntungan Bersih: {format_rupiah(total_keuntungan_bersih)}")
+    st.write(f"🔹 Keuntungan Meja (X): {format_rupiah(z2)}")
+    st.write(f"🔹 Keuntungan Kursi (Y): {format_rupiah(z3)}")
+    st.write(f"✅ Total Keuntungan Bersih: {format_rupiah(z2 + z3)}")
 
     # ===============================
     # Grafik Perbandingan
