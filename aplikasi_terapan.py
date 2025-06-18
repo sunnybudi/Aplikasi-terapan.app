@@ -141,7 +141,7 @@ with tab1:
     keuntungan = [total_laba_meja, total_laba_kursi, total_keuntungan_bersih]
     
     x_pos = np.arange(len(kategori))
-    width = 0.50  # lebar batang
+    width = 0.80  # lebar batang
     
     fig2, ax2 = plt.subplots(figsize=(24, 18))
     
@@ -153,7 +153,7 @@ with tab1:
     for bars in [bar1, bar2]:
         for bar in bars:
             value = int(bar.get_height())
-            text = f"Rp {value:,.0f}".replace(",", ".")
+            text = f"{value:,.0f}".replace(",", ".")
             ax2.text(
                 bar.get_x() + bar.get_width() / 2,
                 bar.get_height() * 0.98,
