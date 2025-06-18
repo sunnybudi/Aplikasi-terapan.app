@@ -154,14 +154,14 @@ with tab1:
         indeks = [0, len(produk)//2, len(produk)-1]
         for i in indeks:
             if nilai[i] != 0:
-                 ax2.text(produk[i], nilai[i] + 50_000, format_rupiah(nilai[i]),
+                 ax2.text(produk[i] + offset_x, nilai[i] + offset_y, format_rupiah(nilai[i]),
                      fontsize=8, color=warna, ha='left', va='bottom')
 
-    label_titik(produk_x, keuntungan_x, 'black')
-    label_titik(produk_y, keuntungan_y, 'black')
-    label_titik(produk_x, penjualan_x, 'black')
-    label_titik(produk_y, penjualan_y, 'black')
-    
+    label_titik(produk_x, keuntungan_x, 'black')                      # Meja
+    label_titik(produk_y, keuntungan_y, 'black', offset_x=0.5)        # Kursi
+    label_titik(produk_x, penjualan_x, 'black', offset_y=100_000)     # Meja
+    label_titik(produk_y, penjualan_y, 'black', offset_y=100_000, offset_x=0.5)  # Kursi
+
     ax2.set_xlabel("Jumlah Produk")
     ax2.set_ylabel("Rupiah")
     ax2.set_title("Perbandingan Jumlah Produk vs Keuntungan & Penjualan")
