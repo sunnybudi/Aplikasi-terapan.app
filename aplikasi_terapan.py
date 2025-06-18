@@ -146,8 +146,8 @@ with tab1:
     fig3, ax3 = plt.subplots(figsize=(20, 14))
     
     # Batang horizontal
-    bar1 = ax3.barh(x_pos - width/2, keuntungan, height=width, color='skyblue', label='Keuntungan', fontsize=20)
-    bar2 = ax3.barh(x_pos + width/2, penjualan, height=width, color='lightgreen', label='Penjualan', fontsize=20)
+    bar1 = ax3.barh(x_pos - width/2, keuntungan, height=width, color='skyblue', label='Keuntungan')
+    bar2 = ax3.barh(x_pos + width/2, penjualan, height=width, color='lightgreen', label='Penjualan')
     
     # Label di dalam batang
     for bars in [bar1, bar2]:
@@ -165,14 +165,14 @@ with tab1:
             )
     
     # --- Axis & Layout dengan font lebih besar ---
-    ax2.set_xlabel("Jumlah Produk", fontsize=14)
-    ax2.set_ylabel("Rupiah", fontsize=14)
-    ax2.set_title("Perbandingan Jumlah Produk vs Keuntungan & Penjualan", fontsize=16)
+    ax2.set_xlabel("Jumlah Produk", fontsize=20)
+    ax2.set_ylabel("Rupiah", fontsize=20)
+    ax2.set_title("Perbandingan Jumlah Produk vs Keuntungan & Penjualan", fontsize=20)
     ax2.legend(fontsize=12)
     
     # Ukuran angka pada sumbu
-    ax2.tick_params(axis='x', labelsize=12)
-    ax2.tick_params(axis='y', labelsize=12)
+    ax2.tick_params(axis='x', labelsize=20)
+    ax2.tick_params(axis='y', labelsize=20)
     
     # Format angka sumbu Y
     ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x):,}'.replace(",", ".")))
