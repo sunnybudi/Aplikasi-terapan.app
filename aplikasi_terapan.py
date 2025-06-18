@@ -145,7 +145,7 @@ with tab1:
     
     fig3, ax3 = plt.subplots(figsize=(20, 14))
     # Set font global (opsional, tapi efisien)
-    plt.rcParams.update({'font.size': 12})
+    plt.rcParams.update({'font.size': 10})
     
     # Atur label sumbu Y
     ax3.set_yticks(x_pos)
@@ -153,7 +153,7 @@ with tab1:
     
     # Label sumbu X dan judul
     ax3.set_xlabel("Rupiah", fontsize=24)
-    ax3.set_title("Perbandingan Penjualan dan Keuntungan", fontsize=30)
+    ax3.set_title("Perbandingan Penjualan dan Keuntungan", fontsize=50)
     
     # Legend dengan ukuran font lebih besar
     ax3.legend(loc='lower right', fontsize=24)
