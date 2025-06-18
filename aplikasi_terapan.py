@@ -131,9 +131,9 @@ with tab1:
     st.write(f"✅ Total Keuntungan Bersih: {format_rupiah(z2 + z3)}")
 
     # ===============================
-    # Grafik Perbandingan (Diagram Batang)
+    # Grafik Perbandingan (Diagram Batang Vertikal)
     # ===============================
-    st.markdown("### 📊 Diagram Batang: Perbandingan Penjualan dan Keuntungan")
+    st.markdown("### 📊 Diagram Batang Vertikal: Perbandingan Penjualan dan Keuntungan")
     
     # Data per kategori
     kategori = ['Meja (X)', 'Kursi (Y)', 'Total']
@@ -145,40 +145,40 @@ with tab1:
     
     fig2, ax2 = plt.subplots(figsize=(20, 14))
     
-    # Batang horizontal
-    bar1 = ax2.barh(x_pos - width/2, keuntungan, height=width, color='skyblue', label='Keuntungan')
-    bar2 = ax2.barh(x_pos + width/2, penjualan, height=width, color='lightgreen', label='Penjualan')
+    # Batang vertikal
+    bar1 = ax2.bar(x_pos - width/2, keuntungan, width=width, color='skyblue', label='Keuntungan')
+    bar2 = ax2.bar(x_pos + width/2, penjualan, width=width, color='lightgreen', label='Penjualan')
     
     # Label di dalam batang
     for bars in [bar1, bar2]:
         for bar in bars:
-            value = int(bar.get_width())
+            value = int(bar.get_height())
             text = f"Rp {value:,.0f}".replace(",", ".")
             ax2.text(
-                bar.get_x() + bar.get_width() * 0.95,
-                bar.get_y() + bar.get_height() / 2,
+                bar.get_x() + bar.get_width() / 2,
+                bar.get_height() * 0.98,
                 text,
-                ha='right', va='center',
+                ha='center', va='top',
                 fontsize=24,
                 color='black',
                 fontweight='bold'
             )
     
-    # --- Axis & Layout dengan font lebih besar ---
-    ax2.set_xlabel("Jumlah Produk", fontsize=26)
+    # Axis & Layout dengan font lebih besar
     ax2.set_ylabel("Rupiah", fontsize=26)
-    ax2.set_title("Perbandingan Jumlah Produk vs Keuntungan & Penjualan", fontsize=26)
-    ax2.legend(fontsize=26)
+    ax2.set_xlabel("Kategori Produk", fontsize=26)
+    ax2.set_title("Perbandingan Penjualan dan Keuntungan", fontsize=26)
+    ax2.set_xticks(x_pos)
+    ax2.set_xticklabels(kategori, fontsize=24)
+    ax2.legend(fontsize=24)
     
     # Ukuran angka pada sumbu
-    ax2.tick_params(axis='x', labelsize=26)
-    ax2.tick_params(axis='y', labelsize=26)
+    ax2.tick_params(axis='y', labelsize=24)
     
     # Format angka sumbu Y
     ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x):,}'.replace(",", ".")))
     
     plt.tight_layout()
-    fig2.subplots_adjust(right=0.85)
     st.pyplot(fig2)
 
 # =========================
