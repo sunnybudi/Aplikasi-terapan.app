@@ -46,8 +46,8 @@ with tab1:
     st.header("1️⃣ Optimasi Produksi (Linear Programming)")
     st.markdown("""
     ### Studi Kasus
-    Sebuah perusahaan memproduksi **Meja (X)** dan **Kursi (Y)**.  
-    Setiap produk memerlukan waktu produksi:       
+    Sebuah perusahaan furnitur memproduksi **Meja (X)** dan **Kursi (Y)**. Pemiliknya menggunakan perhitungan matematika 
+    untuk mengetahui total penjualan dan keuntungan produksi di perusahaannya. 
     """)
 
     st.latex(r"Z = c₁X + c₂Y")
