@@ -40,85 +40,116 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 # ================================
 # TAB 1: Optimasi Produksi (Linear Programming)
 # ================================
-st.header("1️⃣ Optimasi Produksi (Linear Programming)")
-st.write("Studi kasus: Menentukan kombinasi produk meja dan kursi yang memaksimalkan keuntungan dengan keterbatasan sumber daya.")
+tab1, _ = st.tabs(["Optimasi Produksi", "Kosong"])  # Tab lainnya bisa disesuaikan
 
-st.markdown("""
-### Studi Kasus
-Sebuah perusahaan memproduksi **Meja (X)** dan **Kursi (Y)**.  
-Setiap produk memerlukan waktu produksi:
+with tab1:
+    st.header("1️⃣ Optimasi Produksi (Linear Programming)")
+    st.write("Studi kasus: Menentukan kombinasi produk meja dan kursi yang memaksimalkan keuntungan dengan keterbatasan sumber daya.")
 
-| Produk   | Waktu Kayu (jam) | Waktu Finishing (jam) | Keuntungan per unit |
-|----------|------------------|------------------------|----------------------|
-| Meja (X) | 4 jam            | 2 jam                 | Rp 400.000           |
-| Kursi (Y)| 2 jam            | 1 jam                 | Rp 300.000           |
+    st.markdown("""
+    ### Studi Kasus
+    Sebuah perusahaan memproduksi **Meja (X)** dan **Kursi (Y)**.  
+    Setiap produk memerlukan waktu produksi:
 
-Batas waktu kerja per minggu:
-- Bagian Kayu: 240 jam
-- Bagian Finishing: 100 jam
-""")
+    | Produk | Waktu Kayu (jam) | Waktu Finishing (jam) | Keuntungan per unit |
+    |--------|------------------|------------------------|----------------------|
+    | Meja (X) | 4 jam           | 2 jam                 | Rp 400.000           |
+    | Kursi (Y)| 3 jam           | 1 jam                 | Rp 300.000           |
 
-st.latex(r"Z = c₁X + c₂Y")
+    Batas waktu kerja per minggu:
+    - Bagian Kayu: 240 jam
+    - Bagian Finishing: 100 jam
+    """)
 
-# Input harga per unit
-st.markdown("### Harga per Unit (Keuntungan)")
-c1 = st.number_input("Harga per unit produk Meja (X)", value=400_000)
-c2 = st.number_input("Harga per unit produk Kursi (Y)", value=300_000)
+    st.latex(r"Z = c₁X + c₂Y")
 
-# === GRAFIK Linear Programming ===
-st.markdown("### 📊 Grafik Wilayah Layak & Solusi Optimal")
+    # Input harga per unit
+    st.markdown("### Harga per Unit (Keuntungan)")
+    c1 = st.number_input("Harga per unit produk Meja (X)", value=400_000)
+    c2 = st.number_input("Harga per unit produk Kursi (Y)", value=300_000)
 
-x_vals = np.linspace(0, 70, 400)
-y1 = (240 - 4 * x_vals) / 2  # kendala kayu: 4X + 2Y ≤ 240 → Y = (240 - 4X)/2
-y2 = 100 - 2 * x_vals        # kendala finishing: 2X + Y ≤ 100 → Y = 100 - 2X
+    # Titik batas produksi dari kendala
+    st.markdown("### Titik Batas Produksi Berdasarkan Kendala")
+    x2 = st.number_input("Titik (0, Y) dari batas kayu: Y =", value=80)
+    y3 = st.number_input("Titik (X, 0) dari batas finishing: X =", value=25)
 
-fig, ax = plt.subplots()
+    # Hitung nilai Z
+    z1 = 0
+    z2 = c2 * x2
+    z3 = c1 * y3
 
-ax.plot(x_vals, y1, label="4X + 2Y = 240 (Kayu)", color="blue")
-ax.plot(x_vals, y2, label="2X + Y = 100 (Finishing)", color="green")
+    # Menentukan solusi optimal
+    st.write("### 🔎 Hasil Perhitungan:")
+    st.write(f"Z(0, 0) = {z1}")
+    st.write(f"Z(0, {x2}) = Rp {z2:,.0f}")
+    st.write(f"Z({y3}, 0) = Rp {z3:,.0f}")
 
-# Wilayah layak (shaded)
-y_min = np.minimum(y1, y2)
-y_min = np.clip(y_min, 0, None)
-ax.fill_between(x_vals, 0, y_min, where=(y_min >= 0), color='gray', alpha=0.3, label="Wilayah Layak")
+    z_opt = max(z1, z2, z3)
+    if z_opt == z2:
+        solusi = f"(0, {x2})"
+    elif z_opt == z3:
+        solusi = f"({y3}, 0)"
+    else:
+        solusi = "(0, 0)"
 
-# Titik pojok (hitungan manual dari perpotongan kendala)
-titik = {
-    "(0,0)": (0, 0),
-    "(0,100)": (0, 100),      # Y dari kendala finishing
-    "(60,0)": (60, 0),        # X dari kendala kayu
-    "(20,60)": (20, 60),      # titik potong 2 kendala
-}
+    st.success(f"💡 Solusi optimal: {solusi} dengan keuntungan maksimum sebesar Rp {z_opt:,.0f}")
 
-hasil = {}
-for nama, (x, y) in titik.items():
-    z = c1 * x + c2 * y
-    hasil[nama] = z
-    ax.plot(x, y, 'ro')
-    ax.text(x + 0.5, y + 1, nama, fontsize=8)
+    # === GRAFIK: Perbandingan Produk vs Keuntungan dan Penjualan ===
+    st.markdown("### 📈 Perbandingan Jumlah Produk terhadap Keuntungan & Penjualan")
 
-# Titik solusi optimal
-titik_opt = max(hasil, key=hasil.get)
-x_opt, y_opt = titik[titik_opt]
-z_opt = hasil[titik_opt]
-ax.plot(x_opt, y_opt, 'go', markersize=10, label="Solusi Optimal")
+    # Produk X (Meja)
+    produk_x = list(range(0, y3 + 20, 10))
+    keuntungan_x = [c1 * x for x in produk_x]
+    penjualan_x = [x * c1 for x in produk_x]
 
-ax.set_xlim(0, 70)
-ax.set_ylim(0, 110)
-ax.set_xlabel("Jumlah Meja (X)")
-ax.set_ylabel("Jumlah Kursi (Y)")
-ax.set_title("Wilayah Layak & Titik Solusi Linear Programming")
-ax.legend()
-st.pyplot(fig)
+    # Produk Y (Kursi)
+    produk_y = list(range(0, x2 + 20, 10))
+    keuntungan_y = [c2 * y for y in produk_y]
+    penjualan_y = [y * c2 for y in produk_y]
 
-# ================================
-# TOTAL PENJUALAN DAN KEUNTUNGAN
-# ================================
-st.markdown("### 🧾 Ringkasan Total Penjualan dan Keuntungan")
+    fig2, ax2 = plt.subplots()
 
-st.write(f"💰 **Jumlah Meja (X)**: {x_opt}")
-st.write(f"💰 **Jumlah Kursi (Y)**: {y_opt}")
-st.write(f"🎯 **Keuntungan Maksimum (Z)**: {format_rupiah(z_opt)}")
+    # Garis keuntungan
+    ax2.plot(produk_x, keuntungan_x, 'o-', color='blue', label='Keuntungan Meja (X)')
+    ax2.plot(produk_y, keuntungan_y, 'o-', color='green', label='Keuntungan Kursi (Y)')
+
+    # Garis penjualan
+    ax2.plot(produk_x, penjualan_x, 'x--', color='skyblue', alpha=0.7, label='Penjualan Meja (X)')
+    ax2.plot(produk_y, penjualan_y, 'x--', color='lightgreen', alpha=0.7, label='Penjualan Kursi (Y)')
+
+    # Format Rupiah
+    def format_rupiah(nilai):
+        return f"Rp {nilai:,.0f}".replace(",", ".")
+
+    # Label beberapa titik penting
+    def label_titik(produk, nilai, warna):
+        indeks = [0, len(produk)//2, len(produk)-1]
+        for i in indeks:
+            ax2.text(produk[i], nilai[i], format_rupiah(nilai[i]),
+                     fontsize=8, color=warna, ha='left', va='bottom')
+
+    label_titik(produk_x, keuntungan_x, 'blue')
+    label_titik(produk_y, keuntungan_y, 'green')
+
+    ax2.set_xlabel("Jumlah Produk")
+    ax2.set_ylabel("Rupiah")
+    ax2.set_title("Perbandingan Jumlah Produk vs Keuntungan & Penjualan")
+    ax2.legend()
+    st.pyplot(fig2)
+
+    # ================================
+    # TOTAL PENJUALAN DAN KEUNTUNGAN
+    # ================================
+    st.markdown("### 🧾 Ringkasan Total Penjualan dan Keuntungan")
+
+    total_penjualan_x = y3 * c1
+    total_penjualan_y = x2 * c2
+    total_penjualan = total_penjualan_x + total_penjualan_y
+
+    st.write(f"💰 **Total Penjualan Meja (X)**: {format_rupiah(total_penjualan_x)}")
+    st.write(f"💰 **Total Penjualan Kursi (Y)**: {format_rupiah(total_penjualan_y)}")
+    st.write(f"🧮 **Total Penjualan Keseluruhan**: {format_rupiah(total_penjualan)}")
+    st.write(f"🎯 **Keuntungan Maksimum (Z opt)**: {format_rupiah(z_opt)}")
     
 # =========================
 # TAB 2: EOQ
