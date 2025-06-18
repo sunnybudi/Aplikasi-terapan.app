@@ -146,8 +146,8 @@ with tab1:
 
     ax2.plot(produk_x, keuntungan_x, 'o-', color='blue', label='Keuntungan Meja (X)')
     ax2.plot(produk_y, keuntungan_y, 'o-', color='green', label='Keuntungan Kursi (Y)')
-    ax2.plot(produk_x, penjualan_x, 'x--', color='red', alpha=0.7, label='Penjualan Meja (X)')
-    ax2.plot(produk_y, penjualan_y, 'x--', color='brown', alpha=0.7, label='Penjualan Kursi (Y)')
+    ax2.plot(produk_x, penjualan_x, 'x--', color='darkblue', alpha=0.7, label='Penjualan Meja (X)')
+    ax2.plot(produk_y, penjualan_y, 'x--', color='darkgreen', alpha=0.7, label='Penjualan Kursi (Y)')
 
     def label_titik(produk, nilai, warna):
         indeks = [0, len(produk)//2, len(produk)-1]
