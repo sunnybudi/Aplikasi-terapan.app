@@ -144,6 +144,8 @@ with tab1:
     width = 0.35  # lebar batang
     
     fig3, ax3 = plt.subplots(figsize=(20, 14))
+    # Set font global (opsional, tapi efisien)
+    plt.rcParams.update({'font.size': 14})
     
     # Atur label sumbu Y
     ax3.set_yticks(x_pos)
