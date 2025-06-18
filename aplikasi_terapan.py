@@ -42,18 +42,34 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 # ====================================
 with tab1:
     st.header("1️⃣ Optimasi Produksi (Linear Programming)")
-    st.write("Studi kasus: Menentukan kombinasi produk yang memaksimalkan keuntungan dengan keterbatasan sumber daya.")
+    st.write("Studi kasus: Menentukan kombinasi produk meja dan kursi yang memaksimalkan keuntungan dengan keterbatasan sumber daya.")
+
+    st.markdown("""
+    ### Studi Kasus
+    Sebuah perusahaan memproduksi **Meja (Produk X)** dan **Kursi (Produk Y)**.  
+    Setiap produk memerlukan waktu produksi:
+
+    | Produk | Waktu Kayu (jam) | Waktu Finishing (jam) | Keuntungan per unit |
+    |--------|------------------|------------------------|----------------------|
+    | Meja (X) | 4 jam           | 2 jam                 | Rp 400.000           |
+    | Kursi (Y)| 3 jam           | 1 jam                 | Rp 300.000           |
+
+    Batas waktu kerja per minggu:
+    - Bagian Kayu: 240 jam
+    - Bagian Finishing: 100 jam
+    """)
+
     st.latex(r"Z = c₁X + c₂Y")
 
-    # Harga per unit
-    st.markdown("### Harga per Unit")
-    c1 = st.number_input("Harga per unit produk X", value=40)
-    c2 = st.number_input("Harga per unit produk Y", value=60)
+    # Harga per unit (disesuaikan)
+    st.markdown("### Harga per Unit (Keuntungan)")
+    c1 = st.number_input("Harga per unit produk Meja (X)", value=400_000)
+    c2 = st.number_input("Harga per unit produk Kursi (Y)", value=300_000)
 
-    # Titik batas produksi
-    st.markdown("### Banyaknya Jumlah Barang Produksi")
-    x2 = st.number_input("Titik (0, Y): Y =", value=33)
-    y3 = st.number_input("Titik (X, 0): X =", value=50)
+    # Titik batas produksi berdasarkan kendala
+    st.markdown("### Titik Batas Produksi Berdasarkan Kendala")
+    x2 = st.number_input("Titik (0, Y) dari batas kayu: Y =", value=80)
+    y3 = st.number_input("Titik (X, 0) dari batas finishing: X =", value=25)
 
     # Perhitungan nilai Z
     z1 = 0
@@ -63,8 +79,8 @@ with tab1:
     # Menentukan solusi optimal
     st.write("### 🔎 Hasil Perhitungan:")
     st.write(f"Z(0, 0) = {z1}")
-    st.write(f"Z(0, {x2}) = {z2:,.0f}")
-    st.write(f"Z({y3}, 0) = {z3:,.0f}")
+    st.write(f"Z(0, {x2}) = Rp {z2:,.0f}")
+    st.write(f"Z({y3}, 0) = Rp {z3:,.0f}")
 
     z_opt = max(z1, z2, z3)
     if z_opt == z2:
@@ -87,45 +103,38 @@ with tab1:
     ax1.plot([0, y3], [x2, 0], 'r--', label='Garis Fungsi Objektif')
     ax1.set_xlim(-5, max(60, y3 + 10))
     ax1.set_ylim(-5, max(40, x2 + 10))
-    ax1.set_xlabel("X (Produk 1)")
-    ax1.set_ylabel("Y (Produk 2)")
+    ax1.set_xlabel("X (Meja)")
+    ax1.set_ylabel("Y (Kursi)")
     ax1.set_title("Visualisasi Titik Pojok & Fungsi Objektif")
     ax1.legend()
     st.pyplot(fig1)
 
-   # === GRAFIK 2: Perbandingan Jumlah Produk vs Keuntungan ===
+    # === GRAFIK 2: Perbandingan Jumlah Produk vs Keuntungan ===
     st.markdown("### 📈 Grafik Perbandingan Jumlah Produk dan Keuntungan")
-    
-    # Buat data dengan interval 20 agar tidak terlalu rapat
+
     produk_x = list(range(0, y3 + 20, 20))
     keuntungan_x = [c1 * x for x in produk_x]
-    
+
     produk_y = list(range(0, x2 + 20, 20))
     keuntungan_y = [c2 * y for y in produk_y]
-    
+
     fig2, ax2 = plt.subplots()
-    
-    # Plot Produk X
-    ax2.plot(produk_x, keuntungan_x, 'o-b', label='Produk X vs Keuntungan')
-    
-    # Plot Produk Y
-    ax2.plot(produk_y, keuntungan_y, 'o-g', label='Produk Y vs Keuntungan')
-    
-    # Format angka Z jadi seperti 2.000.000
+
+    ax2.plot(produk_x, keuntungan_x, 'o-b', label='Meja (X) vs Keuntungan')
+    ax2.plot(produk_y, keuntungan_y, 'o-g', label='Kursi (Y) vs Keuntungan')
+
     def format_rupiah(nilai):
         return f"Z={nilai:,.0f}".replace(",", ".")
-    
-    # Tambahkan label di beberapa titik penting: awal, tengah, akhir
+
     def label_titik(produk, keuntungan, warna):
         indeks = [0, len(produk)//2, len(produk)-1]
         for i in indeks:
             ax2.text(produk[i], keuntungan[i], format_rupiah(keuntungan[i]),
                      fontsize=8, color=warna, ha='left', va='bottom')
-    
+
     label_titik(produk_x, keuntungan_x, 'blue')
     label_titik(produk_y, keuntungan_y, 'green')
-    
-    # Label dan legenda
+
     ax2.set_xlabel("Jumlah Produk")
     ax2.set_ylabel("Keuntungan (Z)")
     ax2.set_title("Perbandingan Jumlah Produk dan Keuntungan")
