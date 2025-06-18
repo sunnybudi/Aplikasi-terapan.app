@@ -54,12 +54,7 @@ with tab1:
     | Produk | Waktu Kayu (jam) | Waktu Finishing (jam) | Keuntungan per unit |
     |--------|------------------|------------------------|----------------------|
     | Meja (X) | 4 jam           | 2 jam                 | Rp 400.000           |
-    | Kursi (Y)| 3 jam           | 1 jam                 | Rp 300.000           |
-
-    Batas waktu kerja per minggu:
-    - Bagian Kayu: 240 jam
-    - Bagian Finishing: 100 jam
-    """)
+    | Kursi (Y)| 2 jam           | 1 jam                 | Rp 200.000           |
 
     st.latex(r"Z = c₁X + c₂Y")
 
@@ -68,10 +63,10 @@ with tab1:
     c1 = st.number_input("Harga per unit produk Meja (X)", value=400_000)
     c2 = st.number_input("Harga per unit produk Kursi (Y)", value=300_000)
 
-    # Titik batas produksi dari kendala
-    st.markdown("### Titik Batas Produksi Berdasarkan Kendala")
-    x2 = st.number_input("Titik (0, Y) dari batas kayu: Y =", value=80)
-    y3 = st.number_input("Titik (X, 0) dari batas finishing: X =", value=25)
+    # Input Produksi Unit
+    st.markdown("Jumlah Produksi Unit")
+    x2 = st.number_input("Produksi Meja", value=80)
+    y3 = st.number_input("Produksi Kursi", value=25)
 
     # Hitung nilai Z
     z1 = 0
@@ -114,8 +109,8 @@ with tab1:
     ax2.plot(produk_y, keuntungan_y, 'o-', color='green', label='Keuntungan Kursi (Y)')
 
     # Garis penjualan
-    ax2.plot(produk_x, penjualan_x, 'x--', color='skyblue', alpha=0.7, label='Penjualan Meja (X)')
-    ax2.plot(produk_y, penjualan_y, 'x--', color='lightgreen', alpha=0.7, label='Penjualan Kursi (Y)')
+    ax2.plot(produk_x, penjualan_x, 'x--', color='red', alpha=0.7, label='Penjualan Meja (X)')
+    ax2.plot(produk_y, penjualan_y, 'x--', color='brown', alpha=0.7, label='Penjualan Kursi (Y)')
 
     # Format Rupiah
     def format_rupiah(nilai):
