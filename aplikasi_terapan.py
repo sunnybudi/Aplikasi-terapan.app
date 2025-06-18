@@ -141,9 +141,9 @@ with tab1:
     keuntungan = [total_laba_meja, total_laba_kursi, total_keuntungan_bersih]
     
     x_pos = np.arange(len(kategori))
-    width = 0.35  # lebar batang
+    width = 0.50  # lebar batang
     
-    fig2, ax2 = plt.subplots(figsize=(20, 14))
+    fig2, ax2 = plt.subplots(figsize=(24, 18))
     
     # Batang vertikal
     bar1 = ax2.bar(x_pos - width/2, keuntungan, width=width, color='skyblue', label='Keuntungan')
