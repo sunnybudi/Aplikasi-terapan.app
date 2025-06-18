@@ -143,21 +143,21 @@ with tab1:
     x_pos = np.arange(len(kategori))
     width = 0.35  # lebar batang
     
-    fig3, ax3 = plt.subplots(figsize=(16, 10))
+    fig3, ax3 = plt.subplots(figsize=(20, 14))
 
     # Set font global (opsional, tapi efisien)
-    plt.rcParams.update({'font.size': 14})
+    plt.rcParams.update({'font.size': 18})
     
     # Atur label sumbu Y
     ax3.set_yticks(x_pos)
-    ax3.set_yticklabels(kategori, fontsize=14)
+    ax3.set_yticklabels(kategori, fontsize=18)
     
     # Label sumbu X dan judul
-    ax3.set_xlabel("Rupiah", fontsize=14)
-    ax3.set_title("Perbandingan Penjualan dan Keuntungan", fontsize=14)
+    ax3.set_xlabel("Rupiah", fontsize=18)
+    ax3.set_title("Perbandingan Penjualan dan Keuntungan", fontsize=18)
     
     # Legend dengan ukuran font lebih besar
-    ax3.legend(loc='lower right', fontsize=14)
+    ax3.legend(loc='lower right', fontsize=18)
     
     # Batang horizontal
     bar1 = ax3.barh(x_pos - width/2, keuntungan, height=width, color='skyblue', label='Keuntungan')
@@ -173,7 +173,7 @@ with tab1:
                 bar.get_y() + bar.get_height()/2,
                 text,
                 ha='right', va='center',
-                fontsize=14,
+                fontsize=18,
                 color='black',
                 fontweight='bold'
             )
