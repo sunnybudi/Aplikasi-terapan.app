@@ -131,45 +131,40 @@ with tab1:
     st.write(f"✅ Total Keuntungan Bersih: {format_rupiah(z2 + z3)}")
 
     # ===============================
-    # Grafik Perbandingan
+    # Grafik Perbandingan (1 simbol saja per garis)
     # ===============================
     st.markdown("### 📈 Perbandingan Jumlah Produk terhadap Keuntungan & Penjualan")
-
-    produk_x = list(range(0, int(x)+10, 10))
-    produk_y = list(range(0, int(y)+10, 10))
-
-    keuntungan_x = [laba_meja * x for x in produk_x]
-    keuntungan_y = [laba_kursi * y for y in produk_y]
-    penjualan_x = [harga_meja * x for x in produk_x]
-    penjualan_y = [harga_kursi * y for y in produk_y]
-
-    fig2, ax2 = plt.subplots()
-
-    ax2.plot(produk_x, keuntungan_x, 'o-', color='blue', label='Keuntungan Meja (X)')
-    ax2.plot(produk_y, keuntungan_y, 'o-', color='green', label='Keuntungan Kursi (Y)')
-    ax2.plot(produk_x, penjualan_x, 'x--', color='darkblue', alpha=0.7, label='Penjualan Meja (X)')
-    ax2.plot(produk_y, penjualan_y, 'x--', color='darkgreen', alpha=0.7, label='Penjualan Kursi (Y)')
-
-    # Label hanya di ujung akhir garis
-    def label_akhir(produk, nilai, warna, offset_y=50_000, offset_x=0):
-        if len(produk) > 0:
-            ax2.text(produk[-1] + offset_x, nilai[-1] + offset_y,
-                     format_rupiah(nilai[-1]), fontsize=9,
-                     color=warna, ha='left', va='bottom')
     
-    # Panggil hanya sekali untuk tiap garis
-    label_akhir(produk_x, keuntungan_x, 'blue')
-    label_akhir(produk_y, keuntungan_y, 'green', offset_x=0.5)
-    label_akhir(produk_x, penjualan_x, 'darkblue', offset_y=100_000)
-    label_akhir(produk_y, penjualan_y, 'darkgreen', offset_y=100_000, offset_x=0.5)
-
-
+    fig2, ax2 = plt.subplots()
+    
+    # Garis Keuntungan Meja
+    ax2.plot(produk_x, keuntungan_x, '-', color='blue', label='Keuntungan Meja (X)')
+    ax2.scatter([produk_x[-1]], [keuntungan_x[-1]], color='blue')
+    ax2.text(produk_x[-1], keuntungan_x[-1]+50_000, format_rupiah(keuntungan_x[-1]), fontsize=8, color='blue')
+    
+    # Garis Keuntungan Kursi
+    ax2.plot(produk_y, keuntungan_y, '-', color='green', label='Keuntungan Kursi (Y)')
+    ax2.scatter([produk_y[-1]], [keuntungan_y[-1]], color='green')
+    ax2.text(produk_y[-1], keuntungan_y[-1]+50_000, format_rupiah(keuntungan_y[-1]), fontsize=8, color='green')
+    
+    # Garis Penjualan Meja
+    ax2.plot(produk_x, penjualan_x, '--', color='darkblue', alpha=0.7, label='Penjualan Meja (X)')
+    ax2.scatter([produk_x[-1]], [penjualan_x[-1]], color='darkblue', marker='x')
+    ax2.text(produk_x[-1], penjualan_x[-1]+100_000, format_rupiah(penjualan_x[-1]), fontsize=8, color='darkblue')
+    
+    # Garis Penjualan Kursi
+    ax2.plot(produk_y, penjualan_y, '--', color='darkgreen', alpha=0.7, label='Penjualan Kursi (Y)')
+    ax2.scatter([produk_y[-1]], [penjualan_y[-1]], color='darkgreen', marker='x')
+    ax2.text(produk_y[-1], penjualan_y[-1]+100_000, format_rupiah(penjualan_y[-1]), fontsize=8, color='darkgreen')
+    
+    # Pengaturan grafik
     ax2.set_xlabel("Jumlah Produk")
     ax2.set_ylabel("Rupiah")
     ax2.set_title("Perbandingan Jumlah Produk vs Keuntungan & Penjualan")
     ax2.legend()
-    ax2.margins(y=0.1, x=0.3)  # Tambah ruang agar label tidak terpotong
+    ax2.margins(y=0.1, x=0.3)
     ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x):,}'))
+    
     st.pyplot(fig2)
 
 # =========================
