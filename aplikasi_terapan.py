@@ -37,10 +37,10 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "5. Model Lain"
 ])
 
-# ================================
+# ================================================
 # TAB 1: Optimasi Produksi (Linear Programming)
-# ================================
-tab1, _ = st.tabs(["Optimasi Produksi", "Kosong"])  # Tab lainnya bisa disesuaikan
+# ================================================
+tab1, _ = st.tabs(["Optimasi Produksi", "Kosong"])
 
 with tab1:
     st.header("1️⃣ Optimasi Produksi (Linear Programming)")
@@ -54,7 +54,8 @@ with tab1:
     | Produk | Waktu Kayu (jam) | Waktu Finishing (jam) | Keuntungan per unit |
     |--------|------------------|------------------------|----------------------|
     | Meja (X) | 4 jam           | 2 jam                 | Rp 400.000           |
-    | Kursi (Y)| 2 jam           | 1 jam                 | Rp 200.000           |
+    | Kursi (Y)| 2 jam           | 1 jam                 | Rp 300.000           |
+    """)
 
     st.latex(r"Z = c₁X + c₂Y")
 
@@ -64,7 +65,7 @@ with tab1:
     c2 = st.number_input("Harga per unit produk Kursi (Y)", value=300_000)
 
     # Input Produksi Unit
-    st.markdown("###Jumlah Produksi Unit")
+    st.markdown("### Jumlah Produksi Unit")
     x2 = st.number_input("Produksi Meja", value=80)
     y3 = st.number_input("Produksi Kursi", value=25)
 
@@ -92,13 +93,11 @@ with tab1:
     # === GRAFIK: Perbandingan Produk vs Keuntungan dan Penjualan ===
     st.markdown("### 📈 Perbandingan Jumlah Produk terhadap Keuntungan & Penjualan")
 
-    # Produk X (Meja)
-    produk_x = list(range(0, y3 + 20, 10))
+    produk_x = list(range(0, int(y3) + 20, 10))
     keuntungan_x = [c1 * x for x in produk_x]
     penjualan_x = [x * c1 for x in produk_x]
 
-    # Produk Y (Kursi)
-    produk_y = list(range(0, x2 + 20, 10))
+    produk_y = list(range(0, int(x2) + 20, 10))
     keuntungan_y = [c2 * y for y in produk_y]
     penjualan_y = [y * c2 for y in produk_y]
 
@@ -116,7 +115,6 @@ with tab1:
     def format_rupiah(nilai):
         return f"Rp {nilai:,.0f}".replace(",", ".")
 
-    # Label beberapa titik penting
     def label_titik(produk, nilai, warna):
         indeks = [0, len(produk)//2, len(produk)-1]
         for i in indeks:
@@ -144,7 +142,7 @@ with tab1:
     st.write(f"💰 **Total Penjualan Meja (X)**: {format_rupiah(total_penjualan_x)}")
     st.write(f"💰 **Total Penjualan Kursi (Y)**: {format_rupiah(total_penjualan_y)}")
     st.write(f"🧮 **Total Penjualan Keseluruhan**: {format_rupiah(total_penjualan)}")
-    st.write(f"🎯 **Keuntungan Maksimum (Z opt)**: {format_rupiah(z_opt)}")
+    st.write(f"🎯 **Keuntungan Maksimum (Z opt)**: {format_rupiah(z_opt)}")    
     
 # =========================
 # TAB 2: EOQ
