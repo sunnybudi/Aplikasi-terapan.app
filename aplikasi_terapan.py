@@ -93,11 +93,11 @@ with tab1:
     # === GRAFIK: Perbandingan Produk vs Keuntungan dan Penjualan ===
     st.markdown("### 📈 Perbandingan Jumlah Produk terhadap Keuntungan & Penjualan")
 
-    produk_x = list(range(0, int(y3) + 20, 10))
+    produk_x = list(range(0, int(y3) + 10, 10))
     keuntungan_x = [c1 * x for x in produk_x]
     penjualan_x = [x * c1 for x in produk_x]
 
-    produk_y = list(range(0, int(x2) + 20, 10))
+    produk_y = list(range(0, int(x2) + 10, 10))
     keuntungan_y = [c2 * y for y in produk_y]
     penjualan_y = [y * c2 for y in produk_y]
 
