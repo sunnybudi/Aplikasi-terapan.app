@@ -40,7 +40,6 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 # ================================
 # TAB 1: Optimasi Produksi (Linear Programming)
 # ================================
-tab1, _ = st.tabs(["Optimasi Produksi", "Kosong"])  # Tab lainnya bisa disesuaikan
 
 with tab1:
     st.header("1️⃣ Optimasi Produksi (Linear Programming)")
@@ -54,7 +53,7 @@ with tab1:
     | Produk | Waktu Kayu (jam) | Waktu Finishing (jam) | Keuntungan per unit |
     |--------|------------------|------------------------|----------------------|
     | Meja (X) | 4 jam           | 2 jam                 | Rp 400.000           |
-    | Kursi (Y)| 3 jam           | 1 jam                 | Rp 300.000           |
+    | Kursi (Y)| 2 jam           | 1 jam                 | Rp 300.000           |
 
     Batas waktu kerja per minggu:
     - Bagian Kayu: 240 jam
@@ -68,10 +67,10 @@ with tab1:
     c1 = st.number_input("Harga per unit produk Meja (X)", value=400_000)
     c2 = st.number_input("Harga per unit produk Kursi (Y)", value=300_000)
 
-    # Titik batas produksi dari kendala
-    st.markdown("### Titik Batas Produksi Berdasarkan Kendala")
-    x2 = st.number_input("Titik (0, Y) dari batas kayu: Y =", value=80)
-    y3 = st.number_input("Titik (X, 0) dari batas finishing: X =", value=25)
+    # Total Produksi Unit
+    st.markdown("### Total Produksi Unit")
+    x2 = st.number_input("Produksi Unit Meja", value=80)
+    y3 = st.number_input("Produksi Unit Kursi", value=25)
 
     # Hitung nilai Z
     z1 = 0
@@ -94,24 +93,7 @@ with tab1:
 
     st.success(f"💡 Solusi optimal: {solusi} dengan keuntungan maksimum sebesar Rp {z_opt:,.0f}")
 
-    # === GRAFIK 1: Titik Pojok dan Fungsi Objektif ===
-    st.markdown("### 📊 Visualisasi Titik Pojok dan Fungsi Objektif")
-    fig1, ax1 = plt.subplots()
-    ax1.plot([0, 0, y3], [0, x2, 0], 'bo', label="Titik Pojok")
-    ax1.text(0, 0, ' (0,0)', fontsize=9)
-    ax1.text(0, x2, f' (0,{x2})', fontsize=9)
-    ax1.text(y3, 0, f' ({y3},0)', fontsize=9)
-
-    ax1.plot([0, y3], [x2, 0], 'r--', label='Garis Fungsi Objektif')
-    ax1.set_xlim(-5, max(60, y3 + 10))
-    ax1.set_ylim(-5, max(40, x2 + 10))
-    ax1.set_xlabel("X (Meja)")
-    ax1.set_ylabel("Y (Kursi)")
-    ax1.set_title("Visualisasi Titik Pojok & Fungsi Objektif")
-    ax1.legend()
-    st.pyplot(fig1)
-
-    # === GRAFIK 2: Perbandingan Produk vs Keuntungan dan Penjualan ===
+    # === GRAFIK: Perbandingan Produk vs Keuntungan dan Penjualan ===
     st.markdown("### 📈 Perbandingan Jumlah Produk terhadap Keuntungan & Penjualan")
 
     # Produk X (Meja)
@@ -167,6 +149,7 @@ with tab1:
     st.write(f"💰 **Total Penjualan Kursi (Y)**: {format_rupiah(total_penjualan_y)}")
     st.write(f"🧮 **Total Penjualan Keseluruhan**: {format_rupiah(total_penjualan)}")
     st.write(f"🎯 **Keuntungan Maksimum (Z opt)**: {format_rupiah(z_opt)}")
+    
 # =========================
 # TAB 2: EOQ
 # =========================
