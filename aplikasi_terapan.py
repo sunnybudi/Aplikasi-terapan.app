@@ -166,7 +166,7 @@ with tab1:
     ax2.set_title("Perbandingan Jumlah Produk vs Keuntungan & Penjualan")
     ax2.legend()
     ax2.margins(y=0.1, x=0.3)  # Tambah ruang agar label tidak terpotong
-    ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: format_rupiah(int(x)) if x != 0 else '0'))
+    ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x):,}'))
     st.pyplot(fig2)
 
     
