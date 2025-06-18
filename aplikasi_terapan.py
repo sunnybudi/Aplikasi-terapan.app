@@ -144,32 +144,19 @@ with tab1:
     width = 0.35  # lebar batang
     
     fig3, ax3 = plt.subplots(figsize=(20, 14))
-    # Set font global (opsional, tapi efisien)
-    plt.rcParams.update({'font.size': 10})
-    
-    # Atur label sumbu Y
-    ax3.set_yticks(x_pos)
-    ax3.set_yticklabels(kategori, fontsize=30)
-    
-    # Label sumbu X dan judul
-    ax3.set_xlabel("Rupiah", fontsize=24)
-    ax3.set_title("Perbandingan Penjualan dan Keuntungan", fontsize=30)
-    
-    # Legend dengan ukuran font lebih besar
-    ax3.legend(loc='lower right', fontsize=24)
     
     # Batang horizontal
     bar1 = ax3.barh(x_pos - width/2, keuntungan, height=width, color='skyblue', label='Keuntungan')
     bar2 = ax3.barh(x_pos + width/2, penjualan, height=width, color='lightgreen', label='Penjualan')
     
-    # Tampilkan label di dalam batang
+    # Label di dalam batang
     for bars in [bar1, bar2]:
         for bar in bars:
             value = int(bar.get_width())
             text = f"Rp {value:,.0f}".replace(",", ".")
             ax3.text(
                 bar.get_x() + bar.get_width() * 0.95,
-                bar.get_y() + bar.get_height()/2,
+                bar.get_y() + bar.get_height() / 2,
                 text,
                 ha='right', va='center',
                 fontsize=24,
@@ -177,12 +164,12 @@ with tab1:
                 fontweight='bold'
             )
     
-    # Label dan layout
+    # Atur label dan judul
     ax3.set_yticks(x_pos)
-    ax3.set_yticklabels(kategori)
-    ax3.set_xlabel("Rupiah")
+    ax3.set_yticklabels(kategori, fontsize=30)
+    ax3.set_xlabel("Rupiah", fontsize=30)
     ax3.set_title("Perbandingan Penjualan dan Keuntungan", fontsize=30)
-    ax3.legend(loc='lower right')
+    ax3.legend(loc='lower right', fontsize=24)
     
     plt.tight_layout()
     st.pyplot(fig3)
