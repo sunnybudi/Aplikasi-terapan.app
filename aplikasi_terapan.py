@@ -172,9 +172,8 @@ with tab1:
     ax2.legend()
     ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x):,}'.replace(",", ".")))
     
-    # ⬅️ Ini dia yang penting:
     plt.tight_layout()
-    
+    fig2.subplots_adjust(right=0.85)
     st.pyplot(fig2)
 
 # =========================
