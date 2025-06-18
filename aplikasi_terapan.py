@@ -159,7 +159,7 @@ with tab1:
                 bar.get_y() + bar.get_height()/2,
                 text,
                 ha='right', va='center',
-                fontsize=9,
+                fontsize=14,
                 color='black',
                 fontweight='bold'
             )
