@@ -52,11 +52,11 @@ with tab1:
 
     st.latex(r"Z = c₁X + c₂Y")
     st.write("""
-             Z    : Total yang ingin dioptimalkan — biasanya total biaya atau total keuntungan.
-             c₁   : Koefisien dari variabel X — artinya biaya atau keuntungan per unit X.
-             c₂   : Koefisien dari variabel Y — artinya biaya atau keuntungan per unit Y.
-             X    : Jumlah unit produk jenis pertama (misal: Meja)
-             Y    : Jumlah unit produk jenis kedua (misal: Kursi)
+    ### Z    : Total yang ingin dioptimalkan — biasanya total biaya atau total keuntungan.
+    c₁   : Koefisien dari variabel X — artinya biaya atau keuntungan per unit X.
+    c₂   : Koefisien dari variabel Y — artinya biaya atau keuntungan per unit Y.
+    X    : Jumlah unit produk jenis pertama (misal: Meja)
+    Y    : Jumlah unit produk jenis kedua (misal: Kursi)
     """)
 
     # ===============================
