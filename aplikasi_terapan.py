@@ -54,7 +54,7 @@ with tab1:
     | Produk | Waktu Kayu (jam) | Waktu Finishing (jam) | Keuntungan per unit |
     |--------|------------------|------------------------|----------------------|
     | Meja (X) | 4 jam           | 2 jam                 | Rp 400.000           |
-    | Kursi (Y)| 2 jam           | 1 jam                 | Rp 300.000           |
+    | Kursi (Y)| 2 jam           | 1 jam                 | Rp 200.000           |
     """)
 
     st.latex(r"Z = c₁X + c₂Y")
