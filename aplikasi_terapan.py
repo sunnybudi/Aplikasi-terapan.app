@@ -165,7 +165,7 @@ with tab1:
             )
     
     # --- Axis & Layout dengan font lebih besar ---
-    ax2.set_xlabel("Jumlah Produk", fontsize=20)
+    ax2.set_xlabel("Jumlah Produk", fontsize=14)
     ax2.set_ylabel("Rupiah", fontsize=20)
     ax2.set_title("Perbandingan Jumlah Produk vs Keuntungan & Penjualan", fontsize=20)
     ax2.legend(fontsize=12)
