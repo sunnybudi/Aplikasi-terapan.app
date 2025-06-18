@@ -40,7 +40,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 # ================================
 # TAB 1: Optimasi Produksi (Linear Programming)
 # ================================
-tab1, _ = st.tabs(["Optimasi Produksi", "Kosong"])  # Tab lain bisa diisi nanti
+tab1, _ = st.tabs(["Optimasi Produksi", "Kosong"])  # Tab lainnya bisa disesuaikan
 
 with tab1:
     st.header("1️⃣ Optimasi Produksi (Linear Programming)")
@@ -115,34 +115,34 @@ with tab1:
     st.markdown("### 📈 Perbandingan Jumlah Produk terhadap Keuntungan & Penjualan")
 
     # Produk X (Meja)
-    produk_x = list(range(0, y3 + 20, 20))
+    produk_x = list(range(0, y3 + 20, 10))
     keuntungan_x = [c1 * x for x in produk_x]
-    penjualan_x = [x * c1 for x in produk_x]  # Sama dalam konteks ini, tapi dipisah untuk fleksibilitas
+    penjualan_x = [x * c1 for x in produk_x]
 
     # Produk Y (Kursi)
-    produk_y = list(range(0, x2 + 20, 20))
+    produk_y = list(range(0, x2 + 20, 10))
     keuntungan_y = [c2 * y for y in produk_y]
-    penjualan_y = [y * c2 for y in produk_y]  # Sama juga
+    penjualan_y = [y * c2 for y in produk_y]
 
     fig2, ax2 = plt.subplots()
 
     # Garis keuntungan
-    ax2.plot(produk_x, keuntungan_x, 'o-b', label='Meja (X) vs Keuntungan')
-    ax2.plot(produk_y, keuntungan_y, 'o-g', label='Kursi (Y) vs Keuntungan')
+    ax2.plot(produk_x, keuntungan_x, 'o-', color='blue', label='Keuntungan Meja (X)')
+    ax2.plot(produk_y, keuntungan_y, 'o-', color='green', label='Keuntungan Kursi (Y)')
 
     # Garis penjualan
-    ax2.plot(produk_x, penjualan_x, 'x--b', alpha=0.5, label='Meja (X) vs Penjualan')
-    ax2.plot(produk_y, penjualan_y, 'x--g', alpha=0.5, label='Kursi (Y) vs Penjualan')
+    ax2.plot(produk_x, penjualan_x, 'x--', color='skyblue', alpha=0.7, label='Penjualan Meja (X)')
+    ax2.plot(produk_y, penjualan_y, 'x--', color='lightgreen', alpha=0.7, label='Penjualan Kursi (Y)')
 
     # Format Rupiah
     def format_rupiah(nilai):
-        return f"Z={nilai:,.0f}".replace(",", ".")
+        return f"Rp {nilai:,.0f}".replace(",", ".")
 
-    # Label titik
-    def label_titik(produk, keuntungan, warna):
+    # Label beberapa titik penting
+    def label_titik(produk, nilai, warna):
         indeks = [0, len(produk)//2, len(produk)-1]
         for i in indeks:
-            ax2.text(produk[i], keuntungan[i], format_rupiah(keuntungan[i]),
+            ax2.text(produk[i], nilai[i], format_rupiah(nilai[i]),
                      fontsize=8, color=warna, ha='left', va='bottom')
 
     label_titik(produk_x, keuntungan_x, 'blue')
@@ -153,6 +153,21 @@ with tab1:
     ax2.set_title("Perbandingan Jumlah Produk vs Keuntungan & Penjualan")
     ax2.legend()
     st.pyplot(fig2)
+
+    # ================================
+    # TOTAL PENJUALAN DAN KEUNTUNGAN
+    # ================================
+    st.markdown("### 🧾 Ringkasan Total Penjualan dan Keuntungan")
+
+    total_penjualan_x = y3 * c1
+    total_penjualan_y = x2 * c2
+    total_penjualan = total_penjualan_x + total_penjualan_y
+
+    st.write(f"💰 **Total Penjualan Meja (X)**: {format_rupiah(total_penjualan_x)}")
+    st.write(f"💰 **Total Penjualan Kursi (Y)**: {format_rupiah(total_penjualan_y)}")
+    st.write(f"🧮 **Total Penjualan Keseluruhan**: {format_rupiah(total_penjualan)}")
+    st.write(f"🎯 **Keuntungan Maksimum (Z opt)**: {format_rupiah(z_opt)}")
+
 # =========================
 # TAB 2: EOQ
 # =========================
