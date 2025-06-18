@@ -37,16 +37,18 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "5. Model Lain"
 ])
 
-# ====================================
+# ================================
 # TAB 1: Optimasi Produksi (Linear Programming)
-# ====================================
+# ================================
+tab1, _ = st.tabs(["Optimasi Produksi", "Kosong"])  # Tab lain bisa diisi nanti
+
 with tab1:
     st.header("1️⃣ Optimasi Produksi (Linear Programming)")
     st.write("Studi kasus: Menentukan kombinasi produk meja dan kursi yang memaksimalkan keuntungan dengan keterbatasan sumber daya.")
 
     st.markdown("""
     ### Studi Kasus
-    Sebuah perusahaan memproduksi **Meja (Produk X)** dan **Kursi (Produk Y)**.  
+    Sebuah perusahaan memproduksi **Meja (X)** dan **Kursi (Y)**.  
     Setiap produk memerlukan waktu produksi:
 
     | Produk | Waktu Kayu (jam) | Waktu Finishing (jam) | Keuntungan per unit |
@@ -61,17 +63,17 @@ with tab1:
 
     st.latex(r"Z = c₁X + c₂Y")
 
-    # Harga per unit (disesuaikan)
+    # Input harga per unit
     st.markdown("### Harga per Unit (Keuntungan)")
     c1 = st.number_input("Harga per unit produk Meja (X)", value=400_000)
     c2 = st.number_input("Harga per unit produk Kursi (Y)", value=300_000)
 
-    # Titik batas produksi berdasarkan kendala
+    # Titik batas produksi dari kendala
     st.markdown("### Titik Batas Produksi Berdasarkan Kendala")
     x2 = st.number_input("Titik (0, Y) dari batas kayu: Y =", value=80)
     y3 = st.number_input("Titik (X, 0) dari batas finishing: X =", value=25)
 
-    # Perhitungan nilai Z
+    # Hitung nilai Z
     z1 = 0
     z2 = c2 * x2
     z3 = c1 * y3
@@ -92,7 +94,7 @@ with tab1:
 
     st.success(f"💡 Solusi optimal: {solusi} dengan keuntungan maksimum sebesar Rp {z_opt:,.0f}")
 
-    # === GRAFIK 1: Titik Pojok & Fungsi Objektif ===
+    # === GRAFIK 1: Titik Pojok dan Fungsi Objektif ===
     st.markdown("### 📊 Visualisasi Titik Pojok dan Fungsi Objektif")
     fig1, ax1 = plt.subplots()
     ax1.plot([0, 0, y3], [0, x2, 0], 'bo', label="Titik Pojok")
@@ -109,23 +111,34 @@ with tab1:
     ax1.legend()
     st.pyplot(fig1)
 
-    # === GRAFIK 2: Perbandingan Jumlah Produk vs Keuntungan ===
-    st.markdown("### 📈 Grafik Perbandingan Jumlah Produk dan Keuntungan")
+    # === GRAFIK 2: Perbandingan Produk vs Keuntungan dan Penjualan ===
+    st.markdown("### 📈 Perbandingan Jumlah Produk terhadap Keuntungan & Penjualan")
 
+    # Produk X (Meja)
     produk_x = list(range(0, y3 + 20, 20))
     keuntungan_x = [c1 * x for x in produk_x]
+    penjualan_x = [x * c1 for x in produk_x]  # Sama dalam konteks ini, tapi dipisah untuk fleksibilitas
 
+    # Produk Y (Kursi)
     produk_y = list(range(0, x2 + 20, 20))
     keuntungan_y = [c2 * y for y in produk_y]
+    penjualan_y = [y * c2 for y in produk_y]  # Sama juga
 
     fig2, ax2 = plt.subplots()
 
+    # Garis keuntungan
     ax2.plot(produk_x, keuntungan_x, 'o-b', label='Meja (X) vs Keuntungan')
     ax2.plot(produk_y, keuntungan_y, 'o-g', label='Kursi (Y) vs Keuntungan')
 
+    # Garis penjualan
+    ax2.plot(produk_x, penjualan_x, 'x--b', alpha=0.5, label='Meja (X) vs Penjualan')
+    ax2.plot(produk_y, penjualan_y, 'x--g', alpha=0.5, label='Kursi (Y) vs Penjualan')
+
+    # Format Rupiah
     def format_rupiah(nilai):
         return f"Z={nilai:,.0f}".replace(",", ".")
 
+    # Label titik
     def label_titik(produk, keuntungan, warna):
         indeks = [0, len(produk)//2, len(produk)-1]
         for i in indeks:
@@ -136,11 +149,10 @@ with tab1:
     label_titik(produk_y, keuntungan_y, 'green')
 
     ax2.set_xlabel("Jumlah Produk")
-    ax2.set_ylabel("Keuntungan (Z)")
-    ax2.set_title("Perbandingan Jumlah Produk dan Keuntungan")
+    ax2.set_ylabel("Rupiah")
+    ax2.set_title("Perbandingan Jumlah Produk vs Keuntungan & Penjualan")
     ax2.legend()
     st.pyplot(fig2)
-
 # =========================
 # TAB 2: EOQ
 # =========================
