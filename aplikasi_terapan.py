@@ -152,17 +152,21 @@ with tab1:
     def label_titik(produk, nilai, warna):
         indeks = [0, len(produk)//2, len(produk)-1]
         for i in indeks:
-            ax2.text(produk[i], nilai[i], format_rupiah(nilai[i]),
-                     fontsize=8, color=warna, ha='left', va='bottom')
+            ax2.text(produk[i], nilai[i] + 50_000, format_rupiah(nilai[i]),
+                 fontsize=8, color=warna, ha='left', va='bottom')
 
     label_titik(produk_x, keuntungan_x, 'blue')
     label_titik(produk_y, keuntungan_y, 'green')
-
+    label_titik(produk_x, penjualan_x, 'red')
+    label_titik(produk_y, penjualan_y, 'brown')
+    
     ax2.set_xlabel("Jumlah Produk")
     ax2.set_ylabel("Rupiah")
     ax2.set_title("Perbandingan Jumlah Produk vs Keuntungan & Penjualan")
     ax2.legend()
+    ax2.margins(y=0.2)  # Tambah ruang agar label tidak terpotong
     st.pyplot(fig2)
+
     
 # =========================
 # TAB 2: EOQ
