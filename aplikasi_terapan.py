@@ -37,9 +37,16 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "5. Model Lain"
 ])
 
-# ====================================
-# TAB 1: Optimasi Produksi (Linear Programming)
-# ====================================
+# =======================
+# Konfigurasi Halaman
+# =======================
+st.set_page_config(page_title="Optimasi Produksi Meja & Kursi", layout="centered")
+
+# =======================
+# Tab Aplikasi
+# =======================
+tab1, _ = st.tabs(["Optimasi Produksi", "Tab Lain"])
+
 with tab1:
     st.header("1️⃣ Optimasi Produksi (Linear Programming)")
     st.write("Studi kasus: Menentukan kombinasi produk meja dan kursi yang memaksimalkan keuntungan dengan keterbatasan sumber daya.")
@@ -49,76 +56,90 @@ with tab1:
     Sebuah perusahaan memproduksi **Meja (Produk X)** dan **Kursi (Produk Y)**.  
     Setiap produk memerlukan waktu produksi:
 
-    | Produk | Waktu Kayu (jam) | Waktu Finishing (jam) | Keuntungan per unit |
-    |--------|------------------|------------------------|----------------------|
-    | Meja (X) | 4 jam           | 2 jam                 | Rp 400.000           |
-    | Kursi (Y)| 2 jam           | 1 jam                 | Rp 300.000           |
+    | Produk     | Waktu Kayu (jam) | Waktu Finishing (jam) | Keuntungan per unit |
+    |------------|------------------|------------------------|----------------------|
+    | Meja (X)   | 4 jam            | 2 jam                 | Rp 400.000           |
+    | Kursi (Y)  | 2 jam            | 1 jam                 | Rp 300.000           |
+    """)
 
-    st.latex(r"Z = c₁X + c₂Y")
+    st.latex(r"Z = c_1 \cdot X + c_2 \cdot Y")
 
-    # Harga per unit (disesuaikan)
-    st.markdown("### Harga per Unit")
-    c1 = st.number_input("Harga per unit produk Meja (X)", value=400_000)
-    c2 = st.number_input("Harga per unit produk Kursi (Y)", value=300_000)
+    # ==================================
+    # INPUT DATA
+    # ==================================
+    st.markdown("### Masukkan Harga dan Jumlah Produksi")
 
-    # Jumlah Produksi Unit
-    st.markdown("Jumlah Produksi Unit")
-    x2 = st.number_input("Produksi Unit Meja", value=80)
-    y3 = st.number_input("Produksi Unit Kursi", value=25)
+    col1, col2 = st.columns(2)
+    with col1:
+        c1 = st.number_input("Harga per unit Meja (X)", value=400_000)
+        x = st.number_input("Jumlah produksi Meja (X)", value=25)
 
-    # Perhitungan nilai Z
-    z1 = 0
-    z2 = c2 * x2
-    z3 = c1 * y3
+    with col2:
+        c2 = st.number_input("Harga per unit Kursi (Y)", value=300_000)
+        y = st.number_input("Jumlah produksi Kursi (Y)", value=80)
 
-    # Menentukan solusi optimal
-    st.write("### 🔎 Hasil Perhitungan:")
-    st.write(f"Z(0, 0) = {z1}")
-    st.write(f"Z(0, {x2}) = Rp {z2:,.0f}")
-    st.write(f"Z({y3}, 0) = Rp {z3:,.0f}")
+    # ==================================
+    # PERHITUNGAN
+    # ==================================
+    st.markdown("### 🔎 Hasil Perhitungan Fungsi Objektif")
 
-    z_opt = max(z1, z2, z3)
-    if z_opt == z2:
-        solusi = f"(0, {x2})"
-    elif z_opt == z3:
-        solusi = f"({y3}, 0)"
+    z_meja = c1 * x
+    z_kursi = c2 * y
+    total_z = z_meja + z_kursi
+
+    st.write(f"Keuntungan dari {int(x)} Meja = Rp {z_meja:,.0f}")
+    st.write(f"Keuntungan dari {int(y)} Kursi = Rp {z_kursi:,.0f}")
+    st.success(f"💰 Total Keuntungan = Rp {total_z:,.0f}")
+
+    # Menentukan alternatif solusi optimal secara manual (jika hanya memilih satu produk)
+    z_0 = 0
+    z_x_only = c1 * x
+    z_y_only = c2 * y
+
+    if z_x_only >= z_y_only and z_x_only >= z_0:
+        solusi_optimal = f"(X={x}, Y=0)"
+        z_opt = z_x_only
+    elif z_y_only >= z_x_only and z_y_only >= z_0:
+        solusi_optimal = f"(X=0, Y={y})"
+        z_opt = z_y_only
     else:
-        solusi = "(0, 0)"
+        solusi_optimal = "(0, 0)"
+        z_opt = 0
 
-    st.success(f"💡 Solusi optimal: {solusi} dengan keuntungan maksimum sebesar Rp {z_opt:,.0f}")
+    st.info(f"📌 Solusi Alternatif Maksimum (jika hanya satu produk): {solusi_optimal} dengan Z = Rp {z_opt:,.0f}")
 
-    # === GRAFIK: Perbandingan Jumlah Produk vs Keuntungan ===
+    # ==================================
+    # GRAFIK PERBANDINGAN KEUNTUNGAN
+    # ==================================
     st.markdown("### 📈 Grafik Perbandingan Jumlah Produk dan Keuntungan")
 
-    produk_x = list(range(0, y3 + 20, 20))
-    keuntungan_x = [c1 * x for x in produk_x]
+    # Dataset
+    produk_x = list(range(0, int(x)+20, 10))
+    keuntungan_x = [c1 * i for i in produk_x]
 
-    produk_y = list(range(0, x2 + 20, 20))
-    keuntungan_y = [c2 * y for y in produk_y]
+    produk_y = list(range(0, int(y)+20, 10))
+    keuntungan_y = [c2 * j for j in produk_y]
 
-    fig2, ax2 = plt.subplots()
+    fig, ax = plt.subplots()
 
-    ax2.plot(produk_x, keuntungan_x, 'o-b', label='Meja (X) vs Keuntungan')
-    ax2.plot(produk_y, keuntungan_y, 'o-g', label='Kursi (Y) vs Keuntungan')
+    # Garis keuntungan meja
+    ax.plot(produk_x, keuntungan_x, 'o-b', label='Meja (X) vs Keuntungan')
+    # Garis keuntungan kursi
+    ax.plot(produk_y, keuntungan_y, 'o-g', label='Kursi (Y) vs Keuntungan')
 
-    def format_rupiah(nilai):
-        return f"Z={nilai:,.0f}".replace(",", ".")
+    # Tambahkan titik aktual produksi
+    ax.plot(x, z_meja, 's', color='blue', label=f'Meja Aktual ({int(x)}, Rp {z_meja:,.0f})')
+    ax.plot(y, z_kursi, 's', color='green', label=f'Kursi Aktual ({int(y)}, Rp {z_kursi:,.0f})')
 
-    def label_titik(produk, keuntungan, warna):
-        indeks = [0, len(produk)//2, len(produk)-1]
-        for i in indeks:
-            ax2.text(produk[i], keuntungan[i], format_rupiah(keuntungan[i]),
-                     fontsize=8, color=warna, ha='left', va='bottom')
+    # Tambahkan total keuntungan
+    ax.plot(x + y, total_z, 'd', color='purple', label=f'Total Produksi ({int(x+y)}, Rp {total_z:,.0f})')
 
-    label_titik(produk_x, keuntungan_x, 'blue')
-    label_titik(produk_y, keuntungan_y, 'green')
-
-    ax2.set_xlabel("Jumlah Produk")
-    ax2.set_ylabel("Keuntungan (Z)")
-    ax2.set_title("Perbandingan Jumlah Produk dan Keuntungan")
-    ax2.legend()
-    st.pyplot(fig2)
-
+    # Label grafik
+    ax.set_xlabel("Jumlah Produk")
+    ax.set_ylabel("Keuntungan (Z)")
+    ax.set_title("Perbandingan Jumlah Produk dan Keuntungan")
+    ax.legend()
+    st.pyplot(fig)
 # =========================
 # TAB 2: EOQ
 # =========================
