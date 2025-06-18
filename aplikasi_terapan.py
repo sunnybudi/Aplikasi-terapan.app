@@ -93,62 +93,61 @@ with tab1:
 
     st.success(f"💡 Solusi optimal: {solusi} dengan keuntungan maksimum sebesar Rp {z_opt:,.0f}")
 
-    # === GRAFIK: Perbandingan Produk vs Keuntungan dan Penjualan ===
-    st.markdown("### 📈 Perbandingan Jumlah Produk terhadap Keuntungan & Penjualan")
+        # === GRAFIK Linear Programming ===
+    st.markdown("### 📊 Grafik Wilayah Layak & Solusi Optimal")
 
-    # Produk X (Meja)
-    produk_x = list(range(0, y3 + 20, 10))
-    keuntungan_x = [c1 * x for x in produk_x]
-    penjualan_x = [x * c1 for x in produk_x]
+    x_vals = np.linspace(0, 70, 400)
+    y1 = (240 - 4 * x_vals) / 2  # kendala kayu: 4X + 2Y ≤ 240 → Y = (240 - 4X)/2
+    y2 = 100 - 2 * x_vals        # kendala finishing: 2X + Y ≤ 100 → Y = 100 - 2X
 
-    # Produk Y (Kursi)
-    produk_y = list(range(0, x2 + 20, 10))
-    keuntungan_y = [c2 * y for y in produk_y]
-    penjualan_y = [y * c2 for y in produk_y]
+    fig, ax = plt.subplots()
 
-    fig2, ax2 = plt.subplots()
+    ax.plot(x_vals, y1, label="4X + 2Y = 240 (Kayu)", color="blue")
+    ax.plot(x_vals, y2, label="2X + Y = 100 (Finishing)", color="green")
 
-    # Garis keuntungan
-    ax2.plot(produk_x, keuntungan_x, 'o-', color='blue', label='Keuntungan Meja (X)')
-    ax2.plot(produk_y, keuntungan_y, 'o-', color='green', label='Keuntungan Kursi (Y)')
+    # Wilayah layak (shaded)
+    y_min = np.minimum(y1, y2)
+    y_min = np.clip(y_min, 0, None)
+    ax.fill_between(x_vals, 0, y_min, where=(y_min >= 0), color='gray', alpha=0.3, label="Wilayah Layak")
 
-    # Garis penjualan
-    ax2.plot(produk_x, penjualan_x, 'x--', color='skyblue', alpha=0.7, label='Penjualan Meja (X)')
-    ax2.plot(produk_y, penjualan_y, 'x--', color='lightgreen', alpha=0.7, label='Penjualan Kursi (Y)')
+    # Titik pojok (hitungan manual dari perpotongan kendala)
+    titik = {
+        "(0,0)": (0, 0),
+        "(0,100)": (0, 100),      # Y dari kendala finishing
+        "(60,0)": (60, 0),        # X dari kendala kayu
+        "(20,60)": (20, 60),      # titik potong 2 kendala
+    }
 
-    # Format Rupiah
-    def format_rupiah(nilai):
-        return f"Rp {nilai:,.0f}".replace(",", ".")
+    hasil = {}
+    for nama, (x, y) in titik.items():
+        z = c1 * x + c2 * y
+        hasil[nama] = z
+        ax.plot(x, y, 'ro')
+        ax.text(x + 0.5, y + 1, nama, fontsize=8)
 
-    # Label beberapa titik penting
-    def label_titik(produk, nilai, warna):
-        indeks = [0, len(produk)//2, len(produk)-1]
-        for i in indeks:
-            ax2.text(produk[i], nilai[i], format_rupiah(nilai[i]),
-                     fontsize=8, color=warna, ha='left', va='bottom')
+    # Titik solusi optimal
+    titik_opt = max(hasil, key=hasil.get)
+    x_opt, y_opt = titik[titik_opt]
+    z_opt = hasil[titik_opt]
+    ax.plot(x_opt, y_opt, 'go', markersize=10, label="Solusi Optimal")
 
-    label_titik(produk_x, keuntungan_x, 'blue')
-    label_titik(produk_y, keuntungan_y, 'green')
-
-    ax2.set_xlabel("Jumlah Produk")
-    ax2.set_ylabel("Rupiah")
-    ax2.set_title("Perbandingan Jumlah Produk vs Keuntungan & Penjualan")
-    ax2.legend()
-    st.pyplot(fig2)
+    ax.set_xlim(0, 70)
+    ax.set_ylim(0, 110)
+    ax.set_xlabel("Jumlah Meja (X)")
+    ax.set_ylabel("Jumlah Kursi (Y)")
+    ax.set_title("Wilayah Layak & Titik Solusi Linear Programming")
+    ax.legend()
+    st.pyplot(fig)
 
     # ================================
     # TOTAL PENJUALAN DAN KEUNTUNGAN
     # ================================
     st.markdown("### 🧾 Ringkasan Total Penjualan dan Keuntungan")
 
-    total_penjualan_x = y3 * c1
-    total_penjualan_y = x2 * c2
-    total_penjualan = total_penjualan_x + total_penjualan_y
+    st.write(f"💰 **Jumlah Meja (X)**: {x_opt}")
+    st.write(f"💰 **Jumlah Kursi (Y)**: {y_opt}")
+    st.write(f"🎯 **Keuntungan Maksimum (Z)**: {format_rupiah(z_opt)}")
 
-    st.write(f"💰 **Total Penjualan Meja (X)**: {format_rupiah(total_penjualan_x)}")
-    st.write(f"💰 **Total Penjualan Kursi (Y)**: {format_rupiah(total_penjualan_y)}")
-    st.write(f"🧮 **Total Penjualan Keseluruhan**: {format_rupiah(total_penjualan)}")
-    st.write(f"🎯 **Keuntungan Maksimum (Z opt)**: {format_rupiah(z_opt)}")
     
 # =========================
 # TAB 2: EOQ
