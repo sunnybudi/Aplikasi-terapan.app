@@ -154,7 +154,7 @@ with tab1:
         for bar in bars:
             value = int(bar.get_width())
             text = f"Rp {value:,.0f}".replace(",", ".")
-            ax3.text(
+            ax2.text(
                 bar.get_x() + bar.get_width() * 0.95,
                 bar.get_y() + bar.get_height() / 2,
                 text,
