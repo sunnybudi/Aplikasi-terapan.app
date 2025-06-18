@@ -144,10 +144,24 @@ with tab1:
     width = 0.35  # lebar batang
     
     fig3, ax3 = plt.subplots(figsize=(16, 10))
+
+    # Set font global (opsional, tapi efisien)
+    plt.rcParams.update({'font.size': 14})
+    
+    # Atur label sumbu Y
+    ax3.set_yticks(x_pos)
+    ax3.set_yticklabels(kategori, fontsize=14)
+    
+    # Label sumbu X dan judul
+    ax3.set_xlabel("Rupiah", fontsize=14)
+    ax3.set_title("Perbandingan Penjualan dan Keuntungan", fontsize=14)
+    
+    # Legend dengan ukuran font lebih besar
+    ax3.legend(loc='lower right', fontsize=14)
     
     # Batang horizontal
-    bar1 = ax3.barh(x_pos - width/8, keuntungan, height=width, color='skyblue', label='Keuntungan')
-    bar2 = ax3.barh(x_pos + width/8, penjualan, height=width, color='lightgreen', label='Penjualan')
+    bar1 = ax3.barh(x_pos - width/2, keuntungan, height=width, color='skyblue', label='Keuntungan')
+    bar2 = ax3.barh(x_pos + width/2, penjualan, height=width, color='lightgreen', label='Penjualan')
     
     # Tampilkan label di dalam batang
     for bars in [bar1, bar2]:
