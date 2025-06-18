@@ -150,17 +150,19 @@ with tab1:
     ax2.plot(produk_x, penjualan_x, 'x--', color='darkblue', alpha=0.7, label='Penjualan Meja (X)')
     ax2.plot(produk_y, penjualan_y, 'x--', color='darkgreen', alpha=0.7, label='Penjualan Kursi (Y)')
 
-        # Hanya beri label di titik akhir setiap garis
+    # Label hanya di ujung akhir garis
     def label_akhir(produk, nilai, warna, offset_y=50_000, offset_x=0):
-        i = -1  # indeks terakhir
-        if nilai[i] != 0:
-            ax2.text(produk[i] + offset_x, nilai[i] + offset_y,
-                     format_rupiah(nilai[i]), fontsize=8, color=warna, ha='left', va='bottom')
+        if len(produk) > 0:
+            ax2.text(produk[-1] + offset_x, nilai[-1] + offset_y,
+                     format_rupiah(nilai[-1]), fontsize=9,
+                     color=warna, ha='left', va='bottom')
+    
+    # Panggil hanya sekali untuk tiap garis
+    label_akhir(produk_x, keuntungan_x, 'blue')
+    label_akhir(produk_y, keuntungan_y, 'green', offset_x=0.5)
+    label_akhir(produk_x, penjualan_x, 'darkblue', offset_y=100_000)
+    label_akhir(produk_y, penjualan_y, 'darkgreen', offset_y=100_000, offset_x=0.5)
 
-    label_akhir(produk_x, keuntungan_x, 'black')
-    label_akhir(produk_y, keuntungan_y, 'black', offset_x=0.5)
-    label_akhir(produk_x, penjualan_x, 'black', offset_y=100_000)
-    label_akhir(produk_y, penjualan_y, 'black', offset_y=100_000, offset_x=0.5)
 
     ax2.set_xlabel("Jumlah Produk")
     ax2.set_ylabel("Rupiah")
@@ -170,7 +172,6 @@ with tab1:
     ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x):,}'))
     st.pyplot(fig2)
 
-    
 # =========================
 # TAB 2: EOQ
 # =========================
