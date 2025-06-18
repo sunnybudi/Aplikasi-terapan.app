@@ -143,7 +143,7 @@ with tab1:
     x_pos = np.arange(len(kategori))
     width = 0.35  # lebar batang
     
-    fig3, ax2 = plt.subplots(figsize=(20, 14))
+    fig2, ax2 = plt.subplots(figsize=(20, 14))
     
     # Batang horizontal
     bar1 = ax2.barh(x_pos - width/2, keuntungan, height=width, color='skyblue', label='Keuntungan')
