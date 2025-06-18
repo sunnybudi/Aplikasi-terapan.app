@@ -136,9 +136,9 @@ with tab1:
     st.markdown("### 📊 Diagram Batang: Perbandingan Penjualan dan Keuntungan")
     
     # Data per kategori
-    kategori = ['Meja (X)', 'Kursi (Y)']
-    penjualan = [total_penjualan_meja, total_penjualan_kursi]
-    keuntungan = [total_laba_meja, total_laba_kursi]
+    kategori = ['Meja (X)', 'Kursi (Y)', 'Total']
+    penjualan = [total_penjualan_meja, total_penjualan_kursi, total_penjualan]
+    keuntungan = [total_laba_meja, total_laba_kursi, total_keuntungan_bersih]
     
     x_pos = np.arange(len(kategori))
     width = 0.35  # lebar batang
@@ -161,9 +161,8 @@ with tab1:
                 ha='right', va='center',
                 fontsize=9,
                 color='black',
-                fontweight='bold'  # ➤ Teks jadi tebal
+                fontweight='bold'
             )
-
     
     # Label dan layout
     ax3.set_yticks(x_pos)
