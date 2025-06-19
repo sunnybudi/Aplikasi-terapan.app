@@ -203,8 +203,8 @@ with tab2:
     st.latex(r"""
     \begin{aligned}
     \textbf{EOQ} &= \sqrt{\frac{2DS}{H}} \\
-    \textbf{Frekuensi Pemesanan} &= \frac{D}{EOQ} \\
-    \textbf{Interval Pemesanan} &= \frac{365}{\text{Frekuensi}}
+    \textbf{N} &= \frac{D}{EOQ} \\
+    \textbf{T} &= \frac{365}{\text{N}}
     \end{aligned}
     """)
 
@@ -215,11 +215,13 @@ with tab2:
         D     = Demand (jumlah kebutuhan (tuntutan barang per tahun)
         S     = Ordering Cost (biaya pemesanan per pesanan)
         H     = Holding Cost (biaya penyimpanan per unit per tahun)
+        N     = Frekuensi pemesanan
+        T     = Interval pemesanan
         """)
     
-    D = st.number_input("📅 Permintaan Tahunan (unit)", value=10000)
-    S = st.number_input("🛒 Biaya Pemesanan per Order (Rp)", value=50000)
-    H = st.number_input("🏬 Biaya Penyimpanan per Unit per Tahun (Rp)", value=2000)
+    D = st.number_input("📅 Permintaan Tahunan (D/unit)", value=10000)
+    S = st.number_input("🛒 Biaya Pemesanan per Order (S/Rp)", value=50000)
+    H = st.number_input("🏬 Biaya Penyimpanan per Unit per Tahun (H/Rp)", value=2000)
 
     if D > 0 and S > 0 and H > 0:
         EOQ = math.sqrt((2 * D * S) / H)
@@ -227,8 +229,8 @@ with tab2:
         cycle_days = 365 / freq
 
         st.success(f"EOQ: {EOQ:.2f} unit")
-        st.write(f"Frekuensi Pemesanan: {freq:.2f} kali/tahun")
-        st.write(f"Interval Pemesanan: {cycle_days:.0f} hari")
+        st.success(f"N: {freq:.2f} kali/tahun")
+        st.success(f"T: {cycle_days:.0f} hari")
 
         fig, ax = plt.subplots()
         ax.bar(["Permintaan", "EOQ"], [D, EOQ], color=['red', 'green'])
