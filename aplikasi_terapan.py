@@ -202,12 +202,12 @@ with tab2:
 
     st.subheader("📐 Rumus-Rumus:")
    st.latex(r"""
-    \begin{aligned}
-    \textbf{EOQ} &= \sqrt{\frac{2DS}{H}} \\
-    \textbf{Frekuensi Pemesanan} &= \frac{D}{EOQ} \\
-    \textbf{Interval Pemesanan} &= \frac{365}{\text{Frekuensi}}
-    \end{aligned}
-    """)
+   \begin{aligned}
+   \textbf&{EOQ} &= \sqrt{\frac{2DS}{H}} \\
+   \textbf&{Frekuensi Pemesanan} &= \frac{D}{EOQ} \\
+   \textbf&{Interval Pemesanan} &= \frac{365}{\text{Frekuensi}}
+   \end{aligned}
+   """)
 
     
     st.markdown("""Keterangan""")
