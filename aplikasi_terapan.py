@@ -229,11 +229,11 @@ with tab2:
         cycle_days = 365 / freq
 
         st.success(
-            f"
-            EOQ: {EOQ:.2f} unit")
-            N: {freq:.2f} kali/tahun")
-            T: {cycle_days:.0f} hari")
-            "
+            f"""
+            EOQ: {EOQ:.2f} unit
+            N: {freq:.2f} kali/tahun
+            T: {cycle_days:.0f} hari
+            """
         )
 
         fig, ax = plt.subplots()
