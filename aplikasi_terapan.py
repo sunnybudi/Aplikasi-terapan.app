@@ -166,21 +166,21 @@ with tab1:
                 bar.get_height() * 0.98,
                 text,
                 ha='center', va='top',
-                fontsize=30,
+                fontsize=10,
                 color='black',
                 fontweight='bold'
             )
     
     # Axis & Layout dengan font lebih besar
-    ax2.set_ylabel("Rupiah", fontsize=40)
-    ax2.set_xlabel("Kategori Produk", fontsize=40)
-    ax2.set_title("Perbandingan Penjualan dan Keuntungan", fontsize=40)
+    ax2.set_ylabel("Rupiah", fontsize=10)
+    ax2.set_xlabel("Kategori Produk", fontsize=10)
+    ax2.set_title("Perbandingan Penjualan dan Keuntungan", fontsize=10)
     ax2.set_xticks(x_pos)
-    ax2.set_xticklabels(kategori, fontsize=35)
-    ax2.legend(fontsize=35)
+    ax2.set_xticklabels(kategori, fontsize=10)
+    ax2.legend(fontsize=10)
     
     # Ukuran angka pada sumbu
-    ax2.tick_params(axis='y', labelsize=35)
+    ax2.tick_params(axis='y', labelsize=10)
     
     # Format angka sumbu Y
     ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x):,}'.replace(",", ".")))
