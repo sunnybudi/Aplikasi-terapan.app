@@ -64,28 +64,20 @@ with tab1:
     # Input Harga dan Keuntungan
     # ===============================
     st.markdown("### Harga Jual dan Keuntungan per Unit")
-    col1, col2 = st.columns(2)
+    col1, col2= st.columns(2)
     with col1:
+        x = st.number_input("Jumlah Produksi Meja (X)", value=10)
+        laba_meja = st.number_input("Keuntungan per Meja (c₁)", value=400_000)
         harga_meja = st.number_input("Harga Jual Meja (X)", value=800_000)
-        harga_kursi = st.number_input("Harga Jual Kursi (Y)", value=500_000)
     with col2:
-        laba_meja = st.number_input("Keuntungan per Meja (X)", value=400_000)
-        laba_kursi = st.number_input("Keuntungan per Kursi (Y)", value=200_000)
+        y = st.number_input("Jumlah Produksi Kursi (Y)", value=20)
+        laba_kursi = st.number_input("Keuntungan per Kursi (c₂)", value=200_000)
+        harga_kursi = st.number_input("Harga Jual Kursi (Y)", value=500_000)
 
     # Hitung biaya produksi dari selisih harga dan keuntungan
     biaya_meja = harga_meja - laba_meja
     biaya_kursi = harga_kursi - laba_kursi
-
-    # ===============================
-    # Input Jumlah Produksi
-    # ===============================
-    st.markdown("### Jumlah Produksi")
-    col3, col4 = st.columns(2)
-    with col3:
-        x = st.number_input("Jumlah Produksi Meja (X)", value=10)
-    with col4:
-        y = st.number_input("Jumlah Produksi Kursi (Y)", value=20)
-
+    
     # ===============================
     # Fungsi Format Rupiah
     # ===============================
