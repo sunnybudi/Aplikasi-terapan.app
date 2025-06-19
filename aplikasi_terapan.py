@@ -207,9 +207,9 @@ with tab2:
     
     st.markdown("""Keterangan""")
     st.code("""
-        EOQ   = Economic Order Quantity (jumlah pemesanan ekonomis)\
-        D     = Demand (jumlah kebutuhan/tuntutan barang per tahun)\
-        S     = Ordering Cost (biaya pemesanan per pesanan)\
+        EOQ   = Economic Order Quantity (jumlah pemesanan ekonomis)\\
+        D     = Demand (jumlah kebutuhan/tuntutan barang per tahun)\\
+        S     = Ordering Cost (biaya pemesanan per pesanan)\\
         H     = Holding Cost (biaya penyimpanan per unit per tahun)
         """)
     
