@@ -53,13 +53,13 @@ with tab1:
 
     st.latex(r"Z = c₁X + c₂Y")
     st.markdown("""Keterangan""")
-    st.code("""
-        Z    : Total biaya atau total keuntungan.
-        c₁   : Biaya atau keuntungan per unit X.
-        c₂   : Biaya atau keuntungan per unit Y.
-        X    : Jumlah unit produk (misal: Meja)
-        Y    : Jumlah unit produk (misal: Kursi)
-        """)
+    st.markdown(r"""
+    Z    : Total biaya atau total keuntungan.
+    c₁   : Biaya atau keuntungan per unit X.
+    c₂   : Biaya atau keuntungan per unit Y.
+    X    : Jumlah unit produk (misal: Meja)
+    Y    : Jumlah unit produk (misal: Kursi)
+    """)
 
     # ===============================
     # Input Harga dan Keuntungan
@@ -269,9 +269,8 @@ with tab3:
     st.markdown("""
         ### 🔧 Studi Kasus
         PT Kreasi Untung Indonesia yang merupakan sebuah perusahaan furnitur memproduksi Meja dan Kursi. 
-        Karena perusahaan ingin menerapkan sistem pembelian yang teratur, maka dari itu untuk melakukan pembelian
-        customer harus melakukan transaksi pemesanan melalui web pembelian. Untuk melihat efektivitas ini maka pihak
-        manajemen membuat sebuah server antrian yang dikhususkan untuk memantau kelancaran pembelian di dalam website.
+        Perusahaan menginginkan semua aktivitas pembelian dialihkan ke website, maka dari itu diperlukan aplikasi
+        untuk memantau proses pembelian di server web perusahaan.
     """)
 
     # Tampilkan Rumus Umum Sebelum Input
