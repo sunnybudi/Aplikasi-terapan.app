@@ -237,7 +237,7 @@ with tab2:
         )
 
         st.markdown("### 📊 Diagram EOQ dan Permintaan Tahunan")
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=(25, 15))
         labels = ["Permintaan", "EOQ"]
         values = [D, EOQ]
         colors = ['red', 'green']
