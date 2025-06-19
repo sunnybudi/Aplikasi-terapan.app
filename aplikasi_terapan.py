@@ -19,8 +19,8 @@ Aplikasi ini memiliki 5 model matematika industri:
 1. **Optimasi Produksi**
 2. **Model Persediaan EOQ**  
 3. **Model Antrian (M/M/1)**  
-4. **Turunan Parsial**  
-5. **Model Lain (Kebutuhan Bahan Baku)**
+4. **Model Lain** 
+5. **Turunan Parsial** 
 
 Masukkan data sesuai tab. Hasil & grafik akan muncul secara otomatis.
 """)
@@ -34,8 +34,8 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "1. Optimasi Produksi",
     "2. Model Persediaan (EOQ)",
     "3. Model Antrian (M/M/1)",
-    "4. Turunan Parsial",
-    "5. Model Lain"
+    "4. Model Lain",
+    "5. Turunan Parsial"
 ])
 
 # ================================================
@@ -332,9 +332,41 @@ with tab3:
         st.pyplot(fig2)
 
 # =========================
-# TAB 4: Turunan Parsial
+# TAB 4: Kebutuhan Bahan Baku
 # =========================
 with tab4:
+    st.header("5️⃣ Kebutuhan Bahan Baku")
+    st.write("Studi kasus: Kebutuhan bahan baku untuk pemenuhan produksi.")
+    produk = st.text_input("Nama Produk:", "Meja")
+    jumlah_produk = st.number_input("Jumlah Produk yang Akan Diproduksi:", min_value=0, value=100)
+
+    st.markdown("Masukkan kebutuhan bahan baku per unit produk:")
+    bahan1 = st.text_input("Nama Bahan Baku 1:", "Kayu")
+    jumlah1 = st.number_input(f"Jumlah {bahan1} per unit {produk}:", min_value=0, value=5)
+
+    bahan2 = st.text_input("Nama Bahan Baku 2:", "Paku")
+    jumlah2 = st.number_input(f"Jumlah {bahan2} per unit {produk}:", min_value=0, value=10)
+
+    total1 = jumlah_produk * jumlah1
+    total2 = jumlah_produk * jumlah2
+
+    st.subheader("📐 Rumus Perhitungan")
+    st.latex(r"\text{Total Bahan Baku} = \text{Jumlah Produk} \times \text{Jumlah Bahan Baku per Unit}")
+
+    st.success("✅ Total Kebutuhan Bahan Baku:")
+    st.write(f"🔹 {bahan1}: {total1} unit")
+    st.write(f"🔹 {bahan2}: {total2} unit")
+
+    fig, ax = plt.subplots()
+    ax.bar([bahan1, bahan2], [total1, total2], color=['green', 'brown'])
+    ax.set_ylabel("Jumlah Kebutuhan")
+    ax.set_title("Total Kebutuhan Bahan Baku")
+    st.pyplot(fig)
+
+# =========================
+# TAB 5: Turunan Parsial
+# =========================
+with tab5:
     st.header("4️⃣ Turunan Parsial")
     x, y = sp.symbols('x y')
     fungsi = st.text_input("Masukkan f(x, y):", "x**3 + y + y**2")
@@ -369,35 +401,3 @@ with tab4:
         st.pyplot(fig)
     except:
         st.error("Fungsi tidak valid. Gunakan format Python: x**2 + y**2")
-
-# =========================
-# TAB 5: Kebutuhan Bahan Baku
-# =========================
-with tab5:
-    st.header("5️⃣ Kebutuhan Bahan Baku")
-    st.write("Studi kasus: Kebutuhan bahan baku untuk pemenuhan produksi.")
-    produk = st.text_input("Nama Produk:", "Meja")
-    jumlah_produk = st.number_input("Jumlah Produk yang Akan Diproduksi:", min_value=0, value=100)
-
-    st.markdown("Masukkan kebutuhan bahan baku per unit produk:")
-    bahan1 = st.text_input("Nama Bahan Baku 1:", "Kayu")
-    jumlah1 = st.number_input(f"Jumlah {bahan1} per unit {produk}:", min_value=0, value=5)
-
-    bahan2 = st.text_input("Nama Bahan Baku 2:", "Paku")
-    jumlah2 = st.number_input(f"Jumlah {bahan2} per unit {produk}:", min_value=0, value=10)
-
-    total1 = jumlah_produk * jumlah1
-    total2 = jumlah_produk * jumlah2
-
-    st.subheader("📐 Rumus Perhitungan")
-    st.latex(r"\text{Total Bahan Baku} = \text{Jumlah Produk} \times \text{Jumlah Bahan Baku per Unit}")
-
-    st.success("✅ Total Kebutuhan Bahan Baku:")
-    st.write(f"🔹 {bahan1}: {total1} unit")
-    st.write(f"🔹 {bahan2}: {total2} unit")
-
-    fig, ax = plt.subplots()
-    ax.bar([bahan1, bahan2], [total1, total2], color=['green', 'brown'])
-    ax.set_ylabel("Jumlah Kebutuhan")
-    ax.set_title("Total Kebutuhan Bahan Baku")
-    st.pyplot(fig)
