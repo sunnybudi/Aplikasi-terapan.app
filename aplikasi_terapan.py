@@ -201,7 +201,7 @@ with tab2:
 
 
     st.subheader("📐 Rumus-Rumus:")
-   st.latex(r"""
+   st.latex("""
     \begin{aligned}
     \textbf&{EOQ} &= \sqrt{\frac{2DS}{H}} \\
     \textbf&{Frekuensi Pemesanan} &= \frac{D}{EOQ} \\
