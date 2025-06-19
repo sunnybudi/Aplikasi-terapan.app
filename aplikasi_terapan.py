@@ -288,10 +288,15 @@ with tab3:
 
     st.markdown("""Keterangan""")
     st.code("""
-        λ: Tingkat kedatangan pelanggan per satuan waktu (misal: pelanggan per jam)
-        μ: Tingkat pelayanan pelanggan per satuan waktu
-        ρ: Utilisasi server, yaitu perbandingan antara kedatangan dan pelayanan (𝜌=𝜆/𝜇)
-        L: Jumlah rata-rata pelanggan dalam sistem (termasuk antrian dan sedang dilayani)
+        - \( \lambda \): Tingkat kedatangan pelanggan per satuan waktu (misalnya pelanggan per jam)  
+        - \( \mu \): Tingkat pelayanan pelanggan per satuan waktu  
+        - \( \rho \): Utilisasi server, yaitu \( \rho = \lambda / \mu \)  
+        - \( L \): Rata-rata jumlah pelanggan dalam sistem (antrian + dilayani)  
+        - \( L_q \): Rata-rata jumlah pelanggan dalam antrian  
+        - \( W \): Waktu rata-rata pelanggan berada dalam sistem  
+        - \( W_q \): Waktu rata-rata pelanggan dalam antrian  
+        - \( P_0 \): Probabilitas sistem kosong (tidak ada pelanggan)  
+        - \( P_n \): Probabilitas terdapat n pelanggan dalam sistem  
         """)
 
     # Input parameter
