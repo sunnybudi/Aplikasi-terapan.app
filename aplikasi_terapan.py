@@ -273,8 +273,8 @@ with tab3:
         management membuat sebuah server antrian yang dikhususkan untuk memantau kelancaran pembelian didalam website.
         """)
 
-        # Tampilkan Rumus
-        st.subheader("🧮 Rumus-Rumus Model M/M/1")
+    # Tampilkan Rumus
+    st.subheader("🧮 Rumus-Rumus Model M/M/1")
         st.latex(rf"""
         \begin{{align*}}
         \rho &= \frac{{\lambda}}{{\mu}} = \frac{{{lambd}}}{{{mu}}} = {rho:.3f} \\
