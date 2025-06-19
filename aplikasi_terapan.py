@@ -205,7 +205,7 @@ with tab2:
     st.latex(r"\text{Frekuensi Pemesanan} = \frac{D}{EOQ}")
     st.latex(r"\text{Interval Pemesanan} = \frac{365}{\text{Frekuensi}}")
     
-    st.write("""
+    st.markdown("""
         EOQ   = Economic Order Quantity (jumlah pemesanan ekonomis)\\
         D     = Demand (jumlah kebutuhan/tuntutan barang per tahun)\\
         S     = Ordering Cost (biaya pemesanan per pesanan)\\
