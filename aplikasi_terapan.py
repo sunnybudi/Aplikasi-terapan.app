@@ -266,29 +266,28 @@ with tab2:
 with tab3:
     st.header("3️⃣ Model Antrian (M/M/1)")
     st.markdown("""
-        ### Studi kasus
+        ### Studi Kasus
         PT Kreasi Untung Indonesia yang merupakan sebuah perusahaan furnitur memproduksi Meja dan Kursi. 
         Karena perusahaan ingin menerapkan sistem pembelian yang teratur, maka dari itu untuk melakukan pembelian
-        customer harus melakukan transaksi pemesanan melalui web pembelian. Untuk melihat efektifitas ini maka pihak
-        management membuat sebuah server antrian yang dikhususkan untuk memantau kelancaran pembelian didalam website.
-        """)
+        customer harus melakukan transaksi pemesanan melalui web pembelian. Untuk melihat efektivitas ini maka pihak
+        manajemen membuat sebuah server antrian yang dikhususkan untuk memantau kelancaran pembelian di dalam website.
+    """)
 
-    # Tampilkan Rumus
-    st.subheader("🧮 Rumus-Rumus Model M/M/1")
-        st.latex(rf"""
-        \begin{{align*}}
-        \rho &= \frac{{\lambda}}{{\mu}} = \frac{{{lambd}}}{{{mu}}} = {rho:.3f} \\
-        L &= \frac{{\lambda}}{{\mu - \lambda}} = \frac{{{lambd}}}{{{mu - lambd}}} = {L:.3f} \\
-        L_q &= \frac{{\lambda^2}}{{\mu(\mu - \lambda)}} = \frac{{{lambd}^2}}{{{mu}({mu - lambd})}} = {Lq:.3f} \\
-        W &= \frac{{1}}{{\mu - \lambda}} = \frac{{1}}{{{mu - lambd}}} = {W:.3f} \\
-        W_q &= \frac{{\lambda}}{{\mu(\mu - \lambda)}} = \frac{{{lambd}}}{{{mu}({mu - lambd})}} = {Wq:.3f} \\
-        P_0 &= 1 - \rho = 1 - {rho:.3f} = {P0:.3f}
-        \end{{align*}}
-        """)
-
+    # Tampilkan Rumus Umum Sebelum Input
+    st.subheader("📘 Rumus-Rumus Umum Model M/M/1")
+    st.latex(r"""
+    \begin{align*}
+    \rho &= \frac{\lambda}{\mu} \\
+    L &= \frac{\lambda}{\mu - \lambda} \\
+    L_q &= \frac{\lambda^2}{\mu(\mu - \lambda)} \\
+    W &= \frac{1}{\mu - \lambda} \\
+    W_q &= \frac{\lambda}{\mu(\mu - \lambda)} \\
+    P_0 &= 1 - \rho
+    \end{align*}
+    """)
 
     # Input parameter
-   col1, col2 = st.columns(2)
+    col1, col2 = st.columns(2)
     with col1:
         lambd = st.number_input("📥 Tingkat Kedatangan (λ) - pelanggan/jam", min_value=0, value=2)
     with col2:
@@ -300,10 +299,23 @@ with tab3:
         # Perhitungan
         rho = lambd / mu
         L = lambd / (mu - lambd)
-        Lq = (lambd**2) / (mu * (mu - lambd))
+        Lq = (lambd ** 2) / (mu * (mu - lambd))
         W = 1 / (mu - lambd)
         Wq = lambd / (mu * (mu - lambd))
         P0 = 1 - rho
+
+        # Tampilkan Rumus Dengan Nilai
+        st.subheader("🧮 Perhitungan Berdasarkan Input")
+        st.latex(rf"""
+        \begin{{align*}}
+        \rho &= \frac{{\lambda}}{{\mu}} = \frac{{{lambd}}}{{{mu}}} = {rho:.3f} \\
+        L &= \frac{{\lambda}}{{\mu - \lambda}} = \frac{{{lambd}}}{{{mu - lambd}}} = {L:.3f} \\
+        L_q &= \frac{{\lambda^2}}{{\mu(\mu - \lambda)}} = \frac{{{lambd}^2}}{{{mu}({mu - lambd})}} = {Lq:.3f} \\
+        W &= \frac{{1}}{{\mu - \lambda}} = \frac{{1}}{{{mu - lambd}}} = {W:.3f} \\
+        W_q &= \frac{{\lambda}}{{\mu(\mu - \lambda)}} = \frac{{{lambd}}}{{{mu}({mu - lambd})}} = {Wq:.3f} \\
+        P_0 &= 1 - \rho = 1 - {rho:.3f} = {P0:.3f}
+        \end{{align*}}
+        """)
 
         # Grafik Ringkasan
         st.subheader("📊 Grafik Ringkasan")
@@ -321,6 +333,7 @@ with tab3:
         ax.set_ylabel("Nilai")
         st.pyplot(fig)
 
+        # Hasil Perhitungan Teks
         st.subheader("📈 Hasil Perhitungan")
         st.markdown(f"""
         - **Tingkat Utilisasi (ρ):** {rho:.3f}
