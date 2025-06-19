@@ -155,14 +155,19 @@ with tab1:
     bar1 = ax2.bar(x_pos - width/2, keuntungan, width=width, color='skyblue', label='Keuntungan')
     bar2 = ax2.bar(x_pos + width/2, penjualan, width=width, color='lightgreen', label='Penjualan')
     
-    # Label angka tetap (tanpa font dinamis)
+    # Gabungan semua nilai untuk menentukan batas Y
+    values = penjualan + keuntungan
+    max_val = max(values)
+    ax2.set_ylim(0, max_val * 1.3)  # Ruang ekstra di atas grafik
+    
+    # Label angka tetap (tidak menempel batang)
     for bars in [bar1, bar2]:
         for bar in bars:
-            value = int(bar.get_height())
+            value = bar.get_height()
             text = f"{value:,.0f}".replace(",", ".")
             ax2.text(
                 bar.get_x() + bar.get_width() / 2,
-                bar.get_height(),
+                value + (max_val * 0.03),  # Jarak 3% dari tinggi maksimal
                 text,
                 ha='center', va='bottom',
                 fontsize=10,
