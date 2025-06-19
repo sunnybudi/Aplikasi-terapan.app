@@ -104,7 +104,6 @@ with tab1:
         solusi = f"({y}, 0)"
     else:
         solusi = "(0, 0)"
-
     st.success(f"💡 Solusi optimal: {solusi} dengan keuntungan maksimum sebesar {format_rupiah(z_opt)}")
 
     # ===============================
@@ -141,7 +140,6 @@ with tab1:
     # Grafik Perbandingan (Diagram Batang Vertikal)
     # ===============================
     st.markdown("### 📊 Diagram Perbandingan Penjualan dan Keuntungan")
-
     # Data per kategori
     kategori = ['Meja (X)', 'Kursi (Y)', 'Total']
     penjualan = [total_penjualan_meja, total_penjualan_kursi, total_penjualan]
@@ -149,13 +147,12 @@ with tab1:
 
     x_pos = np.arange(len(kategori))
     width = 0.35  # lebar batang
-
     fig2, ax2 = plt.subplots()
     # Batang vertikal
     bar1 = ax2.bar(x_pos - width/2, keuntungan, width=width, color='skyblue', label='Keuntungan')
     bar2 = ax2.bar(x_pos + width/2, penjualan, width=width, color='lightgreen', label='Penjualan')
     values = penjualan + keuntungan
-    ax.set_ylim(0, max(values) * 1.2)
+    ax2.set_ylim(0, max(values) * 1.2)
 
     # Label angka tetap (tanpa font dinamis)
     for bars in [bar1, bar2]:
@@ -179,10 +176,8 @@ with tab1:
     ax2.set_xticks(x_pos)
     ax2.set_xticklabels(kategori, fontsize=10)
     ax2.legend(fontsize=10)
-
     # Format angka sumbu Y ke format titik ribuan
     ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x):,}'.replace(",", ".")))
-
     plt.tight_layout()
     st.pyplot(fig2)
 
