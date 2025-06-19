@@ -250,7 +250,7 @@ with tab2:
             height = bar.get_height()
             ax.text(
                 bar.get_x() + bar.get_width() / 2,  # posisi tengah batang
-                height + 0.05 * max(values),        # sedikit di atas batang
+                height + 0 * max(values),        # sedikit di atas batang
                 f"{height:.2f}",                    # format angka
                 ha='center', va='bottom', fontsize=10, fontweight='bold'
             )
