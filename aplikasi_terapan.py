@@ -154,6 +154,7 @@ with tab1:
     # Batang vertikal
     bar1 = ax2.bar(x_pos - width/2, keuntungan, width=width, color='skyblue', label='Keuntungan')
     bar2 = ax2.bar(x_pos + width/2, penjualan, width=width, color='lightgreen', label='Penjualan')
+    values = penjualan + keuntungan
     ax.set_ylim(0, max(values) * 1.2)
 
     # Label angka tetap (tanpa font dinamis)
