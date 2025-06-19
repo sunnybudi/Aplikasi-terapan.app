@@ -139,7 +139,7 @@ with tab1:
     # ===============================
     # Grafik Perbandingan (Diagram Batang Vertikal)
     # ===============================
-    st.markdown("### 📊 Diagram Batang Vertikal: Perbandingan Penjualan dan Keuntungan")
+    st.markdown("### 📊 Diagram Perbandingan Penjualan dan Keuntungan")
     
     # Data per kategori
     kategori = ['Meja (X)', 'Kursi (Y)', 'Total']
@@ -236,6 +236,7 @@ with tab2:
             """
         )
 
+        st.markdown("### 📊 Diagram EOQ dan Permintaan Tahunan")
         fig, ax = plt.subplots()
         labels = ["Permintaan", "EOQ"]
         values = [D, EOQ]
