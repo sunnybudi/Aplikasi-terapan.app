@@ -274,8 +274,11 @@ with tab3:
         """)
 
     # Input parameter
-    lambd = st.number_input("📥 Tingkat Kedatangan (λ) - pelanggan/jam", min_value=0, value=2)
-    mu = st.number_input("⚙️ Tingkat Pelayanan (μ) - pelanggan/jam", min_value=0, value=3)
+   col1, col2 = st.columns(2)
+    with col1:
+        lambd = st.number_input("📥 Tingkat Kedatangan (λ) - pelanggan/jam", min_value=0, value=2)
+    with col2:
+        mu = st.number_input("⚙️ Tingkat Pelayanan (μ) - pelanggan/jam", min_value=0, value=3)
 
     if lambd >= mu:
         st.error("⚠️ Sistem tidak stabil (λ ≥ μ). Harap pastikan λ < μ.")
