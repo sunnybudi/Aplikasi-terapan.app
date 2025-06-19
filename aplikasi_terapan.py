@@ -68,11 +68,11 @@ with tab1:
     with col1:
         x = st.number_input("Jumlah Produksi Meja (X)", value=10)
         laba_meja = st.number_input("Keuntungan per Meja (c₁)", value=400_000)
-        harga_meja = st.number_input("Harga Jual Meja (X)", value=800_000)
+        harga_meja = st.number_input("Harga Jual Meja", value=800_000)
     with col2:
         y = st.number_input("Jumlah Produksi Kursi (Y)", value=20)
         laba_kursi = st.number_input("Keuntungan per Kursi (c₂)", value=200_000)
-        harga_kursi = st.number_input("Harga Jual Kursi (Y)", value=500_000)
+        harga_kursi = st.number_input("Harga Jual Kursi", value=500_000)
 
     # Hitung biaya produksi dari selisih harga dan keuntungan
     biaya_meja = harga_meja - laba_meja
