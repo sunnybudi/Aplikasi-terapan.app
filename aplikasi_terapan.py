@@ -287,7 +287,7 @@ with tab3:
     """)
 
     st.markdown("""Keterangan""")
-    st.code("""
+    st.code(r"""
         - \( \lambda \): Tingkat kedatangan pelanggan per satuan waktu (misalnya pelanggan per jam)  
         - \( \mu \): Tingkat pelayanan pelanggan per satuan waktu  
         - \( \rho \): Utilisasi server, yaitu \( \rho = \lambda / \mu \)  
