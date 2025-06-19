@@ -140,20 +140,25 @@ with tab1:
     # Grafik Perbandingan (Diagram Batang Vertikal)
     # ===============================
     st.markdown("### 📊 Diagram Perbandingan Penjualan dan Keuntungan")
+    
     # Data per kategori
     kategori = ['Meja (X)', 'Kursi (Y)', 'Total']
     penjualan = [total_penjualan_meja, total_penjualan_kursi, total_penjualan]
     keuntungan = [total_laba_meja, total_laba_kursi, total_keuntungan_bersih]
-
+    
+    # Grafik
     x_pos = np.arange(len(kategori))
-    width = 0.35  # lebar batang
+    width = 0.35
     fig2, ax2 = plt.subplots()
-    # Batang vertikal
+    
+    # Buat batang grafik
     bar1 = ax2.bar(x_pos - width/2, keuntungan, width=width, color='skyblue', label='Keuntungan')
     bar2 = ax2.bar(x_pos + width/2, penjualan, width=width, color='lightgreen', label='Penjualan')
+    
+    # Gabungan semua nilai untuk menentukan batas Y
     values = penjualan + keuntungan
     ax2.set_ylim(0, max(values) * 1.2)
-
+    
     # Label angka tetap (tanpa font dinamis)
     for bars in [bar1, bar2]:
         for bar in bars:
@@ -168,16 +173,18 @@ with tab1:
                 color='black',
                 fontweight='bold'
             )
-
-    # Axis & Layout
+    
+    # Pengaturan axis dan label
     ax2.set_ylabel("Rupiah", fontsize=10)
     ax2.set_xlabel("Kategori Produk", fontsize=10)
     ax2.set_title("Perbandingan Penjualan dan Keuntungan", fontsize=12)
     ax2.set_xticks(x_pos)
     ax2.set_xticklabels(kategori, fontsize=10)
     ax2.legend(fontsize=10)
-    # Format angka sumbu Y ke format titik ribuan
+    
+    # Format angka di sumbu Y
     ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x):,}'.replace(",", ".")))
+    
     plt.tight_layout()
     st.pyplot(fig2)
 
