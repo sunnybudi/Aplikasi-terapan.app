@@ -196,7 +196,7 @@ with tab2:
     st.markdown("""
         ### Studi Kasus
         Sebuah perusahaan manufaktur memproduksi alat musik piano. Pihak manajemen ingin mengetahui 
-        berapa banyak lembar kayu yang sebaiknya dipesan setiap untuk menghemat biaya total persediaan.
+        berapa banyak lembar kayu yang sebaiknya dipesan setiap batch order untuk menghemat biaya total persediaan.
         """)
 
 
@@ -204,7 +204,14 @@ with tab2:
     st.latex(r"EOQ = \sqrt{\frac{2DS}{H}}")
     st.latex(r"\text{Frekuensi Pemesanan} = \frac{D}{EOQ}")
     st.latex(r"\text{Interval Pemesanan} = \frac{365}{\text{Frekuensi}}")
-
+    
+    st.write("""
+        EOQ = Economic Order Quantity (jumlah pemesanan ekonomis)//
+        D = Demand (jumlah kebutuhan/tuntutan barang per tahun)//
+        S = Ordering Cost (biaya pemesanan per pesanan)//
+        H = Holding Cost (biaya penyimpanan per unit per tahun)
+        """)
+    
     D = st.number_input("📅 Permintaan Tahunan (unit)", value=10000)
     S = st.number_input("🛒 Biaya Pemesanan per Order (Rp)", value=50000)
     H = st.number_input("🏬 Biaya Penyimpanan per Unit per Tahun (Rp)", value=2000)
