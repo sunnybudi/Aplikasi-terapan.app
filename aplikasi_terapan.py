@@ -266,7 +266,7 @@ with tab2:
 with tab3:
     st.header("3️⃣ Model Antrian (M/M/1)")
     st.markdown("""
-        ###Studi kasus: 
+        ### Studi kasus
         PT Kreasi Untung Indonesia yang merupakan sebuah perusahaan furnitur memproduksi Meja dan Kursi. 
         Karena perusahaan ingin menerapkan sistem pembelian yang teratur, maka dari itu untuk melakukan pembelian
         customer harus melakukan transaksi pemesanan melalui web pembelian. Untuk melihat efektifitas ini maka pihak
