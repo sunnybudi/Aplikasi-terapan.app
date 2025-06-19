@@ -201,15 +201,20 @@ with tab2:
 
 
     st.subheader("📐 Rumus-Rumus:")
-    st.latex(r"EOQ = \sqrt{\frac{2DS}{H}}")
-    st.latex(r"\text{Frekuensi Pemesanan} = \frac{D}{EOQ}")
-    st.latex(r"\text{Interval Pemesanan} = \frac{365}{\text{Frekuensi}}")
+   st.latex(r"""
+    \begin{aligned}
+    \textbf&{EOQ} &= \sqrt{\frac{2DS}{H}} \\
+    \textbf&{Frekuensi Pemesanan} &= \frac{D}{EOQ} \\
+    \textbf&{Interval Pemesanan} &= \frac{365}{\text{Frekuensi}}
+    \end{aligned}
+    """)
+
     
     st.markdown("""Keterangan""")
     st.code("""
-        EOQ   = Economic Order Quantity (jumlah pemesanan ekonomis)\\
-        D     = Demand (jumlah kebutuhan/tuntutan barang per tahun)\\
-        S     = Ordering Cost (biaya pemesanan per pesanan)\\
+        EOQ   = Economic Order Quantity (jumlah pemesanan ekonomis)
+        D     = Demand (jumlah kebutuhan/tuntutan barang per tahun)
+        S     = Ordering Cost (biaya pemesanan per pesanan)
         H     = Holding Cost (biaya penyimpanan per unit per tahun)
         """)
     
