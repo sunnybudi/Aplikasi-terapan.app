@@ -237,12 +237,25 @@ with tab2:
         )
 
         fig, ax = plt.subplots()
-        ax.bar(["Permintaan", "EOQ"], [D, EOQ], color=['red', 'green'])
+        labels = ["Permintaan", "EOQ"]
+        values = [D, EOQ]
+        colors = ['red', 'green']
+        
+        bars = ax.bar(labels, values, color=colors)
         ax.set_ylabel("Jumlah Unit")
         ax.set_title("EOQ dan Permintaan Tahunan")
+        
+        # Tambahkan nilai di atas tiap batang
+        for bar in bars:
+            height = bar.get_height()
+            ax.text(
+                bar.get_x() + bar.get_width() / 2,  # posisi tengah batang
+                height + 0.05 * max(values),        # sedikit di atas batang
+                f"{height:.2f}",                    # format angka
+                ha='center', va='bottom', fontsize=10, fontweight='bold'
+            )
+        
         st.pyplot(fig)
-    else:
-        st.warning("Input harus lebih besar dari 0")
 
 # =========================
 # TAB 3: Model Antrian (M/M/1)
