@@ -46,8 +46,9 @@ with tab1:
     st.header("1️⃣ Optimasi Produksi (Linear Programming)")
     st.markdown("""
     ### Studi Kasus
-    Sebuah perusahaan furnitur memproduksi **Meja (X)** dan **Kursi (Y)**. Untuk mengetahui berapa banyak 
-    penjualan dan keuntungan pada hasil produksi, pemiliknya menggunakan perhitungan matematika dengan rumus:
+    PT Kreasi Untung Indonesia yang merupakan sebuah perusahaan furnitur memproduksi **Meja (X)** dan **Kursi (Y)**. 
+    Untuk mengetahui berapa banyak penjualan dan keuntungan pada hasil produksi, pemiliknya menggunakan perhitungan 
+    matematika dengan rumus:
     """)
 
     st.latex(r"Z = c₁X + c₂Y")
@@ -194,8 +195,9 @@ with tab2:
     st.header("📦 Model Persediaan EOQ")
     st.markdown("""
         ### Studi Kasus
-        Sebuah perusahaan furnitur memproduksi Meja dan Kursi. Pihak manajemen ingin mengetahui 
-        berapa banyak lembar kayu yang sebaiknya dipesan pada setiap batch order untuk menghemat biaya total persediaan.
+        PT Kreasi Untung Indonesia yang merupakan sebuah perusahaan furnitur memproduksi Meja dan Kursi. 
+        Pihak manajemen ingin mengetahui berapa banyak lembar kayu yang sebaiknya dipesan pada setiap batch 
+        order untuk menghemat biaya total persediaan.
         """)
 
 
@@ -263,11 +265,13 @@ with tab2:
 # =========================
 with tab3:
     st.header("3️⃣ Model Antrian (M/M/1)")
-    st.write("""
-    Model antrian M/M/1 digunakan untuk menganalisis sistem dengan satu server,
-    di mana waktu antar kedatangan dan waktu pelayanan mengikuti distribusi eksponensial.
-    """)
-    st.write("Studi kasus: Efisiensi sebuah server dalam sebuah antrian pembelian.")
+    st.markdown("""
+        ###Studi kasus: 
+        PT Kreasi Untung Indonesia yang merupakan sebuah perusahaan furnitur memproduksi Meja dan Kursi. 
+        Karena perusahaan ingin menerapkan sistem pembelian yang teratur, maka dari itu untuk melakukan pembelian
+        customer harus melakukan transaksi pemesanan melalui web pembelian. Untuk melihat efektifitas ini maka pihak
+        management membuat sebuah server antrian yang dikhususkan untuk memantau kelancaran pembelian didalam website.
+        """)
 
     # Input parameter
     lambd = st.number_input("📥 Tingkat Kedatangan (λ) - pelanggan/jam", min_value=0, value=2)
