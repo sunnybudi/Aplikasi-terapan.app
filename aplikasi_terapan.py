@@ -273,6 +273,20 @@ with tab3:
         management membuat sebuah server antrian yang dikhususkan untuk memantau kelancaran pembelian didalam website.
         """)
 
+        # Tampilkan Rumus
+        st.subheader("🧮 Rumus-Rumus Model M/M/1")
+        st.latex(rf"""
+        \begin{{align*}}
+        \rho &= \frac{{\lambda}}{{\mu}} = \frac{{{lambd}}}{{{mu}}} = {rho:.3f} \\
+        L &= \frac{{\lambda}}{{\mu - \lambda}} = \frac{{{lambd}}}{{{mu - lambd}}} = {L:.3f} \\
+        L_q &= \frac{{\lambda^2}}{{\mu(\mu - \lambda)}} = \frac{{{lambd}^2}}{{{mu}({mu - lambd})}} = {Lq:.3f} \\
+        W &= \frac{{1}}{{\mu - \lambda}} = \frac{{1}}{{{mu - lambd}}} = {W:.3f} \\
+        W_q &= \frac{{\lambda}}{{\mu(\mu - \lambda)}} = \frac{{{lambd}}}{{{mu}({mu - lambd})}} = {Wq:.3f} \\
+        P_0 &= 1 - \rho = 1 - {rho:.3f} = {P0:.3f}
+        \end{{align*}}
+        """)
+
+
     # Input parameter
    col1, col2 = st.columns(2)
     with col1:
@@ -290,15 +304,6 @@ with tab3:
         W = 1 / (mu - lambd)
         Wq = lambd / (mu * (mu - lambd))
         P0 = 1 - rho
-
-        # Tampilkan Rumus
-        st.subheader("🧮 Rumus-Rumus Model M/M/1")
-        st.latex(rf"\rho = \frac{{\lambda}}{{\mu}} = \frac{{{lambd}}}{{{mu}}} = {rho:.3f}")
-        st.latex(rf"L = \frac{{\lambda}}{{\mu - \lambda}} = \frac{{{lambd}}}{{{mu - lambd}}} = {L:.3f}")
-        st.latex(rf"L_q = \frac{{\lambda^2}}{{\mu(\mu - \lambda)}} = \frac{{{lambd}^2}}{{{mu}({mu - lambd})}} = {Lq:.3f}")
-        st.latex(rf"W = \frac{{1}}{{\mu - \lambda}} = \frac{{1}}{{{mu - lambd}}} = {W:.3f}")
-        st.latex(rf"W_q = \frac{{\lambda}}{{\mu(\mu - \lambda)}} = \frac{{{lambd}}}{{{mu}({mu - lambd})}} = {Wq:.3f}")
-        st.latex(rf"P_0 = 1 - \rho = 1 - {rho:.3f} = {P0:.3f}")
 
         # Grafik Ringkasan
         st.subheader("📊 Grafik Ringkasan")
