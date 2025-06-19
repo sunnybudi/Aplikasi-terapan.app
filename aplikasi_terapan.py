@@ -228,9 +228,13 @@ with tab2:
         freq = D / EOQ
         cycle_days = 365 / freq
 
-        st.success(f"EOQ: {EOQ:.2f} unit")
-        st.success(f"N: {freq:.2f} kali/tahun")
-        st.success(f"T: {cycle_days:.0f} hari")
+        st.success(
+            f"
+            EOQ: {EOQ:.2f} unit")
+            N: {freq:.2f} kali/tahun")
+            T: {cycle_days:.0f} hari")
+            "
+        )
 
         fig, ax = plt.subplots()
         ax.bar(["Permintaan", "EOQ"], [D, EOQ], color=['red', 'green'])
