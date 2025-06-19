@@ -45,7 +45,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 with tab1:
     st.header("1️⃣ Optimasi Produksi (Linear Programming)")
     st.markdown("""
-    ### Studi Kasus
+    ### 🔧 Studi Kasus
     PT Kreasi Untung Indonesia yang merupakan sebuah perusahaan furnitur memproduksi **Meja (X)** dan **Kursi (Y)**. 
     Untuk mengetahui berapa banyak penjualan dan keuntungan pada hasil produksi, pemiliknya menggunakan perhitungan 
     matematika dengan rumus:
@@ -194,7 +194,7 @@ with tab1:
 with tab2:
     st.header("📦 Model Persediaan EOQ")
     st.markdown("""
-        ### Studi Kasus
+        ### 🔧 Studi Kasus
         PT Kreasi Untung Indonesia yang merupakan sebuah perusahaan furnitur memproduksi Meja dan Kursi. 
         Pihak manajemen ingin mengetahui berapa banyak lembar kayu yang sebaiknya dipesan pada setiap batch 
         order untuk menghemat biaya total persediaan.
@@ -266,7 +266,7 @@ with tab2:
 with tab3:
     st.header("3️⃣ Model Antrian (M/M/1)")
     st.markdown("""
-        ### Studi Kasus
+        ### 🔧 Studi Kasus
         PT Kreasi Untung Indonesia yang merupakan sebuah perusahaan furnitur memproduksi Meja dan Kursi. 
         Karena perusahaan ingin menerapkan sistem pembelian yang teratur, maka dari itu untuk melakukan pembelian
         customer harus melakukan transaksi pemesanan melalui web pembelian. Untuk melihat efektivitas ini maka pihak
