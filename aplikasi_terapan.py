@@ -149,7 +149,7 @@ with tab1:
     x_pos = np.arange(len(kategori))
     width = 0.35  # lebar batang
     
-    fig2, ax2 = plt.subplots(figsize=(20, 15))
+    fig2, ax2 = plt.subplots(figsize=(25, 15))
     
     # Batang vertikal
     bar1 = ax2.bar(x_pos - width/2, keuntungan, width=width, color='skyblue', label='Keuntungan')
@@ -165,21 +165,21 @@ with tab1:
                 bar.get_height() * 0.98,
                 text,
                 ha='center', va='top',
-                fontsize=24,
+                fontsize=30,
                 color='black',
                 fontweight='bold'
             )
     
     # Axis & Layout dengan font lebih besar
-    ax2.set_ylabel("Rupiah", fontsize=30)
-    ax2.set_xlabel("Kategori Produk", fontsize=26)
-    ax2.set_title("Perbandingan Penjualan dan Keuntungan", fontsize=30)
+    ax2.set_ylabel("Rupiah", fontsize=35)
+    ax2.set_xlabel("Kategori Produk", fontsize=35)
+    ax2.set_title("Perbandingan Penjualan dan Keuntungan", fontsize=35)
     ax2.set_xticks(x_pos)
-    ax2.set_xticklabels(kategori, fontsize=30)
-    ax2.legend(fontsize=30)
+    ax2.set_xticklabels(kategori, fontsize=35)
+    ax2.legend(fontsize=35)
     
     # Ukuran angka pada sumbu
-    ax2.tick_params(axis='y', labelsize=30)
+    ax2.tick_params(axis='y', labelsize=35)
     
     # Format angka sumbu Y
     ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x):,}'.replace(",", ".")))
