@@ -194,8 +194,8 @@ with tab2:
     st.header("📦 Model Persediaan EOQ")
     st.markdown("""
         ### Studi Kasus
-        Sebuah perusahaan manufaktur memproduksi alat musik piano. Pihak manajemen ingin mengetahui 
-        berapa banyak lembar kayu yang sebaiknya dipesan setiap batch order untuk menghemat biaya total persediaan.
+        Sebuah perusahaan furnitur memproduksi Meja dan Kursi. Pihak manajemen ingin mengetahui 
+        berapa banyak lembar kayu yang sebaiknya dipesan pada setiap batch order untuk menghemat biaya total persediaan.
         """)
 
 
@@ -230,8 +230,8 @@ with tab2:
 
         st.success(
             f"""
-            EOQ: {EOQ:.2f} unit
-            N: {freq:.2f} kali/tahun
+            EOQ: {EOQ:.2f} unit\\
+            N: {freq:.2f} kali/tahun\\
             T: {cycle_days:.0f} hari
             """
         )
