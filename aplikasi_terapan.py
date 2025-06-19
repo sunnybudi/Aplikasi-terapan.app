@@ -286,6 +286,14 @@ with tab3:
     \end{align*}
     """)
 
+    st.markdown("""Keterangan""")
+    st.code("""
+        λ: Tingkat kedatangan pelanggan per satuan waktu (misal: pelanggan per jam)
+        μ: Tingkat pelayanan pelanggan per satuan waktu
+        ρ: Utilisasi server, yaitu perbandingan antara kedatangan dan pelayanan (𝜌=𝜆/𝜇)
+        L: Jumlah rata-rata pelanggan dalam sistem (termasuk antrian dan sedang dilayani)
+        """)
+
     # Input parameter
     col1, col2 = st.columns(2)
     with col1:
