@@ -140,55 +140,51 @@ with tab1:
 # ===============================
 # Grafik Perbandingan (Diagram Batang Vertikal)
 # ===============================
-st.markdown("### 📊 Diagram Perbandingan Penjualan dan Keuntungan")
+with tab1:
+    st.markdown("### 📊 Diagram Perbandingan Penjualan dan Keuntungan")
 
-# Data per kategori
-kategori = ['Meja (X)', 'Kursi (Y)', 'Total']
-penjualan = [total_penjualan_meja, total_penjualan_kursi, total_penjualan]
-keuntungan = [total_laba_meja, total_laba_kursi, total_keuntungan_bersih]
+    # Data per kategori
+    kategori = ['Meja (X)', 'Kursi (Y)', 'Total']
+    penjualan = [total_penjualan_meja, total_penjualan_kursi, total_penjualan]
+    keuntungan = [total_laba_meja, total_laba_kursi, total_keuntungan_bersih]
 
-x_pos = np.arange(len(kategori))
-width = 0.35  # lebar batang
+    x_pos = np.arange(len(kategori))
+    width = 0.35  # lebar batang
 
-fig2, ax2 = plt.subplots()
+    fig2, ax2 = plt.subplots()
 
-# Batang vertikal
-bar1 = ax2.bar(x_pos - width/2, keuntungan, width=width, color='skyblue', label='Keuntungan')
-bar2 = ax2.bar(x_pos + width/2, penjualan, width=width, color='lightgreen', label='Penjualan')
+    # Batang vertikal
+    bar1 = ax2.bar(x_pos - width/2, keuntungan, width=width, color='skyblue', label='Keuntungan')
+    bar2 = ax2.bar(x_pos + width/2, penjualan, width=width, color='lightgreen', label='Penjualan')
 
-# Label angka di atas batang dengan ukuran font dinamis
-for bars in [bar1, bar2]:
-    for bar in bars:
-        value = int(bar.get_height())
-        text = f"{value:,.0f}".replace(",", ".")
+    # Label angka tetap (tanpa font dinamis)
+    for bars in [bar1, bar2]:
+        for bar in bars:
+            value = int(bar.get_height())
+            text = f"{value:,.0f}".replace(",", ".")
+            ax2.text(
+                bar.get_x() + bar.get_width() / 2,
+                bar.get_height(),
+                text,
+                ha='center', va='bottom',
+                fontsize=10,
+                color='black',
+                fontweight='bold'
+            )
 
-        # Ukuran font dinamis tergantung tinggi batang
-        font_size = max(8, min(14, int(bar.get_height() / 1_000_000)))  # skala jutaan
+    # Axis & Layout
+    ax2.set_ylabel("Rupiah", fontsize=10)
+    ax2.set_xlabel("Kategori Produk", fontsize=10)
+    ax2.set_title("Perbandingan Penjualan dan Keuntungan", fontsize=12)
+    ax2.set_xticks(x_pos)
+    ax2.set_xticklabels(kategori, fontsize=10)
+    ax2.legend(fontsize=10)
 
-        ax2.text(
-            bar.get_x() + bar.get_width() / 2,
-            bar.get_height() * 0.98,
-            text,
-            ha='center', va='top',
-            fontsize=font_size,
-            color='black',
-            fontweight='bold'
-        )
+    # Format angka sumbu Y ke format titik ribuan
+    ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x):,}'.replace(",", ".")))
 
-# Axis & Layout
-ax2.set_ylabel("Rupiah", fontsize=10)
-ax2.set_xlabel("Kategori Produk", fontsize=10)
-ax2.set_title("Perbandingan Penjualan dan Keuntungan", fontsize=12)
-ax2.set_xticks(x_pos)
-ax2.set_xticklabels(kategori, fontsize=10)
-ax2.legend(fontsize=10)
-
-# Format angka sumbu Y ke format titik ribuan
-ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x):,}'.replace(",", ".")))
-
-# Tata letak
-plt.tight_layout()
-st.pyplot(fig2)
+    plt.tight_layout()
+    st.pyplot(fig2)
 
 # =========================
 # TAB 2: EOQ
