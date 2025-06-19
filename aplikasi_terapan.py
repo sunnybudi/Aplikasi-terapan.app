@@ -339,6 +339,7 @@ with tab3:
 
         fig, ax = plt.subplots()
         bars = ax.bar(labels, values, color=['skyblue', 'orange', 'green', 'salmon', 'violet'])
+        ax.set_ylim(0, max(values) * 1.2)
         for bar in bars:
             height = bar.get_height()
             ax.annotate(f"{height:.2f}", xy=(bar.get_x() + bar.get_width() / 2, height),
